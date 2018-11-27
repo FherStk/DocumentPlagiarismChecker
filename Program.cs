@@ -8,5 +8,9 @@ namespace PdfPlagiarismChecker
         {
             Console.WriteLine("Hello World!");
         }
+
+        private void Test(){
+            
+        }
     }
 }
