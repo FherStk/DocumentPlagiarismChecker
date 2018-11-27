@@ -1,0 +1,11 @@
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/bin/Debug/netcoreapp2.1/PdfPlagiarismChecker.deps.json
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/bin/Debug/netcoreapp2.1/PdfPlagiarismChecker.runtimeconfig.json
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/bin/Debug/netcoreapp2.1/PdfPlagiarismChecker.runtimeconfig.dev.json
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/bin/Debug/netcoreapp2.1/PdfPlagiarismChecker.dll
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/bin/Debug/netcoreapp2.1/PdfPlagiarismChecker.pdb
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/obj/Debug/netcoreapp2.1/PdfPlagiarismChecker.csprojAssemblyReference.cache
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/obj/Debug/netcoreapp2.1/PdfPlagiarismChecker.csproj.CoreCompileInputs.cache
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/obj/Debug/netcoreapp2.1/PdfPlagiarismChecker.AssemblyInfoInputs.cache
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/obj/Debug/netcoreapp2.1/PdfPlagiarismChecker.AssemblyInfo.cs
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/obj/Debug/netcoreapp2.1/PdfPlagiarismChecker.dll
+/home/porrino.fernando/Projects/PdfPlagiarismChecker/obj/Debug/netcoreapp2.1/PdfPlagiarismChecker.pdb
