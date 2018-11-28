@@ -30,19 +30,15 @@ namespace PdfPlagiarismChecker
             //Col1=Word; Col2=#Appearences in File1; Col3=#Appearences in File2; Col4=%Coincidences
             //Last=%Global Coincidences
 
-            Dictionary<string, int> doc1 = null;
-            Dictionary<string, int> doc2 = null;
-            List<string> docNames = 
-            while(docNames.Count() > 0){                                
-                doc1 = input[docNames[0]];
+            Content doc1 = null;
+            Content doc2 = null;  
 
-                int i = 1;
-                while(i<docNames.Count()){
-                    doc2 = input[docNames[i++]];
-
-                }
-
-                docNames.RemoveAt(0);
+            for(int i = 0; i < input.Count(); i++){                                
+                doc1 = input.ElementAt(i);
+             
+                for(int j = i+1; j < input.Count(); j++){                                
+                    doc2 = input.ElementAt(j);                                    
+                }                    
             }
         }
 
