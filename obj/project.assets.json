@@ -4433,23 +4433,23 @@
     ]
   },
   "packageFolders": {
-    "/home/porrino.fernando/.nuget/packages/": {},
-    "/home/porrino.fernando/dotnet/sdk/NuGetFallbackFolder": {}
+    "C:\\Users\\fher\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/porrino.fernando/Projects/PdfPlagiarismChecker/PdfPlagiarismChecker.csproj",
+      "projectUniqueName": "C:\\Users\\fher\\Git Projects\\PdfPlagiarismChecker\\PdfPlagiarismChecker.csproj",
       "projectName": "PdfPlagiarismChecker",
-      "projectPath": "/home/porrino.fernando/Projects/PdfPlagiarismChecker/PdfPlagiarismChecker.csproj",
-      "packagesPath": "/home/porrino.fernando/.nuget/packages/",
-      "outputPath": "/home/porrino.fernando/Projects/PdfPlagiarismChecker/obj/",
+      "projectPath": "C:\\Users\\fher\\Git Projects\\PdfPlagiarismChecker\\PdfPlagiarismChecker.csproj",
+      "packagesPath": "C:\\Users\\fher\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\fher\\Git Projects\\PdfPlagiarismChecker\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/home/porrino.fernando/dotnet/sdk/NuGetFallbackFolder"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/home/porrino.fernando/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\fher\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
