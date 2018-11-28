@@ -1,5 +1,5 @@
 namespace PdfPlagiarismChecker
 {
-    class FolderNotFoundException: System.Exception {}   
-    class FileNotPdfException: System.Exception {}   
+    public class FolderNotFoundException: System.Exception {}   
+    public class FileNotPdfException: System.Exception {}   
 }

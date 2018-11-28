@@ -2,49 +2,46 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 
 namespace PdfPlagiarismChecker
 {
     class Content
     {
-        private string name {get;}
-        private Dictionary<string, int> words;
+        public string name {get;}
+        public Dictionary<string, int> words {get; private set;}            
 
         /// <summary>
         /// Loads the content of a PDF file and counts how many words and how many times appears along the document.
         /// </summary>
-        /// <param name="filePath">The file path.</param>
-        public Content(string filePath){
+        /// <param name="path">The file path.</param>
+        public Content(string path){
             //Check pre-conditions
-            if(!File.Exists(filePath)) 
+            if(!File.Exists(path)) 
                 throw new FolderNotFoundException();
 
-            if(!Path.GetExtension(filePath).ToLower().Equals("pdf"))
+            if(!System.IO.Path.GetExtension(path).ToLower().Equals(".pdf"))
                 throw new FileNotPdfException();
 
             //Init object attributes.
-            this.name = Path.GetFileName(filePath);
+            this.name = System.IO.Path.GetFileName(path);
             this.words = new Dictionary<string, int>();
-
-            //Read pdf file
-            PdfReader reader = new PdfReader(filePath);
-            PrTokeniser tokenizer = new PrTokeniser(new RandomAccessFileOrArray(reader.GetPageContent(1)));
-
-            //Store the appearence of each word inside the document.                
-            while (tokenizer.NextToken())
+            
+           using (PdfReader reader = new PdfReader(path))
             {
-                if (tokenizer.TokenType == PrTokeniser.TK_STRING)                        
-                    this.AddWord(tokenizer.StringValue);
-            }
+                for (int i = 1; i <= reader.NumberOfPages; i++)
+                {
+                    string text = PdfTextExtractor.GetTextFromPage(reader, i);
+                    text = text.Replace("\n", "");
 
-            reader.Close();
-        }
-
-        private void AddWord(string word){
-             if(!words.ContainsKey(word))
-                words.Add(word, 0);
-                        
-            words[word]++;     
+                    foreach(string word in text.Split(" ").Where(x => x.Length > 0)){
+                        if(!this.words.ContainsKey(word))
+                            this.words.Add(word, 0);
+                                    
+                        this.words[word]++;     
+                    }
+                }
+            }            
         }
     }
 }

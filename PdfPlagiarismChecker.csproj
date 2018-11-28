@@ -4,6 +4,6 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="*"/>
+    <PackageReference Include="iTextSharp" Version="*"/>
   </ItemGroup>
 </Project>
