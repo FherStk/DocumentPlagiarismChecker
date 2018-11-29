@@ -1,10 +1,18 @@
 namespace PdfPlagiarismChecker.WordCounter
 {
-    public class ResultLine{
-        public string word {get;}
+    internal class ResultLine{
+        public string _word;
+         public string Word {
+            get{
+                return _word;
+            } 
+            set{
+                _word = value;
+            }
+        }
 
         private int _appearenceLeft;
-        public int appearenceLeft {
+        public int AppearenceLeft {
             get{
                 return _appearenceLeft;
             } 
@@ -14,7 +22,7 @@ namespace PdfPlagiarismChecker.WordCounter
             }
         }
         private int _appearenceRight;
-        public int appearenceRight {
+        public int AppearenceRight {
             get{
                 return _appearenceRight;
             } 
@@ -23,20 +31,28 @@ namespace PdfPlagiarismChecker.WordCounter
                 Refresh();
             }
         }
-        public float similitude {get; private set;}
+        public float _matching;
+         public float Matching {
+            get{
+                return _matching;
+            } 
+            set{
+                _matching = value;
+            }
+        }
 
         public  ResultLine(string word){
-            this.word = word;
-            this.similitude = 0;
+            this.Word = word;
+            this.Matching = 0;
             _appearenceLeft = 0;
             _appearenceRight = 0;            
         } 
 
         private void Refresh(){
-            if(this.appearenceLeft == 0 || this.appearenceRight == 0) 
-                this.similitude = 0;
+            if(this.AppearenceLeft == 0 || this.AppearenceRight == 0) 
+                this.Matching = 0;
             else
-                this.similitude = (this.appearenceLeft < this.appearenceRight ? (float)this.appearenceLeft / (float)this.appearenceRight : (float)this.appearenceRight / (float)this.appearenceLeft);
+                this.Matching = (this.AppearenceLeft < this.AppearenceRight ? (float)this.AppearenceLeft / (float)this.AppearenceRight : (float)this.AppearenceRight / (float)this.AppearenceLeft);
         }      
     }      
 }

@@ -3,40 +3,71 @@ using System.Linq;
 
 namespace PdfPlagiarismChecker.WordCounter
 {
-    public class ResultHeader{
-        public string left {get;}
-        public string right {get;}
-        public float similitude {get; private set;}
-
-        public Dictionary<string, ResultLine> lines {get; private set;}
+    internal class ResultHeader{
+        public string _left;
+        public string Left {
+            get{
+                return _left;
+            } 
+            private set{
+                _left = value;
+            }
+        }
+        public string _right;
+        public string Right {
+            get{
+                return _right;
+            } 
+            private set{
+                _right = value;
+            }
+        }
+        public float _matching;
+        public float Matching {
+            get{
+                return _matching;
+            } 
+            private set{
+                _matching = value;
+            }
+        }
+        public Dictionary<string, ResultLine> _lines;
+        public List<ResultLine> Lines {
+            get{
+                return _lines.Values.ToList();
+            } 
+            private set{
+                _lines = value.ToDictionary(x => x.Word, x => x);
+            }
+        }
         
         public ResultHeader(string left, string right){
-            this.left = left;
-            this.right = right;
-            this.lines = new Dictionary<string, ResultLine>();
+            this.Left = left;
+            this.Right = right;
+            this.Lines = new List<ResultLine>();
         }
 
         public void AddRight(string word, int appearence){
             ResultLine rl = GetLine(word);            
-            rl.appearenceRight += appearence; 
+            rl.AppearenceRight += appearence; 
 
             Refresh();           
         }
 
         public void AddLeft(string word, int appearence){
             ResultLine rl = GetLine(word);            
-            rl.appearenceLeft += appearence;    
+            rl.AppearenceLeft += appearence;    
 
             Refresh();          
         }
 
         private ResultLine GetLine(string word){
             ResultLine rl = null;
-            if(this.lines.ContainsKey(word)) rl = this.lines[word];
+            if(_lines.ContainsKey(word)) rl = _lines[word];
             else
             {
                 rl =  new ResultLine(word);
-                this.lines.Add(word, rl);
+                _lines.Add(word, rl);
             }            
 
             return rl; 
@@ -45,12 +76,12 @@ namespace PdfPlagiarismChecker.WordCounter
         private void Refresh(){
             int count = 0;
             float total = 0;
-            foreach(ResultLine rl in this.lines.Select(x => x.Value)){
-                total += rl.similitude;
+            foreach(ResultLine rl in this.Lines){
+                total += rl.Matching;
                 count++;
             }
             
-            this.similitude = (count > 0 ?  total / count : 0);
+            this.Matching = (count > 0 ?  total / count : 0);
         }         
     }      
 }

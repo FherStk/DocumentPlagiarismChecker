@@ -5,13 +5,12 @@ using iTextSharp.text.pdf;
 
 namespace PdfPlagiarismChecker.WordCounter
 {
-    class Worker
+    public class Worker
     {
-
-        public static void Run(string path){
+        public static void Run(string path, bool details = false){
             List<Document> docs = Parse(path);
             List<ResultHeader> res = Compare(docs);  
-            Print(res);      
+            Print(res, details);      
         }
 
         /// <summary>
@@ -52,30 +51,33 @@ namespace PdfPlagiarismChecker.WordCounter
         }
 
         private static ResultHeader Compare(Document left,  Document right){
-            ResultHeader r = new ResultHeader(left.name, right.name);
+            ResultHeader r = new ResultHeader(left.Name, right.Name);
             
-            foreach(var wLeft in left.words)
+            foreach(var wLeft in left.Words)
                 r.AddLeft(wLeft.text, wLeft.count);
 
-            foreach(var wRight in right.words)
+            foreach(var wRight in right.Words)
                 r.AddRight(wRight.text, wRight.count);
 
             
             return r;
         }
 
-        private static void Print(List<ResultHeader> results){
+        private static void Print(List<ResultHeader> results, bool details){
             foreach(ResultHeader r in results){
                 System.Console.WriteLine("##############################################################################");
-                System.Console.WriteLine("Left file: {0}", r.left);
-                System.Console.WriteLine("Right file: {0}", r.right);
-                System.Console.WriteLine("Similitude: {0}%", System.Math.Round(r.similitude*100, 2));
-                System.Console.WriteLine("------------------------------------------------------------------------------");
+                System.Console.WriteLine("Left file: {0}", r.Left);
+                System.Console.WriteLine("Right file: {0}", r.Right);
+                System.Console.WriteLine("Matching: {0}%", System.Math.Round(r.Matching*100, 2));                
 
-                foreach(ResultLine rl in r.lines.Values){
-                    System.Console.WriteLine("Word: {0} | Left: {1} | Right: {2} | Similitude: {3}%", rl.word, rl.appearenceLeft, rl.appearenceRight, System.Math.Round(rl.similitude*100, 2));
+                if(details){
+                    System.Console.WriteLine("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+                    foreach(ResultLine rl in r.Lines){
+                        System.Console.WriteLine("Word: {0} | Left: {1} | Right: {2} | Matching: {3}%", rl.Word, rl.AppearenceLeft, rl.AppearenceRight, System.Math.Round(rl.Matching*100, 2));
+                    }
                 }
 
+                System.Console.WriteLine("##############################################################################");
                 System.Console.WriteLine("");
             }
         }
