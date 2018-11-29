@@ -1,16 +1,8 @@
 namespace PdfPlagiarismChecker.Core
 {
     internal class ResultLine{       
-        private string _item;
-        public string Item {
-            get{
-                return _item;
-            } 
-            set{
-                _item = value;
-            }
-        }
-
+        public string Item {get; set;}      
+        public float Matching {get; private set;}     
         private int _leftValue;
         public int LeftValue {
             get{
@@ -30,22 +22,10 @@ namespace PdfPlagiarismChecker.Core
                 _rightValue = value;
                 Refresh();
             }
-        }
-        private float _matching;
-        public float Matching {
-            get{
-                return _matching;
-            } 
-            set{
-                _matching = value;
-            }
-        }
+        }       
 
         public  ResultLine(string word){
-            this.Item = word;
-            this.Matching = 0;
-            _leftValue = 0;
-            _rightValue = 0;            
+            this.Item = word;       
         } 
 
         private void Refresh(){

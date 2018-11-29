@@ -4,34 +4,10 @@ using System.Linq;
 namespace PdfPlagiarismChecker.Core
 {
     internal class ResultHeader{
-        private string _leftCaption;
-        public string LeftCaption {
-            get{
-                return _leftCaption;
-            } 
-            private set{
-                _leftCaption = value;
-            }
-        }
-        private string _rightCaption;
-        public string RightCaption {
-            get{
-                return _rightCaption;
-            } 
-            private set{
-                _rightCaption = value;
-            }
-        }
-        private float _matching;
-        public float Matching {
-            get{
-                return _matching;
-            } 
-            private set{
-                _matching = value;
-            }
-        }
-        public Dictionary<string, ResultLine> _lines;
+        public string LeftCaption {get; private set;}
+        public string RightCaption {get; private set;}      
+        public float Matching {get; private set;}            
+        private Dictionary<string, ResultLine> _lines;
         public List<ResultLine> Lines {
             get{
                 return _lines.Values.ToList();

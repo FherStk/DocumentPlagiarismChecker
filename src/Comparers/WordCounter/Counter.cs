@@ -6,7 +6,7 @@ using PdfPlagiarismChecker.Core;
 
 namespace PdfPlagiarismChecker.Comparers.WordCounter
 {
-    public class Worker
+    public class Counter
     {
         public static void Run(string path, bool details = false){
             List<Document> docs = Parse(path);
@@ -55,10 +55,10 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
             ResultHeader r = new ResultHeader(left.Name, right.Name);
             
             foreach(var wLeft in left.Words)
-                r.AddLeft(wLeft.text, wLeft.count);
+                r.AddLeft(wLeft.Text, wLeft.Count);
 
             foreach(var wRight in right.Words)
-                r.AddRight(wRight.text, wRight.count);
+                r.AddRight(wRight.Text, wRight.Count);
 
             
             return r;

@@ -30,6 +30,7 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
             //Init object attributes.
             _words = new Dictionary<string, Word>();
 
+            //Read PDF file and sotre the word count.
             using (PdfReader reader = new PdfReader(path))
             {
                 for (int i = 1; i <= reader.NumberOfPages; i++)
