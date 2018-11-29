@@ -6,24 +6,15 @@ using iTextSharp.text.pdf.parser;
 
 namespace PdfPlagiarismChecker.Comparers.WordCounter
 {
-    internal class Document
-    {
-        private string _name;
-        public string Name {
-            get{
-                return _name;
-            } 
-            private set{
-                _name = value;
-            }
-        }
+    internal class Document: Core.BaseDocument
+    {        
         private Dictionary<string, Word> _words;
         public List<Word> Words {
             get{
                 return _words.Values.ToList();
             } 
             private set{
-                _words = value.ToDictionary(x => x.text, x => x);
+                _words = value.ToDictionary(x => x.Text, x => x);
             }
         }       
 
@@ -31,18 +22,15 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
         /// Loads the content of a PDF file and counts how many words and how many times appears along the document.
         /// </summary>
         /// <param name="path">The file path.</param>
-        public Document(string path){
-            //Check pre-conditions
-            if(!File.Exists(path)) 
-                throw new FolderNotFoundException();
-
+        public Document(string path): base(path){
+            //Check pre-conditions        
             if(!System.IO.Path.GetExtension(path).ToLower().Equals(".pdf"))
                 throw new FileNotPdfException();
 
             //Init object attributes.
-            this.Name = System.IO.Path.GetFileName(path);
-            this._words = new Dictionary<string, Word>();
+            _words = new Dictionary<string, Word>();
 
+            //Read PDF file and sotre the word count.
             using (PdfReader reader = new PdfReader(path))
             {
                 for (int i = 1; i <= reader.NumberOfPages; i++)
@@ -51,10 +39,10 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
                     text = text.Replace("\n", "");
 
                     foreach(string word in text.Split(" ").Where(x => x.Length > 0)){
-                        if(!this._words.ContainsKey(word))
-                            this._words.Add(word, new Word(){text = word, count = 0});
+                        if(!_words.ContainsKey(word))
+                            _words.Add(word, new Word(){Text = word, Count = 0});
                                     
-                        this._words[word].count++;     
+                        _words[word].Count++;     
                     }
                 }
             }            
