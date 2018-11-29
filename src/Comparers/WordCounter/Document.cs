@@ -6,7 +6,7 @@ using iTextSharp.text.pdf.parser;
 
 namespace PdfPlagiarismChecker.Comparers.WordCounter
 {
-    internal class Document: PdfPlagiarismChecker.Core.BaseDocument
+    internal class Document: Core.BaseDocument
     {        
         private Dictionary<string, Word> _words;
         public List<Word> Words {
@@ -14,7 +14,7 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
                 return _words.Values.ToList();
             } 
             private set{
-                _words = value.ToDictionary(x => x.text, x => x);
+                _words = value.ToDictionary(x => x.Text, x => x);
             }
         }       
 
@@ -40,9 +40,9 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
 
                     foreach(string word in text.Split(" ").Where(x => x.Length > 0)){
                         if(!_words.ContainsKey(word))
-                            _words.Add(word, new Word(){text = word, count = 0});
+                            _words.Add(word, new Word(){Text = word, Count = 0});
                                     
-                        _words[word].count++;     
+                        _words[word].Count++;     
                     }
                 }
             }            

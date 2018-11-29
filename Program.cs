@@ -4,7 +4,8 @@
     {
         static void Main(string[] args)
         {            
-            Comparers.WordCounter.WordCounter.Run("C:\\test");
+            Comparers.WordCounter.Counter wc = new Comparers.WordCounter.Counter();
+            wc.Run("C:\\test");
             //WordCounter.Document d = new WordCounter.Document("");
             //d.words.Add(null);
             

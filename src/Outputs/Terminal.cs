@@ -4,7 +4,7 @@ using PdfPlagiarismChecker.Core;
 namespace PdfPlagiarismChecker.Outputs
 {
     internal class Terminal: Core.BaseOutput{
-        protected override void Write(List<ResultHeader> results, int level){
+        public override void Write(List<ResultHeader> results, int level){
             foreach(ResultHeader r in results){
                 System.Console.WriteLine("##############################################################################");
                 System.Console.WriteLine("Left file: {0}", r.LeftCaption);
