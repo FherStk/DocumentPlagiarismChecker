@@ -1,4 +1,4 @@
-namespace PdfPlagiarismChecker
+namespace PdfPlagiarismChecker.WordCounter
 {
     public class ResultLine{
         public string word {get;}

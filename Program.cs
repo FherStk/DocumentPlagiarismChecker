@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Core.Run("C:\\test");
+            WordCounter.Worker.Run("C:\\test");
         }
     }
 }

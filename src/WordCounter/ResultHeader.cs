@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PdfPlagiarismChecker
+namespace PdfPlagiarismChecker.WordCounter
 {
-    public class Result{
+    public class ResultHeader{
         public string left {get;}
         public string right {get;}
         public float similitude {get; private set;}
 
         public Dictionary<string, ResultLine> lines {get; private set;}
         
-        public Result(string left, string right){
+        public ResultHeader(string left, string right){
             this.left = left;
             this.right = right;
             this.lines = new Dictionary<string, ResultLine>();

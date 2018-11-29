@@ -3,14 +3,14 @@ using System.Linq;
 using System.Collections.Generic;
 using iTextSharp.text.pdf;
 
-namespace PdfPlagiarismChecker
+namespace PdfPlagiarismChecker.WordCounter
 {
-    class Core
+    class Worker
     {
 
         public static void Run(string path){
-            List<Content> docs = Parse(path);
-            List<Result> res = Check(docs);  
+            List<Document> docs = Parse(path);
+            List<ResultHeader> res = Compare(docs);  
             Print(res);      
         }
 
@@ -19,26 +19,26 @@ namespace PdfPlagiarismChecker
         /// </summary>
         /// <param name="path">The folder where the PDF files are stored.</param>
         /// <returns>A set of Content items</returns>
-        private static List<Content> Parse(string path){
+        private static List<Document> Parse(string path){
             //Check pre-conditions
             if(!Directory.Exists(path)) 
                 throw new FolderNotFoundException();
             
             //Loop over all the PDF files inside the folder
-            List<Content> res = new List<Content>();
+            List<Document> res = new List<Document>();
             foreach(string filePath in Directory.GetFiles(path).Where(x => Path.GetExtension(x).ToLower().Equals(".pdf")))                
-                 res.Add(new Content(filePath));                
+                 res.Add(new Document(filePath));                
 
             return res;
         }
 
-        private static List<Result> Check(List<Content> input){
+        private static List<ResultHeader> Compare(List<Document> input){
             //Col1=Word; Col2=#Appearences in File1; Col3=#Appearences in File2; Col4=%Coincidences
             //Last=%Global Coincidences
 
-            Content doc1 = null;
-            Content doc2 = null;              
-            List<Result> result = new List<Result>();
+            Document doc1 = null;
+            Document doc2 = null;              
+            List<ResultHeader> result = new List<ResultHeader>();
             for(int i = 0; i < input.Count(); i++){                                
                 doc1 = input.ElementAt(i);
              
@@ -51,21 +51,21 @@ namespace PdfPlagiarismChecker
             return result;
         }
 
-        private static Result Compare(Content left,  Content right){
-            Result r = new Result(left.name, right.name);
+        private static ResultHeader Compare(Document left,  Document right){
+            ResultHeader r = new ResultHeader(left.name, right.name);
             
             foreach(var wLeft in left.words)
-                r.AddLeft(wLeft.Key, wLeft.Value);
+                r.AddLeft(wLeft.text, wLeft.count);
 
             foreach(var wRight in right.words)
-                r.AddRight(wRight.Key, wRight.Value);
+                r.AddRight(wRight.text, wRight.count);
 
             
             return r;
         }
 
-        private static void Print(List<Result> results){
-            foreach(Result r in results){
+        private static void Print(List<ResultHeader> results){
+            foreach(ResultHeader r in results){
                 System.Console.WriteLine("##############################################################################");
                 System.Console.WriteLine("Left file: {0}", r.left);
                 System.Console.WriteLine("Right file: {0}", r.right);
