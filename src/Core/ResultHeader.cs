@@ -1,28 +1,28 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PdfPlagiarismChecker.Comparers.WordCounter
+namespace PdfPlagiarismChecker.Core
 {
     internal class ResultHeader{
-        public string _left;
-        public string Left {
+        private string _leftCaption;
+        public string LeftCaption {
             get{
-                return _left;
+                return _leftCaption;
             } 
             private set{
-                _left = value;
+                _leftCaption = value;
             }
         }
-        public string _right;
-        public string Right {
+        private string _rightCaption;
+        public string RightCaption {
             get{
-                return _right;
+                return _rightCaption;
             } 
             private set{
-                _right = value;
+                _rightCaption = value;
             }
         }
-        public float _matching;
+        private float _matching;
         public float Matching {
             get{
                 return _matching;
@@ -37,26 +37,26 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
                 return _lines.Values.ToList();
             } 
             private set{
-                _lines = value.ToDictionary(x => x.Word, x => x);
+                _lines = value.ToDictionary(x => x.Item, x => x);
             }
         }
         
         public ResultHeader(string left, string right){
-            this.Left = left;
-            this.Right = right;
+            this.LeftCaption = left;
+            this.RightCaption = right;
             this.Lines = new List<ResultLine>();
         }
 
         public void AddRight(string word, int appearence){
             ResultLine rl = GetLine(word);            
-            rl.AppearenceRight += appearence; 
+            rl.RightValue += appearence; 
 
             Refresh();           
         }
 
         public void AddLeft(string word, int appearence){
             ResultLine rl = GetLine(word);            
-            rl.AppearenceLeft += appearence;    
+            rl.LeftValue += appearence;    
 
             Refresh();          
         }

@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using iTextSharp.text.pdf;
+using PdfPlagiarismChecker.Core;
 
 namespace PdfPlagiarismChecker.Comparers.WordCounter
 {
@@ -66,14 +67,14 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
         private static void Print(List<ResultHeader> results, bool details){
             foreach(ResultHeader r in results){
                 System.Console.WriteLine("##############################################################################");
-                System.Console.WriteLine("Left file: {0}", r.Left);
-                System.Console.WriteLine("Right file: {0}", r.Right);
+                System.Console.WriteLine("Left file: {0}", r.LeftCaption);
+                System.Console.WriteLine("Right file: {0}", r.RightCaption);
                 System.Console.WriteLine("Matching: {0}%", System.Math.Round(r.Matching*100, 2));                
 
                 if(details){
                     System.Console.WriteLine("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
                     foreach(ResultLine rl in r.Lines){
-                        System.Console.WriteLine("Word: {0} | Left: {1} | Right: {2} | Matching: {3}%", rl.Word, rl.AppearenceLeft, rl.AppearenceRight, System.Math.Round(rl.Matching*100, 2));
+                        System.Console.WriteLine("Word: {0} | Left: {1} | Right: {2} | Matching: {3}%", rl.Item, rl.LeftValue, rl.RightValue, System.Math.Round(rl.Matching*100, 2));
                     }
                 }
 
