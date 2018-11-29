@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PdfPlagiarismChecker.WordCounter
+namespace PdfPlagiarismChecker.Comparers.WordCounter
 {
     internal class ResultHeader{
         public string _left;

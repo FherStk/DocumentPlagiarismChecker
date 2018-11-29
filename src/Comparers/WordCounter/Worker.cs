@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using iTextSharp.text.pdf;
 
-namespace PdfPlagiarismChecker.WordCounter
+namespace PdfPlagiarismChecker.Comparers.WordCounter
 {
     public class Worker
     {
