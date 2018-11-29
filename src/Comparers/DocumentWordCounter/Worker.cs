@@ -5,26 +5,13 @@ using PdfPlagiarismChecker.Core;
 
 namespace PdfPlagiarismChecker.Comparers.WordCounter
 {
-    internal class Counter: Core.BaseCounter<Document>
-    {       
+    internal class Worker: Core.BaseWorker<Document>
+    {               
         /// <summary>
-        /// Goes through all the PDF files stored into the given path (not recursively) and counts how many words and how many times appears in each document.
+        /// Counts how many words and how many times appears within each document.
         /// </summary>
-        /// <param name="path">The folder where the PDF files are stored.</param>
-        /// <returns>A set of Content items</returns>
-        protected override List<Document> Parse(string path){
-            //Check pre-conditions
-            if(!Directory.Exists(path)) 
-                throw new FolderNotFoundException();
-            
-            //Loop over all the PDF files inside the folder
-            List<Document> res = new List<Document>();
-            foreach(string filePath in Directory.GetFiles(path).Where(x => Path.GetExtension(x).ToLower().Equals(".pdf")))
-                res.Add(new Document(filePath));                       
-
-            return res;
-        }
-
+        /// <param name="input">A set of documents</param>
+        /// <returns></returns>
         protected override List<ResultHeader> Compare(List<Document> input){
             //Col1=Word; Col2=#Appearences in File1; Col3=#Appearences in File2; Col4=%Coincidences
             //Last=%Global Coincidences
@@ -44,6 +31,12 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
             return result;
         }
 
+        /// <summary>
+        /// Counts how many words and how many times appears within each document, and checks the matching percentage.
+        /// </summary>
+        /// <param name="left">Left-side document</param>
+        /// <param name="right">Right-side document</param>
+        /// <returns></returns>
         private static ResultHeader Compare(Document left,  Document right){
             ResultHeader r = new ResultHeader(left.Name, right.Name);
             
@@ -55,11 +48,6 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
 
             
             return r;
-        }
-
-        protected override void  SendToOutput(List<ResultHeader> results, int level = 0){
-            Outputs.Terminal output = new Outputs.Terminal();
-            output.Write(results, level);
-        }        
+        }    
     }   
 }
