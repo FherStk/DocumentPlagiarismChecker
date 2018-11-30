@@ -4,6 +4,7 @@ using System.Linq;
 namespace PdfPlagiarismChecker.Core
 {
     internal class ResultHeader{
+        public string Comparer {get; private set;}
         public string LeftCaption {get; private set;}
         public string RightCaption {get; private set;}      
         public float Matching {get; private set;}            
@@ -17,24 +18,27 @@ namespace PdfPlagiarismChecker.Core
             }
         }
         
-        public ResultHeader(string left, string right){
-            this.LeftCaption = left;
-            this.RightCaption = right;
+        public ResultHeader(string comparer, string leftCaption, string rightCaption){
+            this.Comparer = comparer;
+            this.LeftCaption = leftCaption;
+            this.RightCaption = rightCaption;
             this.Lines = new List<ResultLine>();
         }
 
-        public void AddRight(string word, int appearence){
+        public ResultLine AddRight(string word, int appearence){
             ResultLine rl = GetLine(word);            
             rl.RightValue += appearence; 
 
-            Refresh();           
+            Refresh();  
+            return rl;         
         }
 
-        public void AddLeft(string word, int appearence){
+        public ResultLine AddLeft(string word, int appearence){
             ResultLine rl = GetLine(word);            
             rl.LeftValue += appearence;    
 
-            Refresh();          
+            Refresh();  
+            return rl;        
         }
 
         private ResultLine GetLine(string word){
@@ -48,7 +52,7 @@ namespace PdfPlagiarismChecker.Core
 
             return rl; 
         } 
-
+        
         private void Refresh(){
             int count = 0;
             float total = 0;

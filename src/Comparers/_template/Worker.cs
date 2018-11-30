@@ -24,7 +24,7 @@ namespace PdfPlagiarismChecker.Comparers._template
         /// </summary>
         /// <param name="input">The list of documents to check.</param>
         /// <returns></returns>
-        protected override List<ResultHeader> Compare(List<Document> input){
+        protected override List<Result> Compare(List<Document> input){
             return null;
         }
        
@@ -34,7 +34,7 @@ namespace PdfPlagiarismChecker.Comparers._template
         /// </summary>
         /// <param name="results">The results of the check that will be send to the output.</param>
         /// <param name="level">Output detail level.</param>
-        protected override void  SendToOutput(List<ResultHeader> results, int detail = 0){
+        protected override void  SendToOutput(List<Result> results, int detail = 0){
             base.SendToOutput(results, detail);
         }        
     }   

@@ -14,7 +14,7 @@ namespace PdfPlagiarismChecker.Core
         /// <param name="fileExtension">The file extension of the files to check.</param>
         public void Run(string folderPath, string fileExtension){
             List<T> docs = Parse(folderPath, fileExtension);
-            List<ResultHeader> res = Compare(docs);
+            List<Result> res = Compare(docs);
             SendToOutput(res);
         }
 
@@ -40,10 +40,10 @@ namespace PdfPlagiarismChecker.Core
         /// </summary>
         /// <param name="results">A set of result objects containing the results of the comparisson.</param>
         /// <param name="detail">The output detail level.</param>
-        protected virtual void  SendToOutput(List<ResultHeader> results, int detail = 0){
+        protected virtual void  SendToOutput(List<Result> results, int detail = 0){
             Outputs.Terminal output = new Outputs.Terminal();
             output.Write(results, detail);
         }
-        protected abstract List<ResultHeader>  Compare(List<T> input);
+        protected abstract List<Result> Compare(List<T> input);
     }
 }

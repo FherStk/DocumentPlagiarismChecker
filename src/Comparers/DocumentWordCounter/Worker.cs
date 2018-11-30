@@ -12,13 +12,13 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
         /// </summary>
         /// <param name="input">A set of documents</param>
         /// <returns></returns>
-        protected override List<ResultHeader> Compare(List<Document> input){
+        protected override List<Result> Compare(List<Document> input){
             //Col1=Word; Col2=#Appearences in File1; Col3=#Appearences in File2; Col4=%Coincidences
             //Last=%Global Coincidences
 
             Document doc1 = null;
             Document doc2 = null;              
-            List<ResultHeader> result = new List<ResultHeader>();
+            List<Result> result = new List<Result>();
             for(int i = 0; i < input.Count(); i++){                                
                 doc1 = input.ElementAt(i);
              
@@ -37,16 +37,19 @@ namespace PdfPlagiarismChecker.Comparers.WordCounter
         /// <param name="left">Left-side document</param>
         /// <param name="right">Right-side document</param>
         /// <returns></returns>
-        private static ResultHeader Compare(Document left,  Document right){
-            ResultHeader r = new ResultHeader(left.Name, right.Name);
-            
+        private static Result Compare(Document left,  Document right){
+            //TODO: each comparer must own its own ResultHeader and add it to a global Result that will be sent to print.
+            //this is just a dirty hard-code patch for transition and test.
+            Result r = new Result();            
+            ResultHeader rh = r.AddHeader("Document Word Counter", string.Format("Left file: {0}", left.Name), string.Format("Left file: {0}", right.Name));            
+
             foreach(var wLeft in left.Words)
-                r.AddLeft(wLeft.Text, wLeft.Count);
+                rh.AddLeft(wLeft.Text, wLeft.Count);
 
             foreach(var wRight in right.Words)
-                r.AddRight(wRight.Text, wRight.Count);
+                rh.AddRight(wRight.Text, wRight.Count);
 
-            
+            r.Refresh();
             return r;
         }    
     }   
