@@ -3,8 +3,17 @@ using System.Linq;
 
 namespace DocumentPlagiarismChecker.Core
 {
-    internal class Result{     
-
+    internal class Result{                         
+        private Dictionary<string, ResultHeader> _headers;
+        public List<ResultHeader> Headers {
+            get{
+                return _headers.Values.ToList();
+            } 
+            private set{
+                _headers = value.ToDictionary(x => x.Comparer, x => x);
+            }
+        }    
+       
         private static Result instance;
 
         private Result() {}
@@ -20,17 +29,6 @@ namespace DocumentPlagiarismChecker.Core
             }
         }
 
-        public float Matching {get; private set;}            
-        private Dictionary<string, ResultHeader> _headers;
-        public List<ResultHeader> Headers {
-            get{
-                return _headers.Values.ToList();
-            } 
-            private set{
-                _headers = value.ToDictionary(x => x.Comparer, x => x);
-            }
-        }    
-       
         public ResultHeader AddHeader(string comparer, string leftCaption, string rightCaption){
             ResultHeader rh = null;
             if(_headers.ContainsKey(comparer)) rh = _headers[comparer];
@@ -40,20 +38,7 @@ namespace DocumentPlagiarismChecker.Core
                 _headers.Add(comparer, rh);
             }            
 
-            Refresh(); 
             return rh;         
-        }     
-        
-        //TODO: must be private and be auto-called. Dirty fix during migration...
-        public void Refresh(){
-            int count = 0;
-            float total = 0;
-            foreach(ResultHeader rh in this.Headers){
-                total += rh.Matching;
-                count++;
-            }
-            
-            this.Matching = (count > 0 ?  total / count : 0);
-        }         
+        }                    
     }      
 }

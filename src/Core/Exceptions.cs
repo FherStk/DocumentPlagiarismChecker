@@ -1,4 +1,4 @@
 namespace DocumentPlagiarismChecker.Core
 {
-    public class FolderNotFoundException: System.Exception {}       
+    internal class FolderNotFoundException: System.Exception {}       
 }

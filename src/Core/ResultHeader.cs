@@ -5,8 +5,8 @@ namespace DocumentPlagiarismChecker.Core
 {
     internal class ResultHeader{
         public string Comparer {get; private set;}
-        public string LeftCaption {get; private set;}
-        public string RightCaption {get; private set;}      
+        public string LeftFileName {get; private set;}
+        public string RightFileName {get; private set;}      
         public float Matching {get; private set;}            
         private Dictionary<string, ResultLine> _lines;
                
@@ -21,8 +21,8 @@ namespace DocumentPlagiarismChecker.Core
         
         public ResultHeader(string comparer, string leftCaption, string rightCaption){
             this.Comparer = comparer;
-            this.LeftCaption = leftCaption;
-            this.RightCaption = rightCaption;
+            this.LeftFileName = leftCaption;
+            this.RightFileName = rightCaption;
             this.Lines = new List<ResultLine>();
         }
 
