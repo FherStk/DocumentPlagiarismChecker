@@ -68,7 +68,9 @@ namespace DocumentPlagiarismChecker
         }
 
         private static void WriteOutput(){
-            
+            //TODO: must be selected by settings
+            Outputs.Terminal t = new Outputs.Terminal();
+            t.Write(0);
         }
     }
 }

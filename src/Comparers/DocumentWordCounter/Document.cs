@@ -8,15 +8,8 @@ namespace DocumentPlagiarismChecker.Comparers.WordCounter
 {
     internal class Document: Core.BaseDocument
     {        
-        private Dictionary<string, Word> _words;
-        public List<Word> Words {
-            get{
-                return _words.Values.ToList();
-            } 
-            private set{
-                _words = value.ToDictionary(x => x.Text, x => x);
-            }
-        }       
+        public Dictionary<string, int> WordAppearances {get; set;}
+        
 
         /// <summary>
         /// Loads the content of a PDF file and counts how many words and how many times appears along the document.
@@ -28,7 +21,7 @@ namespace DocumentPlagiarismChecker.Comparers.WordCounter
                 throw new FileNotPdfException();
 
             //Init object attributes.
-            _words = new Dictionary<string, Word>();
+            WordAppearances = new Dictionary<string, int>();
 
             //Read PDF file and sotre the word count.
             using (PdfReader reader = new PdfReader(path))
@@ -39,10 +32,10 @@ namespace DocumentPlagiarismChecker.Comparers.WordCounter
                     text = text.Replace("\n", "");
 
                     foreach(string word in text.Split(" ").Where(x => x.Length > 0)){
-                        if(!_words.ContainsKey(word))
-                            _words.Add(word, new Word(){Text = word, Count = 0});
+                        if(!WordAppearances.ContainsKey(word))
+                            WordAppearances.Add(word, 0);
                                     
-                        _words[word].Count++;     
+                        WordAppearances[word]++;     
                     }
                 }
             }            
