@@ -13,7 +13,7 @@ namespace DocumentPlagiarismChecker
             string folderPath = "C:\\test";
             string fileExtension = "pdf";
 
-            LoadFiles(folderPath, fileExtension);
+            CompareFiles(folderPath, fileExtension);
 
             
             
@@ -36,41 +36,39 @@ namespace DocumentPlagiarismChecker
              */
         }
 
-        private static void LoadFiles(string folderPath, string fileExtension){
+        private static void CompareFiles(string folderPath, string fileExtension){
             //Initial Checks
             if(!Directory.Exists(folderPath)) 
                 throw new FolderNotFoundException();
 
             //Initial vars. including the set of files.
-            string leftFile = null;
-            string rightFile = null;              
+            string leftFilePath = null;
+            string rightFilePath = null;                   
+            List<FileMatchingScore> results = new List<FileMatchingScore>();
             List<string> files = Directory.GetFiles(folderPath).Where(x => Path.GetExtension(x).ToLower().Equals(string.Format(".{0}", fileExtension))).ToList();
 
             //Loops over each pair of files (the files must be compared between each other in a relation "1 to many").
             for(int i = 0; i < files.Count(); i++){                                
-                leftFile = files.ElementAt(i);
+                leftFilePath = files.ElementAt(i);
              
                 for(int j = i+1; j < files.Count(); j++){                                
-                    rightFile = files.ElementAt(j);
-                    RunComparers(leftFile, rightFile);
+                    rightFilePath = files.ElementAt(j);
+
+                    //Run each comparer and store the results
+                    FileMatchingScore fpr = new FileMatchingScore(leftFilePath, rightFilePath);
+                    Comparers.WordCounter.Worker comp = new Comparers.WordCounter.Worker(leftFilePath, rightFilePath);
+                    fpr.ComparerResults.Add(comp.Run());
+                    results.Add(fpr);
                 }                    
             }
 
-            WriteOutput();
-        }
+            WriteOutput(results);
+        }       
 
-        private static void RunComparers(string leftFilePath, string rightFilePath){
-            //Creates an instance of each comparer and runs them for each pair of files.
-            //TODO: pending.
-
-            Comparers.WordCounter.Worker comp = new Comparers.WordCounter.Worker(leftFilePath, rightFilePath);
-            comp.Run();
-        }
-
-        private static void WriteOutput(){
+        private static void WriteOutput(List<FileMatchingScore> results){
             //TODO: must be selected by settings
             Outputs.Terminal t = new Outputs.Terminal();
-            t.Write(0);
+            t.Write(results, 0);
         }
     }
 }

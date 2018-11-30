@@ -14,9 +14,10 @@ namespace DocumentPlagiarismChecker.Comparers._template
         /// [INFO]:     This method can be deleted if default behaviour is enough.
         /// [USE]:      Custom code in order to get the files from the "folderPath" and parse its content into your "Document" objects. 
         /// [WARNING]:  Must be overriden if your "Document" object constructor has new parameters.
+        /// <returns></returns>
         /// </summary>
-        public override void Run(){          
-           
+        public override ComparerMatchingScore Run(){          
+           return null;
         }          
     }   
 }

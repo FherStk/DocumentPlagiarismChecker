@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DocumentPlagiarismChecker.Core
 {
-    internal class ComparerResults{       
+    internal class ComparerMatchingScore{       
         public string Comparer {get; private set;}              
         public string[] DetailsCaption {get; set;}
         public List<string[]> DetailsData {get; set;}   
@@ -17,8 +17,10 @@ namespace DocumentPlagiarismChecker.Core
             }
         }     
 
-        public ComparerResults(string comparer){
-            this.Comparer = comparer;
+        public ComparerMatchingScore(string comparer){
+            _matching = new List<float>();
+            this.DetailsData = new List<string[]>();
+            this.Comparer = comparer;                        
         }
     }      
 }
