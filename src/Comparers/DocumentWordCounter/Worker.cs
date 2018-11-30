@@ -6,7 +6,10 @@ using DocumentPlagiarismChecker.Core;
 namespace DocumentPlagiarismChecker.Comparers.WordCounter
 {
     internal class Worker: Core.BaseWorker<Document>
-    {               
+    {  
+        internal Worker(string fileLeftPath, string fileRightPath): base(fileLeftPath, fileRightPath){
+        }  
+
         /// <summary>
         /// Counts how many words and how many times appears within each document.
         /// </summary>
@@ -40,7 +43,7 @@ namespace DocumentPlagiarismChecker.Comparers.WordCounter
         private static Result Compare(Document left,  Document right){
             //TODO: each comparer must own its own ResultHeader and add it to a global Result that will be sent to print.
             //this is just a dirty hard-code patch for transition and test.
-            Result r = new Result();            
+            Result r = Result.Instance;
             ResultHeader rh = r.AddHeader("Document Word Counter", string.Format("Left file: {0}", left.Name), string.Format("Left file: {0}", right.Name));            
 
             foreach(var wLeft in left.Words)

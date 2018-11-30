@@ -9,6 +9,7 @@ namespace DocumentPlagiarismChecker.Core
         public string RightCaption {get; private set;}      
         public float Matching {get; private set;}            
         private Dictionary<string, ResultLine> _lines;
+               
         public List<ResultLine> Lines {
             get{
                 return _lines.Values.ToList();

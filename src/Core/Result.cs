@@ -4,6 +4,22 @@ using System.Linq;
 namespace DocumentPlagiarismChecker.Core
 {
     internal class Result{     
+
+        private static Result instance;
+
+        private Result() {}
+
+        public static Result Instance
+        {
+            get{
+                if(instance == null){
+                    instance = new Result();
+                    instance.Headers = new List<ResultHeader>();
+                }
+                return instance;
+            }
+        }
+
         public float Matching {get; private set;}            
         private Dictionary<string, ResultHeader> _headers;
         public List<ResultHeader> Headers {
@@ -13,11 +29,7 @@ namespace DocumentPlagiarismChecker.Core
             private set{
                 _headers = value.ToDictionary(x => x.Comparer, x => x);
             }
-        }
-        
-        public Result(){
-            this.Headers = new List<ResultHeader>();
-        }
+        }    
        
         public ResultHeader AddHeader(string comparer, string leftCaption, string rightCaption){
             ResultHeader rh = null;
