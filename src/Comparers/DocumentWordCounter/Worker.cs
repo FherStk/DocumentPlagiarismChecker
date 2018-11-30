@@ -18,11 +18,12 @@ namespace DocumentPlagiarismChecker.Comparers.WordCounter
         public override void Run(){            
             //TODO: each comparer must own its own ResultHeader and add it to a global Result that will be sent to print.
             //this is just a dirty hard-code patch for transition and test.            
-            foreach(var wLeft in this.Left.Words)
+            /*foreach(var wLeft in this.Left.Words)
                 this.ResultHeader.AddLeft(wLeft.Text, wLeft.Count);
 
             foreach(var wRight in this.Right.Words)
                 this.ResultHeader.AddRight(wRight.Text, wRight.Count);
+                */
         }    
     }   
 }

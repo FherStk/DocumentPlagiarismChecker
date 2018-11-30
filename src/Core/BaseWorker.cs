@@ -6,14 +6,14 @@ using System.Collections.Generic;
 namespace DocumentPlagiarismChecker.Core
 {
     internal abstract class BaseWorker<T> where T: BaseDocument{
-        protected ResultHeader ResultHeader{get; private set;}
+        protected ComparerResults ResultComparer{get; private set;}
         public T Left{get; protected set;}
         public T Right{get; protected set;}
 
         protected BaseWorker(string leftFilePath, string rightFilePath){          
             this.Left = (T)Activator.CreateInstance(typeof(T), leftFilePath);  
             this.Right = (T)Activator.CreateInstance(typeof(T), rightFilePath);  
-            this.ResultHeader = new ResultHeader(this.GetType().ToString(), Path.GetFileName(leftFilePath),  Path.GetFileName(rightFilePath));
+            this.ResultComparer = new ComparerResults(this.GetType().ToString());
         }
 
         /// <summary>
