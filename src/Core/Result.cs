@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PdfPlagiarismChecker.Core
+namespace DocumentPlagiarismChecker.Core
 {
     internal class Result{     
         public float Matching {get; private set;}            

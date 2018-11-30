@@ -1,9 +1,9 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using PdfPlagiarismChecker.Core;
+using DocumentPlagiarismChecker.Core;
 
-namespace PdfPlagiarismChecker.Comparers._template
+namespace DocumentPlagiarismChecker.Comparers._template
 {
     internal class Worker: Core.BaseWorker<Document>
     {  

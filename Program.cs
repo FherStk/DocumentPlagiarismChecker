@@ -1,4 +1,4 @@
-﻿namespace PdfPlagiarismChecker
+﻿namespace DocumentPlagiarismChecker
 {
     class Program
     {

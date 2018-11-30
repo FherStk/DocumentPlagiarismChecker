@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace PdfPlagiarismChecker.Core
+namespace DocumentPlagiarismChecker.Core
 {
     internal abstract class BaseWorker<T> where T: BaseDocument{
 

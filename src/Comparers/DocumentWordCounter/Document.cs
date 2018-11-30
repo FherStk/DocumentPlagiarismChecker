@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 
-namespace PdfPlagiarismChecker.Comparers.WordCounter
+namespace DocumentPlagiarismChecker.Comparers.WordCounter
 {
     internal class Document: Core.BaseDocument
     {        

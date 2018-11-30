@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PdfPlagiarismChecker.Core
+namespace DocumentPlagiarismChecker.Core
 {
     internal class ResultHeader{
         public string Comparer {get; private set;}

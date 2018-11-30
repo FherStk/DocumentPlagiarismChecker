@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/PdfPlagiarismChecker.csproj"
+                "${workspaceFolder}/DocumentPlagiarismChecker.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

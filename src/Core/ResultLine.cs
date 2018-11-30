@@ -1,4 +1,4 @@
-namespace PdfPlagiarismChecker.Core
+namespace DocumentPlagiarismChecker.Core
 {
     internal class ResultLine{       
         public string Item {get; set;}      

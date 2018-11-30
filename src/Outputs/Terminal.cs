@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using PdfPlagiarismChecker.Core;
+using DocumentPlagiarismChecker.Core;
 
-namespace PdfPlagiarismChecker.Outputs
+namespace DocumentPlagiarismChecker.Outputs
 {
     internal class Terminal: Core.BaseOutput{
         public override void Write(List<Result> results, int detail){

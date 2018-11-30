@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace PdfPlagiarismChecker.Core
+namespace DocumentPlagiarismChecker.Core
 {
     internal abstract class BaseDocument{
         public string Name {get; protected set;}        
