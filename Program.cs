@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
 
@@ -13,15 +15,7 @@ namespace DocumentPlagiarismChecker
             string folderPath = "C:\\test";
             string fileExtension = "pdf";
 
-            CompareFiles(folderPath, fileExtension);
-
-            
-            
-            
-            //Comparers.WordCounter.Worker wc = new Comparers.WordCounter.Worker("File1", "File2");
-            //wc.Run("C:\\test", "pdf");
-            //WordCounter.Document d = new WordCounter.Document("");
-            //d.words.Add(null);
+            CompareFiles(folderPath, fileExtension);                    
             
             /*    
                 CURRENT:
@@ -54,10 +48,19 @@ namespace DocumentPlagiarismChecker
                 for(int j = i+1; j < files.Count(); j++){                                
                     rightFilePath = files.ElementAt(j);
 
-                    //Run each comparer and store the results
+                    //Create the score for the given file pair
                     FileMatchingScore fpr = new FileMatchingScore(leftFilePath, rightFilePath);
-                    Comparers.WordCounter.Worker comp = new Comparers.WordCounter.Worker(leftFilePath, rightFilePath);
-                    fpr.ComparerResults.Add(comp.Run());
+
+                    //Instantiate and run every comparer
+                    foreach(Type t in GetComparerTypes()){
+                        var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath);
+                        MethodInfo method = comp.GetType().GetMethod("Run");
+                        
+                        //Once the object is instantiated, the Run method is invoked.
+                        ComparerMatchingScore cms = (ComparerMatchingScore)method.Invoke(comp, null);
+                        fpr.ComparerResults.Add(cms);
+                    }
+                   
                     results.Add(fpr);
                 }                    
             }
@@ -68,7 +71,13 @@ namespace DocumentPlagiarismChecker
         private static void WriteOutput(List<FileMatchingScore> results){
             //TODO: must be selected by settings
             Outputs.Terminal t = new Outputs.Terminal();
-            t.Write(results, 0);
+            t.Write(results);
+        }
+
+        private static IEnumerable<Type> GetComparerTypes()
+        {   
+            //TODO: Select plugins using a configuration file.
+            return typeof(Program).Assembly.GetTypes().Where(x => x.BaseType.Name.Contains("BaseComparer") && !x.FullName.Contains("_template")).ToList();
         }
     }
 }

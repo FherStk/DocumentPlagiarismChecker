@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace DocumentPlagiarismChecker.Core
 {
-    internal abstract class BaseWorker<T> where T: BaseDocument{
+    internal abstract class BaseComparer<T> where T: BaseDocument{
         public T Left{get; protected set;}
         public T Right{get; protected set;}
 
-        protected BaseWorker(string leftFilePath, string rightFilePath){          
+        protected BaseComparer(string leftFilePath, string rightFilePath){          
             this.Left = (T)Activator.CreateInstance(typeof(T), leftFilePath);  
             this.Right = (T)Activator.CreateInstance(typeof(T), rightFilePath);              
         }

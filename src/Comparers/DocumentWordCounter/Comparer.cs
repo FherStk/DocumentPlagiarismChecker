@@ -6,9 +6,9 @@ using DocumentPlagiarismChecker.Core;
 
 namespace DocumentPlagiarismChecker.Comparers.WordCounter
 {
-    internal class Worker: Core.BaseWorker<Document>
+    internal class Comparer: Core.BaseComparer<Document>
     {  
-        internal Worker(string fileLeftPath, string fileRightPath): base(fileLeftPath, fileRightPath){
+        public Comparer(string fileLeftPath, string fileRightPath): base(fileLeftPath, fileRightPath){
         }  
         
 
