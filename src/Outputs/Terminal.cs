@@ -4,7 +4,7 @@ using DocumentPlagiarismChecker.Core;
 namespace DocumentPlagiarismChecker.Outputs
 {
     internal class Terminal: Core.BaseOutput{
-        public override void Write(List<FileMatchingScore> results, bool details = false){            
+        public override void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.BASIC){            
             foreach(FileMatchingScore fpr in results){
                 System.Console.WriteLine("##############################################################################");
                 System.Console.WriteLine("Left file: {0}", fpr.LeftFileName);
@@ -16,7 +16,7 @@ namespace DocumentPlagiarismChecker.Outputs
                     System.Console.WriteLine("Comparer: {0}", rc.Comparer);
                     System.Console.WriteLine("Matching: {0}%", System.Math.Round(rc.Matching*100, 2));                                                        
 
-                    if(details){                        
+                    if(level >= OutputLevel.DETAILED){                        
                         System.Console.WriteLine("******************************************************************************");
                         foreach(string c in rc.DetailsCaption)                          
                             System.Console.Write("{0}\t\t", c);
