@@ -11,12 +11,12 @@ namespace DocumentPlagiarismChecker.Core
         public float Matching {
             get{                
                 return (_matching.Count == 0 ? 0 : _matching.Sum(x => x)/_matching.Count);
-            }
-            set{
-                 _matching.Add(value);
-            }
+            }            
         }     
 
+        public void AddMatch(float match){
+              _matching.Add(match);
+        }
         public ComparerMatchingScore(string comparer){
             _matching = new List<float>();
             this.DetailsData = new List<string[]>();

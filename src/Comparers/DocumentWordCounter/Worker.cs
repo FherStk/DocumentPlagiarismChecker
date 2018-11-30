@@ -17,7 +17,7 @@ namespace DocumentPlagiarismChecker.Comparers.WordCounter
         /// </summary>
         /// <returns></returns>
         public override ComparerMatchingScore Run(){
-            ComparerMatchingScore cr = new ComparerMatchingScore(this.GetType().ToString());            
+            ComparerMatchingScore cr = new ComparerMatchingScore("Document Word Counter");            
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
@@ -26,9 +26,9 @@ namespace DocumentPlagiarismChecker.Comparers.WordCounter
                 counter[word][0] += Left.WordAppearances[word];
             }
 
-            foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
+            foreach(string word in this.Right.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
-                counter[word][1] += Left.WordAppearances[word];
+                counter[word][1] += Right.WordAppearances[word];
             }
 
             //Calculate the matching for each individual word.
@@ -37,11 +37,12 @@ namespace DocumentPlagiarismChecker.Comparers.WordCounter
                 int left = counter[word][0];
                 int right = counter[word][1];                
 
-                if(left != 0 && right != 0){
+                if(left == 0 || right == 0) 
+                    match = 0;
+                else 
                     match = (left < right ? (float)left / (float)right : (float)right / (float)left);
-                }
 
-                cr.Matching += match;
+                cr.AddMatch(match);
                 cr.DetailsData.Add(new string[]{word, left.ToString(), right.ToString(), string.Format("{0}%", MathF.Round(match, 2))});                
             }                                    
             
