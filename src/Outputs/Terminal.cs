@@ -1,27 +1,35 @@
 using System.Collections.Generic;
-using PdfPlagiarismChecker.Core;
+using DocumentPlagiarismChecker.Core;
 
-namespace PdfPlagiarismChecker.Outputs
+namespace DocumentPlagiarismChecker.Outputs
 {
     internal class Terminal: Core.BaseOutput{
-        public override void Write(List<Result> results, int detail){
-            foreach(Result r in results){
+        public override void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.BASIC){            
+            foreach(FileMatchingScore fpr in results){
                 System.Console.WriteLine("##############################################################################");
-                System.Console.WriteLine("Global matching: {0}%",  System.Math.Round(r.Matching*100, 2));    
+                System.Console.WriteLine("Left file: {0}", fpr.LeftFileName);
+                System.Console.WriteLine("Right file: {0}", fpr.RightFileName);
+                System.Console.WriteLine("Matching: {0}%", System.Math.Round(fpr.Matching*100, 2));
 
-                foreach(ResultHeader rh in r.Headers){
-                    System.Console.WriteLine("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-                    System.Console.WriteLine("Comparer: {0}", rh.Comparer);
+                foreach(ComparerMatchingScore rc in fpr.ComparerResults){
                     System.Console.WriteLine("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");                    
-                    System.Console.WriteLine("{0}", rh.LeftCaption);
-                    System.Console.WriteLine("{0}", rh.RightCaption);                                                    
-                    System.Console.WriteLine("Matching: {0}%", System.Math.Round(r.Matching*100, 2));
-                 
-                    if(detail == 5){    //TODO: implement details level as an ENUM and details info.
-                        System.Console.WriteLine("------------------------------------------------------------------------------");
-                        foreach(ResultLine rl in rh.Lines){
-                            System.Console.WriteLine("Word: {0} | Left: {1} | Right: {2} | Matching: {3}%", rl.Item, rl.LeftValue, rl.RightValue, System.Math.Round(rl.Matching*100, 2));
+                    System.Console.WriteLine("Comparer: {0}", rc.Comparer);
+                    System.Console.WriteLine("Matching: {0}%", System.Math.Round(rc.Matching*100, 2));                                                        
+
+                    if(level >= OutputLevel.DETAILED){                        
+                        System.Console.WriteLine("******************************************************************************");
+                        foreach(string c in rc.DetailsCaption)                          
+                            System.Console.Write("{0}\t\t", c);
+
+                        System.Console.WriteLine("");
+
+                        foreach(string[] dh in rc.DetailsData){
+                            foreach(string dl in dh){
+                                System.Console.Write("{0}\t\t", dl.Replace("\t", ""));
+                            }
+                            System.Console.WriteLine("");
                         }
+                            
                     }
                 }                
                 

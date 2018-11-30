@@ -1,4 +1,4 @@
-namespace PdfPlagiarismChecker.Comparers._template
+namespace DocumentPlagiarismChecker.Comparers._template
 {
     internal class Document: Core.BaseDocument
     {        
