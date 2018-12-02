@@ -1,11 +1,13 @@
 namespace DocumentPlagiarismChecker.Comparers._template
 {
     internal class Document: Core.BaseDocument
-    {        
-        //CUSTOM PROPERTIES HERE
+    {                
         
-        public Document(string path): base(path){
-            //CUSTOM DOCUMENT PARSING CODE HERE          
+        /// <summary>
+        /// The document constructor is used in order to load and parse the given file path into whatever you need.
+        /// </summary>
+        /// <param name="filePath">The location of the file.</param>
+        public Document(string filePath): base(filePath){
         }
     }
 }

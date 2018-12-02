@@ -6,13 +6,20 @@ using iTextSharp.text.pdf.parser;
 
 namespace DocumentPlagiarismChecker.Comparers.WordCounter
 {
+    /// <summary>
+    /// This document must be used with the Word Counter Comparer, and stores how many words and how many times appears withing a document.
+    /// </summary>
     internal class Document: Core.BaseDocument
     {        
+        /// <summary>
+        /// Contains the words (key) and the appearances (value).
+        /// </summary>
+        /// <value></value>
         public Dictionary<string, int> WordAppearances {get; set;}
         
 
         /// <summary>
-        /// Loads the content of a PDF file and counts how many words and how many times appears along the document.
+        /// Loads the content of a PDF file and counts how many words and how many times appears within the document.
         /// </summary>
         /// <param name="path">The file path.</param>
         public Document(string path): base(path){

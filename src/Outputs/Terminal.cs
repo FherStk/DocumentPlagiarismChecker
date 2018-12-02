@@ -3,7 +3,15 @@ using DocumentPlagiarismChecker.Core;
 
 namespace DocumentPlagiarismChecker.Outputs
 {
+    /// <summary>
+    /// This output base object sends the results to the terminal.
+    /// </summary>
     internal class Terminal: Core.BaseOutput{
+        /// <summary>
+        /// Writes the given set of results into the terminal.
+        /// </summary>
+        /// <param name="results">A set of results regarding each compared pair of files.</param>
+        /// <param name="level">The output details level.</param>
         public override void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.BASIC){            
             foreach(FileMatchingScore fpr in results){
                 System.Console.WriteLine("##############################################################################");

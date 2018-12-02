@@ -7,14 +7,17 @@ namespace DocumentPlagiarismChecker.Comparers._template
 {
     internal class Comparer: Core.BaseComparer<Document>
     {  
+        /// <summary>
+        /// Instantiates a new comparer, creating the document objects for the given file paths (left and right).
+        /// </summary>
+        /// <param name="leftFilePath"></param>
+        /// <param name="rightFilePath"></param>
         public Comparer(string fileLeftPath, string fileRightPath): base(fileLeftPath, fileRightPath){
         }  
-        
-        /// <summary>
-        /// [INFO]:     This method can be deleted if default behaviour is enough.
-        /// [USE]:      Custom code in order to get the files from the "folderPath" and parse its content into your "Document" objects. 
-        /// [WARNING]:  Must be overriden if your "Document" object constructor has new parameters.
-        /// <returns></returns>
+               
+        /// <summary>        
+        /// Runs the comparer and check (whatever you want to code) between the left and right files.
+        /// <returns>The matching score and its details.</returns>
         /// </summary>
         public override ComparerMatchingScore Run(){          
            return null;
