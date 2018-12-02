@@ -4,13 +4,13 @@ using System.Collections.Generic;
 namespace DocumentPlagiarismChecker.Core
 {
     /// <summary>
-    /// Contains the global comparer matching score (%) with its detailed data.
+    /// Contains the global Comparator matching score (%) with its detailed data.
     /// </summary>
-    public class ComparerMatchingScore{       
+    public class ComparatorMatchingScore{       
         /// <summary>
-        /// The comparer's name.
+        /// The Comparator's name.
         /// </summary>
-        public string Comparer {get; private set;}              
+        public string Comparator {get; private set;}              
 
         /// <summary>
         /// The caption row used in order to display the details of the comparisson.
@@ -45,13 +45,13 @@ namespace DocumentPlagiarismChecker.Core
         }
 
         /// <summary>
-        /// Instantiates a new comparer matching socre object.
+        /// Instantiates a new Comparator matching socre object.
         /// </summary>
-        /// <param name="comparer">The comparer's name.</param>
-        public ComparerMatchingScore(string comparer){
+        /// <param name="Comparator">The Comparator's name.</param>
+        public ComparatorMatchingScore(string Comparator){
             _matching = new List<float>();
             this.DetailsData = new List<string[]>();
-            this.Comparer = comparer;                        
+            this.Comparator = Comparator;                        
         }
     }      
 }

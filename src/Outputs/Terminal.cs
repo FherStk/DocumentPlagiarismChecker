@@ -19,9 +19,9 @@ namespace DocumentPlagiarismChecker.Outputs
                 System.Console.WriteLine("Right file: {0}", fpr.RightFileName);
                 System.Console.WriteLine("Matching: {0}%", System.Math.Round(fpr.Matching*100, 2));
 
-                foreach(ComparerMatchingScore rc in fpr.ComparerResults){
+                foreach(ComparatorMatchingScore rc in fpr.ComparatorResults){
                     System.Console.WriteLine("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");                    
-                    System.Console.WriteLine("Comparer: {0}", rc.Comparer);
+                    System.Console.WriteLine("Comparator: {0}", rc.Comparator);
                     System.Console.WriteLine("Matching: {0}%", System.Math.Round(rc.Matching*100, 2));                                                        
 
                     if(level >= OutputLevel.DETAILED){                        

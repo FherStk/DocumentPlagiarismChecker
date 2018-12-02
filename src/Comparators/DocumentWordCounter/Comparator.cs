@@ -4,31 +4,31 @@ using System.Linq;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
 
-namespace DocumentPlagiarismChecker.Comparers.WordCounter
+namespace DocumentPlagiarismChecker.Comparators.WordCounter
 {
     /// <summary>
-    /// The Word Counter Comparer reads a pair of files and counts how many words and how many times appear on each file, and then calculates
+    /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
     /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
     /// a high level of provability.
     /// </summary>
     /// <typeparam name="Document"></typeparam>
-    internal class Comparer: Core.BaseComparer<Document>
+    internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the comparer.
+        /// Creates a new instance for the Comparator.
         /// </summary>
         /// <param name="fileLeftPath">The left side file's path.</param>
         /// <param name="fileRightPath">The right side file's path.</param>
         /// <returns></returns>
-        public Comparer(string fileLeftPath, string fileRightPath): base(fileLeftPath, fileRightPath){
+        public Comparator(string fileLeftPath, string fileRightPath): base(fileLeftPath, fileRightPath){
         }  
         
         /// <summary>
         /// Counts how many words and how many times appears within each document, and checks the matching percentage.
         /// </summary>
         /// <returns>The matching's results.</returns>
-        public override ComparerMatchingScore Run(){
-            ComparerMatchingScore cr = new ComparerMatchingScore("Document Word Counter");            
+        public override ComparatorMatchingScore Run(){
+            ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter");            
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();

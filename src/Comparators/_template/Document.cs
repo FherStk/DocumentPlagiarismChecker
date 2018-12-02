@@ -1,4 +1,4 @@
-namespace DocumentPlagiarismChecker.Comparers._template
+namespace DocumentPlagiarismChecker.Comparators._template
 {
     internal class Document: Core.BaseDocument
     {                

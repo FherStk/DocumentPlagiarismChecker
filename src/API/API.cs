@@ -38,14 +38,14 @@ namespace DocumentPlagiarismChecker
                     //Create the score for the given file pair
                     FileMatchingScore fpr = new FileMatchingScore(leftFilePath, rightFilePath);
 
-                    //Instantiate and run every comparer
-                    foreach(Type t in GetComparerTypes()){
+                    //Instantiate and run every Comparator
+                    foreach(Type t in GetComparatorTypes()){
                         var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath);
                         MethodInfo method = comp.GetType().GetMethod("Run");
                         
                         //Once the object is instantiated, the Run method is invoked.
-                        ComparerMatchingScore cms = (ComparerMatchingScore)method.Invoke(comp, null);
-                        fpr.ComparerResults.Add(cms);
+                        ComparatorMatchingScore cms = (ComparatorMatchingScore)method.Invoke(comp, null);
+                        fpr.ComparatorResults.Add(cms);
                     }
                    
                     results.Add(fpr);
@@ -66,13 +66,13 @@ namespace DocumentPlagiarismChecker
         }
 
         /// <summary>
-        /// Gets all the available comparers.
+        /// Gets all the available Comparators.
         /// </summary>
-        /// <returns>A set of comparer's object types</returns>
-        private static IEnumerable<Type> GetComparerTypes()
+        /// <returns>A set of Comparator's object types</returns>
+        private static IEnumerable<Type> GetComparatorTypes()
         {   
             //TODO: Select plugins using a configuration file.
-            return typeof(Program).Assembly.GetTypes().Where(x => x.BaseType.Name.Contains("BaseComparer") && !x.FullName.Contains("_template")).ToList();
+            return typeof(Program).Assembly.GetTypes().Where(x => x.BaseType.Name.Contains("BaseComparator") && !x.FullName.Contains("_template")).ToList();
         }
     }
 }

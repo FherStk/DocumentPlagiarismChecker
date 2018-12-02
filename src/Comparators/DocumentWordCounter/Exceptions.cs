@@ -1,4 +1,4 @@
-namespace DocumentPlagiarismChecker.Comparers.WordCounter
+namespace DocumentPlagiarismChecker.Comparators.WordCounter
 {
     public class FileNotPdfException: System.Exception {}   
 }

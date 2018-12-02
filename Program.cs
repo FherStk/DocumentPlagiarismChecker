@@ -21,7 +21,7 @@ namespace DocumentPlagiarismChecker
                 PENDING:                                
                     It will be possible to setup some configuration inside an XML file (for example, kind of output and number of check plugins to use (all by default)).                    
                     It will be possible to send a layout file in order to exclude its content from the comparisson.
-                    It will be possible to set the threshold for each comparer in order to alert if its exceeded.
+                    It will be possible to set the threshold for each Comparator in order to alert if its exceeded.
                     Paragraph word counter plugin.
              */
         }
