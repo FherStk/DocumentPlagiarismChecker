@@ -1,5 +1,7 @@
 # Document Plagiarism Checker
-This project contains a really simple way to compare a set of documents between each other in order to check if some of them are copies and it has been developed for academic purposes only.
+This project contains a really simple way to compare a set of documents between each other in order to check if some of them are copies and it has been developed for academic purposes only. Also notice than this project could not be possible without the help of the [iTextSharp](https://developers.itextpdf.com/downloads) library from [iText](https://itextpdf.com/).
+
+Feel free to use, copy, fork or modify this project.
 ## WARNING: still in an early development stage.
 ### How to use it:
 #### As an stand-alone app:
