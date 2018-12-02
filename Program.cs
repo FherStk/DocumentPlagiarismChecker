@@ -11,11 +11,10 @@ namespace DocumentPlagiarismChecker
     {
         static void Main(string[] args)
         {
-            //TODO: THOSE SHOULD BE LOADED BY PARAMETER INPUT
-            string folderPath = "C:\\test";
-            string fileExtension = "pdf";
+            if(args.Length == 0 || args[0] == null) throw new FolderNotSpecifiedException();
+            if(args.Length == 1 || args[1] == null) throw new FileExtensionNotSpecifiedException();
 
-            List<FileMatchingScore> results = API.CompareFiles(folderPath, fileExtension);            
+            List<FileMatchingScore> results = API.CompareFiles(args[0], args[1]);            
             API.WriteOutput(results);        
             
             /*                      
