@@ -51,7 +51,7 @@ namespace DocumentPlagiarismChecker.Comparators.WordCounter
                         WordAppearances[word]++;     
                     }
                 }
-            }            
+            }
         }
     }
 }

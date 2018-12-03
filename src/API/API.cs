@@ -32,7 +32,7 @@ namespace DocumentPlagiarismChecker
             string leftFilePath = null;
             string rightFilePath = null;                   
             List<FileMatchingScore> results = new List<FileMatchingScore>();
-            List<string> files = Directory.GetFiles(folderPath).Where(x => Path.GetExtension(x).ToLower().Equals(string.Format(".{0}", fileExtension))).ToList();
+            List<string> files = Directory.GetFiles(folderPath).Where(x => Path.GetExtension(x).ToLower().Equals(string.Format(".{0}", fileExtension)) && !x.Equals(sampleFilePath)).ToList();
 
             //Loops over each pair of files (the files must be compared between each other in a relation "1 to many").
             for(int i = 0; i < files.Count(); i++){                                

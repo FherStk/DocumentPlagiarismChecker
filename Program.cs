@@ -20,7 +20,7 @@ namespace DocumentPlagiarismChecker
             if(args.Length < 1 || args[0] == null) throw new FolderNotSpecifiedException();
             if(args.Length < 2 || args[1] == null) throw new FileExtensionNotSpecifiedException();                        
 
-            List<FileMatchingScore> results = API.CompareFiles(args[0], args[1], args[2]);            
+            List<FileMatchingScore> results = API.CompareFiles(args[0], args[1], (args.Length < 3 ? null : args[2]));            
             API.WriteOutput(results);        
             
             /*                      

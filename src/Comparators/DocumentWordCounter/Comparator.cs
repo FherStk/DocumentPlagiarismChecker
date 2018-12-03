@@ -37,6 +37,7 @@ namespace DocumentPlagiarismChecker.Comparators.WordCounter
             ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter");            
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             
+            //Counting the words appearences for each document (left and right).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
@@ -46,6 +47,19 @@ namespace DocumentPlagiarismChecker.Comparators.WordCounter
             foreach(string word in this.Right.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
                 counter[word][1] += Right.WordAppearances[word];
+            }
+
+            //Counting sample file word appearences, in order to ignore those from the previous files.
+            if(this.Sample != null){
+                 foreach(string word in this.Sample.WordAppearances.Select(x => x.Key)){
+                    if(counter.ContainsKey(word)){
+                        counter[word][0] = Math.Max(0, counter[word][0] - Sample.WordAppearances[word]);
+                        counter[word][1] = Math.Max(0, counter[word][1] - Sample.WordAppearances[word]);
+                        
+                        if(counter[word][0] == 0 && counter[word][1] == 0)
+                            counter.Remove(word);
+                    }                    
+                }
             }
 
             //Calculate the matching for each individual word.
