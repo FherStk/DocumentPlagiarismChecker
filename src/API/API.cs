@@ -23,7 +23,7 @@ namespace DocumentPlagiarismChecker
         /// <param name="folderPath"></param>
         /// <param name="fileExtension"></param>
         /// <returns></returns>
-        public static List<FileMatchingScore> CompareFiles(string folderPath, string fileExtension){
+        public static List<FileMatchingScore> CompareFiles(string folderPath, string fileExtension, string sampleFilePath = null){
             //Initial Checks
             if(!Directory.Exists(folderPath)) 
                 throw new FolderNotFoundException();
@@ -42,11 +42,11 @@ namespace DocumentPlagiarismChecker
                     rightFilePath = files.ElementAt(j);
 
                     //Create the score for the given file pair
-                    FileMatchingScore fpr = new FileMatchingScore(leftFilePath, rightFilePath);
+                    FileMatchingScore fpr = new FileMatchingScore(Path.GetFileName(leftFilePath), Path.GetFileName(rightFilePath));
 
                     //Instantiate and run every Comparator
                     foreach(Type t in GetComparatorTypes()){
-                        var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath);
+                        var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, sampleFilePath);
                         MethodInfo method = comp.GetType().GetMethod("Run");
                         
                         //Once the object is instantiated, the Run method is invoked.

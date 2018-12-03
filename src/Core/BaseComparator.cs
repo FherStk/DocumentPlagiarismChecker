@@ -27,13 +27,22 @@ namespace DocumentPlagiarismChecker.Core
         public T Right{get; protected set;}
 
         /// <summary>
+        /// The right-side document that will be compared.
+        /// </summary>
+        public T Sample{get; protected set;}
+
+        /// <summary>
         /// Instantiates a new Comparator, creating the document objects for the given file paths (left and right).
         /// </summary>
-        /// <param name="leftFilePath"></param>
-        /// <param name="rightFilePath"></param>
-        protected BaseComparator(string leftFilePath, string rightFilePath){          
+        /// <param name="leftFilePath">The file's path (left-side of the comparisson).</param>
+        /// <param name="rightFilePath">The file's path (right-side of the comparisson).</param>
+        /// <param name="sampleFilePath">The sample's path (its content will be used for ignore some comparissons).</param>
+        protected BaseComparator(string leftFilePath, string rightFilePath, string sampleFilePath=null){          
             this.Left = (T)Activator.CreateInstance(typeof(T), leftFilePath);  
-            this.Right = (T)Activator.CreateInstance(typeof(T), rightFilePath);              
+            this.Right = (T)Activator.CreateInstance(typeof(T), rightFilePath);
+
+            if(!string.IsNullOrEmpty(sampleFilePath)) 
+                this.Sample = (T)Activator.CreateInstance(typeof(T), sampleFilePath);
         }
 
         /// <summary>        

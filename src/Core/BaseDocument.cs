@@ -24,7 +24,7 @@ namespace DocumentPlagiarismChecker.Core
         protected BaseDocument(string filePath){
             //Check pre-conditions
             if(!File.Exists(filePath)) 
-                throw new FolderNotFoundException();
+                throw new FileNotFoundException();
 
             this.Name = System.IO.Path.GetFileName(filePath);
         }       
