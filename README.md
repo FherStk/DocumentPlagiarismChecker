@@ -19,8 +19,9 @@ New comparators will be added as long as the tool became improved with new capab
 - [x] Document Word count: compares two PDF files and check how many words and how many times appears within each document, useful for checking if two documents are almost equals.
 - [ ] Paragraph Word count: compares two PDF files and check how many words and how many times appears within each paragraph, useful for checking which parts of two documents are almost equals.
  ### Roadmap:
+- [X] Sample file: the ability to set a sample file that will be used to ignore some comparisons, useful to exclude some homework statement from the plagiarism matching result.
 - [ ] Configuration file: some settings will be able to be established inside this file (comparators to use or ignore, folders, extensions, outputs, etc.).
-- [ ] Sample file: the ability to set a sample file that will be used to ignore some comparisons, useful to exclude some homework statement from the plagiarism matching result.
 - [ ] Threshold: each comparator will have its own default threshold in order to alert when a comparisson result exceeded it, so only plagiarism alerts will be displayed to the user depending of the output detail level. It will be possible to change the default threshold value using the configuration file. 
 ### Changelog:
+- v0.2.0.0 - 03/12/2018: A sample file can be used in order to exclude some data from the comparisson.
 - v0.1.0.0 - 02/12/2018: Initial release.
