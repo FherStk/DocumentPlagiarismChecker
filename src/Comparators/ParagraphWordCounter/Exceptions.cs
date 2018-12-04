@@ -4,7 +4,7 @@
     Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
  */
  
-namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
+namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
-    public class FileNotPdfException: System.Exception {}   
+    public class FileNotPdfException: System.Exception {}       
 }

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 
-namespace DocumentPlagiarismChecker.Comparators.WordCounter
+namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
     /// This document must be used with the Word Counter Comparator, and stores how many words and how many times appears withing a document.
@@ -44,7 +44,7 @@ namespace DocumentPlagiarismChecker.Comparators.WordCounter
                     string text = PdfTextExtractor.GetTextFromPage(reader, i);
                     text = text.Replace("\n", "");
 
-                    foreach(string word in text.Split(" ").Where(x => x.Length > 0)){
+                    foreach(string word in text.Split(" ").Where(x => !string.IsNullOrEmpty(x))){
                         if(!WordAppearances.ContainsKey(word))
                             WordAppearances.Add(word, 0);
                                     
