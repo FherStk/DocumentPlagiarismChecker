@@ -37,9 +37,46 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter");            
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             
-            //Counting the words and its appearences for each document (left and right) within their paragraphs.                        
-            Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
-            foreach(string pLeft in this.Left.Paragraphs.Select(x => x.Key)){
+            //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
+            if(this.Sample != null){
+                foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
+                    this.Left.Paragraphs.Remove(paragraph);
+                    this.Right.Paragraphs.Remove(paragraph);           
+                }
+            }
+
+            //Counting the words and its appearences for each document (left and right) within their paragraphs.              
+            Dictionary<string, int[]> wordCounter = null;                      
+            Dictionary<string[], Dictionary<string, int[]>> paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();            
+            foreach(string plKey in this.Left.Paragraphs.Select(x => x.Key)){                
+                foreach(string prKey in this.Right.Paragraphs.Select(x => x.Key)){
+                    paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();
+                    
+                    //The left paragraph will be compared with each right paragraph and also the amount of words inside them.
+                     Dictionary<string, int> pLeft = this.Left.Paragraphs[plKey];
+                     Dictionary<string, int> pRight = this.Right.Paragraphs[plKey];
+                    
+
+                    //key will be: 
+                    //new string[]{plKey.Substring(0, 25), prKey.Substring(0, 25)};
+                    
+                }
+                
+                
+                
+
+                foreach(string wLeft in this.Left.Paragraphs.Select(x => x.Key)){
+                    if(!counter.ContainsKey(wLeft)) counter.Add(wLeft, new int[]{0, 0});
+                    counter[wLeft][1] += Right.Paragraphs[wLeft];
+                }
+
+
+                foreach(string pRight in this.Right.Paragraphs.Select(x => x.Key)){
+                    if(!wordCounter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
+                        counter[word][0] += Left.Paragraphs[word];
+                }
+
+
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
                 counter[word][0] += Left.Paragraphs[word];
             }
