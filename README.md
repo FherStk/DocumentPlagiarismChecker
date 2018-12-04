@@ -1,5 +1,5 @@
 # Document Plagiarism Checker
-This project contains a really simple way to compare a set of documents between each other in order to check if some of them are copies and it has been developed for academic purposes only. Also notice than this project could not be possible without the help of the [iTextSharp](https://developers.itextpdf.com/downloads) library from [iText](https://itextpdf.com/).
+This C# project over .NET Core 2.1 contains a really simple way to compare a set of documents between each other in order to check if some of them are copies and it has been developed for academic purposes only. Also notice than this project could not be possible without the help of the [iTextSharp](https://developers.itextpdf.com/downloads) library from [iText](https://itextpdf.com/).
 
 Feel free to use, copy, fork or modify this project; but please refer a mention to this project and its author respecting also the [iText's Community license](https://itextpdf.com/AGPL) if you pretend to develop a commercial prouduct (more info can be found inside the  **LICENSE** file).
 
