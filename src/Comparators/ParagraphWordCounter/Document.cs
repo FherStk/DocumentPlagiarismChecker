@@ -44,7 +44,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 {
                     string text = PdfTextExtractor.GetTextFromPage(reader, i);
 
-                    foreach(string paragraph in text.Split("\t").Where(x => !string.IsNullOrEmpty(x))){                                                
+                    foreach(string paragraph in text.Split("\n").Where(x => !string.IsNullOrEmpty(x))){                                                
                         
                         words = new Dictionary<string, int>();
                         foreach(string word in paragraph.Split(" ").Where(x => !string.IsNullOrEmpty(x))){

@@ -46,18 +46,20 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             Dictionary<string, int[]> wordCounter = null;                      
             Dictionary<string[], Dictionary<string, int[]>> paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();            
             foreach(string plKey in this.Left.Paragraphs.Select(x => x.Key)){                
-                foreach(string prKey in this.Right.Paragraphs.Select(x => x.Key)){
-                    paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();
+                foreach(string prKey in this.Right.Paragraphs.Select(x => x.Key)){                    
                     
                     //Counting the words withing one of the left document's paragraph
+                    wordCounter = new Dictionary<string, int[]>();
+                    paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();
                     Dictionary<string, int> pLeft = this.Left.Paragraphs[plKey];
+
                     foreach(string wLeft in pLeft.Select(x => x.Key)){
                         if(!wordCounter.ContainsKey(wLeft)) wordCounter.Add(wLeft, new int[]{0, 0});
                         wordCounter[wLeft][0] += pLeft[wLeft];
                     }
 
                     //Counting the words withing one of the right document's paragraph
-                    Dictionary<string, int> pRight = this.Right.Paragraphs[plKey];
+                    Dictionary<string, int> pRight = this.Right.Paragraphs[prKey];
                     foreach(string wRight in pRight.Select(x => x.Key)){
                         if(!wordCounter.ContainsKey(wRight)) wordCounter.Add(wRight, new int[]{0, 0});
                         wordCounter[wRight][1] += pRight[wRight];
@@ -66,8 +68,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     //Adding the word count to the global paragapg comparisson (the key are a subset of the paragraph in order to show it 
                     //at the input).
                     paragraphCounter.Add(new string[]{ plKey.Substring(0, 25), prKey.Substring(0, 25) }, wordCounter);
-                }                                
-            }                   
+                }
+            }
 
             //Defining the results headers
             ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter");            
