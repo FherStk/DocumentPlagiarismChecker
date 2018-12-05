@@ -19,7 +19,7 @@ namespace DocumentPlagiarismChecker.Outputs
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>
-        public override void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.BASIC){            
+        public override void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.GLOBAL){            
             foreach(FileMatchingScore fpr in results){
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
@@ -40,7 +40,7 @@ namespace DocumentPlagiarismChecker.Outputs
                 Console.WriteLine("{0}%", Math.Round(fpr.Matching*100, 2));
 
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                if(level >= OutputLevel.MATCHING){
+                if(level >= OutputLevel.COMPARATOR){
                     foreach(ComparatorMatchingScore rc in fpr.ComparatorResults){
                         Console.WriteLine("------------------------------------------------------------------------------");
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -54,7 +54,8 @@ namespace DocumentPlagiarismChecker.Outputs
                         Console.WriteLine("{0}%", Math.Round(rc.Matching*100, 2));
                         
                         Console.ForegroundColor = ConsoleColor.Gray;
-                        if(level >= OutputLevel.DETAILED){                        
+                        //TODO: LOOK FOR DETAILS AND ITS OUTPUT LEVEL, ITERATE THROUGH THEM INCREASING THE INDENT
+                        if(level >= OutputLevel.FULL){                        
                             Console.WriteLine("******************************************************************************");
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             foreach(string c in rc.DetailsCaption)                          

@@ -25,7 +25,7 @@ New comparators will be added as long as the tool became improved with new capab
 ### Changelog:
 - v0.3.0.0 - XXXXXXXXXX:
     - The "Paragraph Word Counter" has been added, and can be used in order to count how many words and how many times appears on each paragraph, having also in count the paragraph's length when calculing the matching percentage.
-    - The output console has been improved, adding colors and tabs in order to clarify.
+    - The output console has been improved, adding multi-level options, output colors and indentation.
 
 - v0.2.0.0 - 03/12/2018:
     - A sample file can be used in order to exclude some data from the comparisson.

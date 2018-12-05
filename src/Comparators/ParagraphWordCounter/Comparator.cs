@@ -74,8 +74,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             }
 
             //Defining the results headers
-            ComparatorMatchingScore cr = new ComparatorMatchingScore("Paragraph Word Counter");            
-            cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Left length", "Right length", "Word", "Count left", "Count right", "Matching" };
+            ComparatorMatchingScore cr = new ComparatorMatchingScore("Paragraph Word Counter");
+            //cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Left length", "Right length", "Word", "Count left", "Count right", "Matching" };
+            cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph"};
 
             //Calculate the matching for each individual word within each paragraph.
             float match, matchWord, matchLength = 0;
@@ -102,7 +103,10 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     //Calculate the total match: 50% - 50% (must be tested in order to tweak) and add the info to the detils.
                     match = (matchWord + matchLength) / 2;
                     cr.AddMatch(match);
-                    cr.DetailsData.Add(new string[]{paragraphs[0], paragraphs[1], leftLengt.ToString(), rightLength.ToString(), word, countLeft.ToString(), countRight.ToString(), string.Format("{0}%", MathF.Round(match, 2))});                
+                    cr.DetailsData.Add(new string[]{paragraphs[0], paragraphs[1]});                
+
+                    //TODO: ADD A NEW DETAILS LEVEL FOR EACH WORD, ETC.
+                    //cr.DetailsData.Add(new string[]{paragraphs[0], paragraphs[1], leftLengt.ToString(), rightLength.ToString(), word, countLeft.ToString(), countRight.ToString(), string.Format("{0}%", MathF.Round(match, 2))});                
                 }
             }                                    
             
