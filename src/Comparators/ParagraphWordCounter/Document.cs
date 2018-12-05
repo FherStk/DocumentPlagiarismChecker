@@ -47,7 +47,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     foreach(string paragraph in text.Split("\n").Where(x => !string.IsNullOrEmpty(x))){                                                
                         
                         words = new Dictionary<string, int>();
-                        foreach(string word in paragraph.Split(" ").Where(x => !string.IsNullOrEmpty(x))){
+                        foreach(string word in paragraph.Split(" ").Where(x => !string.IsNullOrEmpty(x.Trim()))){
                              if(!words.ContainsKey(word))
                                 words.Add(word, 0);
                                         

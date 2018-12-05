@@ -65,10 +65,10 @@ namespace DocumentPlagiarismChecker
         /// Writes the gioven scores to the configured outputs.
         /// </summary>
         /// <param name="results">A set of file matching scores</param>
-        public static void WriteOutput(List<FileMatchingScore> results){
+        public static void WriteOutput(List<FileMatchingScore> results, OutputLevel level = OutputLevel.BASIC){
             //TODO: must be selected by settings
             Outputs.Terminal t = new Outputs.Terminal();
-            t.Write(results);
+            t.Write(results, level);
         }
 
         /// <summary>

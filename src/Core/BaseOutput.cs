@@ -11,7 +11,7 @@ namespace DocumentPlagiarismChecker.Core
     /// <summary>
     /// Used in order to stablish the output detail level.
     /// </summary>
-    internal enum OutputLevel{
+    public enum OutputLevel{
         BASIC = 0,
         MATCHING = 1,
         DETAILED = 2
