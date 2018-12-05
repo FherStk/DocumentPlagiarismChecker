@@ -25,73 +25,56 @@ namespace DocumentPlagiarismChecker.Outputs
                 Console.WriteLine("");
                 Console.WriteLine("##############################################################################");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("\tLeft file: ");
+                Console.Write("  Left file: ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(fms.LeftFileName);
                 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("\tDisplayt file: ");
+                Console.Write("  Displayt file: ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(fms.RightFileName);
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("\tMatching: ");                
+                Console.Write("  Matching: ");                
                 Console.ForegroundColor = (fms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
                 Console.WriteLine("{0}%", Math.Round(fms.Matching*100, 2));
-
-                Console.ForegroundColor = ConsoleColor.DarkGray;
+                
                 if(level >= DisplayLevel.COMPARATOR){
                     foreach(ComparatorMatchingScore cms in fms.ComparatorResults){
-                        Console.WriteLine("------------------------------------------------------------------------------");
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.WriteLine("------------------------------------------------------------------------------");                        
+
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write("\t\tComparator: ");
+                        Console.Write("    Comparator: ");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine(cms.Comparator);
 
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write("\t\tMatching: ");
+                        Console.Write("    Matching: ");
                         Console.ForegroundColor = (cms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
                         Console.WriteLine("{0}%", Math.Round(cms.Matching*100, 2));                        
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         
                         //Looping over the detials
-                        string indent = "\t\t\t";
+                        string indent = "      ";
                         DetailsMatchingScore dms = cms.Child;
                         if(dms != null){
-                            Console.WriteLine("******************************************************************************");
+                            Console.WriteLine("··············································································");
                             
-                        while(dms != null){
-                            if(level >= dms.DisplayLevel){
-                                Console.ForegroundColor = ConsoleColor.DarkRed;
-                                ///TODO: looping
-                                for(int i = 0; i < <string c in cms.DetailsCaption){
-                                    Console.Write("      {0}\t\t", c);
-                                }                          
-                                    
-
-                                Console.WriteLine("");
-                            }
-
-                            dms = dms.Child;
-                            indent += "\t";
-                        }
-
-                        //TODO: LOOK FOR DETAILS AND ITS OUTPUT LEVEL, ITERATE THROUGH THEM INCREASING THE INDENT
-                        if(level >= DisplayLevel.FULL){                        
-                            Console.WriteLine("******************************************************************************");
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            foreach(string c in cms.DetailsCaption)                          
-                                Console.Write("      {0}\t\t", c);
-
-                            Console.WriteLine("");
-                            
-                            Console.ForegroundColor = ConsoleColor.White;
-                            foreach(string[] dh in cms.DetailsData){
-                                foreach(string dl in dh){
-                                    Console.Write("      {0}\t\t", dl.Replace("\t", ""));
+                            while(dms != null){
+                                if(level >= dms.DisplayLevel){                 
+                                    //TODO: move to cols + rows               
+                                    for(int i = 0; i < cms.DetailsCaption.Length; i++){
+                                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                                        Console.Write("{0}{1}: " ,indent, cms.DetailsCaption[i]);
+                                        Console.ForegroundColor = ConsoleColor.White;
+                                        Console.WriteLine(cms.DetailsData[i]); 
+                                    }                                                              
                                 }
-                                Console.WriteLine("");
-                            }                                                            
+
+                                dms = dms.Child;
+                                indent += "  ";
+                            }
                         }
                     }  
                 }
