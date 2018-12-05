@@ -31,7 +31,5 @@ namespace DocumentPlagiarismChecker
                     Paragraph word counter plugin.
              */
         }
-
-        
     }
 }

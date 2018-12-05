@@ -12,9 +12,9 @@ namespace DocumentPlagiarismChecker.Core
     /// Used in order to stablish the output detail level.
     /// </summary>
     public enum OutputLevel{
-        BASIC = 0,
-        MATCHING = 1,
-        DETAILED = 2
+        GLOBAL = 0,
+        COMPARATOR = 1,
+        FULL = 2
     }
 
     /// <summary>
@@ -26,6 +26,6 @@ namespace DocumentPlagiarismChecker.Core
         /// </summary>
         /// <param name="results">A set of scores regarding each pair of compared files.</param>
         /// <param name="level">The detail level that will be displayed.</param>       
-        public abstract void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.BASIC);
+        public abstract void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.GLOBAL);
     }
 }
