@@ -17,7 +17,7 @@ namespace DocumentPlagiarismChecker.Core
         /// The output display level will be compared with this one in order to determine if the details data must be shown.
         /// </summary>
         /// <value></value>
-        public OutputLevel DisplayLevel {get; private set;}
+        public DisplayLevel DisplayLevel {get; private set;}
         
         /// <summary>
         /// Child-level details
@@ -60,11 +60,11 @@ namespace DocumentPlagiarismChecker.Core
         /// <summary>
         /// Instantiates a new details matching socre object.
         /// </summary>
-        public DetailsMatchingScore(OutputLevel displayLevel = OutputLevel.COMPARATOR){            
-            if(displayLevel < OutputLevel.COMPARATOR) throw new DisplayLevelNotAllowed();
+        public DetailsMatchingScore(DisplayLevel displayLevel = Core.DisplayLevel.COMPARATOR){            
+            if(displayLevel < Core.DisplayLevel.COMPARATOR) throw new DisplayLevelNotAllowed();
             else{
                 this.DisplayLevel = displayLevel;
-                this.DetailsData = new List<string[]>();                       
+                this.DetailsData = new List<string[]>();
                 _matching = new List<float>();            
             }            
         }

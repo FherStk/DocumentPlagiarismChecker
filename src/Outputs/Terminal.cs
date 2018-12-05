@@ -18,53 +18,75 @@ namespace DocumentPlagiarismChecker.Outputs
         /// Writes the given set of results into the terminal.
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
-        /// <param name="level">The output details level.</param>
-        public override void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.GLOBAL){            
-            foreach(FileMatchingScore fpr in results){
+        /// <param name="level">The output details level.</param>DisplayDisplay
+        public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.GLOBAL){            
+            foreach(FileMatchingScore fms in results){
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
                 Console.WriteLine("##############################################################################");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("   Left file: ");
+                Console.Write("\tLeft file: ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(fpr.LeftFileName);
+                Console.WriteLine(fms.LeftFileName);
                 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("   Right file: ");
+                Console.Write("\tDisplayt file: ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(fpr.RightFileName);
+                Console.WriteLine(fms.RightFileName);
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("   Matching: ");                
-                Console.ForegroundColor = (fpr.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
-                Console.WriteLine("{0}%", Math.Round(fpr.Matching*100, 2));
+                Console.Write("\tMatching: ");                
+                Console.ForegroundColor = (fms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
+                Console.WriteLine("{0}%", Math.Round(fms.Matching*100, 2));
 
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                if(level >= OutputLevel.COMPARATOR){
-                    foreach(ComparatorMatchingScore rc in fpr.ComparatorResults){
+                if(level >= DisplayLevel.COMPARATOR){
+                    foreach(ComparatorMatchingScore cms in fms.ComparatorResults){
                         Console.WriteLine("------------------------------------------------------------------------------");
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write("   Comparator: ");
+                        Console.Write("\t\tComparator: ");
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(rc.Comparator);
+                        Console.WriteLine(cms.Comparator);
 
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write("   Matching: ");
-                        Console.ForegroundColor = (rc.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
-                        Console.WriteLine("{0}%", Math.Round(rc.Matching*100, 2));
-                        
+                        Console.Write("\t\tMatching: ");
+                        Console.ForegroundColor = (cms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
+                        Console.WriteLine("{0}%", Math.Round(cms.Matching*100, 2));                        
                         Console.ForegroundColor = ConsoleColor.Gray;
+                        
+                        //Looping over the detials
+                        string indent = "\t\t\t";
+                        DetailsMatchingScore dms = cms.Child;
+                        if(dms != null){
+                            Console.WriteLine("******************************************************************************");
+                            
+                        while(dms != null){
+                            if(level >= dms.DisplayLevel){
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                ///TODO: looping
+                                for(int i = 0; i < <string c in cms.DetailsCaption){
+                                    Console.Write("      {0}\t\t", c);
+                                }                          
+                                    
+
+                                Console.WriteLine("");
+                            }
+
+                            dms = dms.Child;
+                            indent += "\t";
+                        }
+
                         //TODO: LOOK FOR DETAILS AND ITS OUTPUT LEVEL, ITERATE THROUGH THEM INCREASING THE INDENT
-                        if(level >= OutputLevel.FULL){                        
+                        if(level >= DisplayLevel.FULL){                        
                             Console.WriteLine("******************************************************************************");
                             Console.ForegroundColor = ConsoleColor.DarkRed;
-                            foreach(string c in rc.DetailsCaption)                          
+                            foreach(string c in cms.DetailsCaption)                          
                                 Console.Write("      {0}\t\t", c);
 
                             Console.WriteLine("");
                             
                             Console.ForegroundColor = ConsoleColor.White;
-                            foreach(string[] dh in rc.DetailsData){
+                            foreach(string[] dh in cms.DetailsData){
                                 foreach(string dl in dh){
                                     Console.Write("      {0}\t\t", dl.Replace("\t", ""));
                                 }
