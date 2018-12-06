@@ -2,13 +2,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>0.3.0.0</Version>
-    <AssemblyVersion>0.3.0.0</AssemblyVersion>
+    <Version>0.4.0.0</Version>
+    <AssemblyVersion>0.4.0.0</AssemblyVersion>
     <PackageId>DocumentPlagiarismChecker</PackageId>
     <Product>Document Plagiarism Checker</Product>
-    <Authors>Fernando Porrino Serrano</Authors>
-    <Description>A really simple way to compare a set of documents between each other in order to check if some of them are copies and it has been developed for academic purposes only.</Description>
-    <Copyright>GNU Affero General Public License v3.0</Copyright>
+    <Authors>© 2018 Fernando Porrino Serrano</Authors>
+    <Description>A really simple way to compare a set of documents between each other in order to check if some of them are copies (for academic purposes only).</Description>
+    <Copyright>Under the GNU Affero General Public License v3.0</Copyright>  
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="iTextSharp" Version="*"/>
