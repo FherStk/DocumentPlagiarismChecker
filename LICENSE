@@ -34,6 +34,10 @@ third party software:
     (further details about the license can be found at 
     https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE).    
 
+  - YamlDotNet: property of Antoine Aubry under the MIT license, 
+    (further details about the license can be found at 
+    https://github.com/aaubry/YamlDotNet/blob/master/LICENSE).
+
 ------------------------------------------------------------------------------
 
                     GNU AFFERO GENERAL PUBLIC LICENSE
