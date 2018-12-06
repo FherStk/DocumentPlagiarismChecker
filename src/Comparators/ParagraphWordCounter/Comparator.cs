@@ -37,7 +37,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
             if(this.Sample != null){                
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
-                    bool test = this.Left.Paragraphs.Remove(paragraph);
+                    this.Left.Paragraphs.Remove(paragraph);
                     this.Right.Paragraphs.Remove(paragraph);           
                 }
 
