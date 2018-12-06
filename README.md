@@ -14,6 +14,10 @@ Please notice than this project could not be possible without the help of:
 Clone the repository to your local working directory, restore the dependencies with `dotnet restore` and build it with `dotnet build`. Finally run the project with `dotnet run %files_path %files_extension` where *%files_path* is the folder that contains all the documents to compare and *%files_extension* is the files's extension to check (files with other extensions will be ignored).
 #### As a library:
 Do the same as with the stand-alone app but import the compiled **DocumentPlagiarismChecker.dll** file to your project. Then invoke the **CompareFiles** method inside the **API** object to get the results. You can also send them to an output with the **WriteOutput** method inside the same **API** object.
+
+`List<FileMatchingScore> results = API.CompareFiles(folder, extension, sample);`
+
+`API.WriteOutput(results);`
 ### How to add new comparator:
 New comparators will be added as long as the tool became improved with new capabilities but, if anyone wants to contribute or just code their own comparator, feel free to enjoy following those steps:
  1. Copy the **_tamplate** folder with all its content inside the **Comparators** folder.
