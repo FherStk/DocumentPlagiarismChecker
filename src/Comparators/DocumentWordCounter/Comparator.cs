@@ -10,7 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
 
-namespace DocumentPlagiarismChecker.Comparators.WordCounter
+namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
     /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
@@ -34,9 +34,6 @@ namespace DocumentPlagiarismChecker.Comparators.WordCounter
         /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){
-            ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter");            
-            cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
-            
             //Counting the words appearences for each document (left and right).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
@@ -62,19 +59,23 @@ namespace DocumentPlagiarismChecker.Comparators.WordCounter
                 }
             }
 
+            //Defining the results headers
+            ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter", DisplayLevel.FULL);            
+            cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
+            cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
+
             //Calculate the matching for each individual word.
             float match = 0;
+            int left, right = 0;
             foreach(string word in counter.Select(x => x.Key)){                
-                int left = counter[word][0];
-                int right = counter[word][1];                
+                left = counter[word][0];
+                right = counter[word][1];                
 
-                if(left == 0 || right == 0) 
-                    match = 0;
-                else 
-                    match = (left < right ? (float)left / (float)right : (float)right / (float)left);
+                if(left == 0 || right == 0) match = 0;
+                else match = (left < right ? (float)left / (float)right : (float)right / (float)left);
 
                 cr.AddMatch(match);
-                cr.DetailsData.Add(new string[]{word, left.ToString(), right.ToString(), string.Format("{0}%", MathF.Round(match, 2))});                
+                cr.DetailsData.Add(new object[]{word, left, right, match});                
             }                                    
             
             return cr;

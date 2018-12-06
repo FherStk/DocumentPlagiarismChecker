@@ -10,4 +10,5 @@ namespace DocumentPlagiarismChecker.Core
     internal class FileExtensionNotSpecifiedException: System.Exception{}
     internal class FolderNotFoundException: System.Exception {}
     internal class MatchValueNotValid: System.Exception {}
+    internal class DisplayLevelNotAllowed: System.Exception {}
 }

@@ -4,6 +4,8 @@
     Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
  */
  
+using System;
+using ConsoleTables;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
 
@@ -17,38 +19,88 @@ namespace DocumentPlagiarismChecker.Outputs
         /// Writes the given set of results into the terminal.
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
-        /// <param name="level">The output details level.</param>
-        public override void Write(List<FileMatchingScore> results, OutputLevel level = OutputLevel.BASIC){            
-            foreach(FileMatchingScore fpr in results){
-                System.Console.WriteLine("##############################################################################");
-                System.Console.WriteLine("Left file: {0}", fpr.LeftFileName);
-                System.Console.WriteLine("Right file: {0}", fpr.RightFileName);
-                System.Console.WriteLine("Matching: {0}%", System.Math.Round(fpr.Matching*100, 2));
-
-                foreach(ComparatorMatchingScore rc in fpr.ComparatorResults){
-                    System.Console.WriteLine("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");                    
-                    System.Console.WriteLine("Comparator: {0}", rc.Comparator);
-                    System.Console.WriteLine("Matching: {0}%", System.Math.Round(rc.Matching*100, 2));                                                        
-
-                    if(level >= OutputLevel.DETAILED){                        
-                        System.Console.WriteLine("******************************************************************************");
-                        foreach(string c in rc.DetailsCaption)                          
-                            System.Console.Write("{0}\t\t", c);
-
-                        System.Console.WriteLine("");
-
-                        foreach(string[] dh in rc.DetailsData){
-                            foreach(string dl in dh){
-                                System.Console.Write("{0}\t\t", dl.Replace("\t", ""));
-                            }
-                            System.Console.WriteLine("");
-                        }
-                            
-                    }
-                }                
+        /// <param name="level">The output details level.</param>DisplayDisplay
+        public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){            
+            foreach(FileMatchingScore fms in results){
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("");
+                Console.WriteLine("##############################################################################");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write("  Left file: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(fms.LeftFileName);
                 
-                System.Console.WriteLine("##############################################################################");
-                System.Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write("  Displayt file: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(fms.RightFileName);
+
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write("  Matching: ");                
+                Console.ForegroundColor = (fms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
+                Console.WriteLine("{0:P2}", fms.Matching);
+                
+                if(level >= DisplayLevel.COMPARATOR){
+                    foreach(ComparatorMatchingScore cms in fms.ComparatorResults){
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.WriteLine("------------------------------------------------------------------------------");                        
+
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.Write("    Comparator: ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(cms.Comparator);
+
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.Write("    Matching: ");
+                        Console.ForegroundColor = (cms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
+                        Console.WriteLine("{0:P2}", cms.Matching);                        
+                        
+                        //Looping over the detials
+                        DetailsMatchingScore dms = (DetailsMatchingScore)cms;
+                        while(dms != null){
+                            if(level >= dms.DisplayLevel){      
+                                Console.ForegroundColor = ConsoleColor.DarkGray;
+                                Console.WriteLine("··············································································");
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                                var table = new ConsoleTable(dms.DetailsCaption);
+                                for(int i = 0; i < dms.DetailsData.Count; i++){
+                                    if(dms.DetailsMatch[i] > 0.5f){  //TODO: use config. threshold
+                                        
+                                        List<string> formatedData = new List<string>();
+                                        for(int j = 0; j < dms.DetailsFormat.Length; j++){                                            
+                                            if(dms.DetailsFormat[j].Contains(":L")){
+                                               //Custom string length formatting output
+                                                string sl = dms.DetailsFormat[j].Substring(dms.DetailsFormat[j].IndexOf(":L")+2);
+                                                sl = sl.Substring(0, sl.IndexOf("}"));
+                                                
+                                                int length = int.Parse(sl);
+                                                string pText = dms.DetailsData[i][j].ToString();
+                                                if(pText.Length <= length) formatedData.Add(pText);
+                                                else formatedData.Add(string.Format("{0}...", pText.Substring(0, length - 3)));                                                       
+                                            }
+                                            else{
+                                                 //Native string formatting output
+                                                formatedData.Add(String.Format(dms.DetailsFormat[j], dms.DetailsData[i][j]));
+                                            }                                            
+                                        }                                            
+                                        
+                                        table.AddRow(formatedData.ToArray());
+                                    }
+                                }
+                                                                
+                                table.Write(); 
+                                Console.WriteLine();                                                                                                                                                         
+                            }
+                            dms = dms.Child;
+                        }
+                    }  
+                }
+                              
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("##############################################################################");
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
     }
