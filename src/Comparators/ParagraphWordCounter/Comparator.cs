@@ -35,19 +35,25 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){
             //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
-            if(this.Sample != null){
+            if(this.Sample != null){                
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
-                    this.Left.Paragraphs.Remove(paragraph);
+                    bool test = this.Left.Paragraphs.Remove(paragraph);
                     this.Right.Paragraphs.Remove(paragraph);           
                 }
+
+                //TODO: Exclude fake positives: paragraphs with less than X words and/or paragraphs whith a length difference of Y%.
+                //      Those fake positives will be compared from the sample, so will be paragraphs that match with the sample in a 
+                //      90% (testing and tweaking necessary.) 
+                    
+                //TODO: Import all those settings (default parameters can be hardcoded) from settings files for each comparator.
             }
 
             //Counting the words and its appearences for each document (left and right) within their paragraphs.                          
             Dictionary<string, int[]> wordCounter = null;                      
             Dictionary<string[], Dictionary<string, int[]>> paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();            
             foreach(string plKey in this.Left.Paragraphs.Select(x => x.Key)){                
-                foreach(string prKey in this.Right.Paragraphs.Select(x => x.Key)){                    
-                    
+                foreach(string prKey in this.Right.Paragraphs.Select(x => x.Key)){                                        
+
                     //Counting the words withing one of the left document's paragraph
                     wordCounter = new Dictionary<string, int[]>();
                     Dictionary<string, int> pLeft = this.Left.Paragraphs[plKey];
