@@ -67,17 +67,16 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     //Adding the word count to the global paragapg comparisson (the key are a subset of the paragraph in order to show it 
                     //at the input).
                     paragraphCounter.Add(new string[]{ 
-                        plKey.Length > 25 ? plKey.Substring(0, 25): plKey, 
-                        prKey.Length > 25 ? prKey.Substring(0, 25) : prKey 
+                        plKey.Length > 50 ? string.Format("{0}...", plKey.Substring(0, 47)): plKey, 
+                        prKey.Length > 50 ? string.Format("{0}...", prKey.Substring(0, 47)) : prKey 
                     }, wordCounter);
                 }
             }
 
             //Defining the results headers
-            ComparatorMatchingScore cr = new ComparatorMatchingScore("Paragraph Word Counter");
-            //cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Left length", "Right length", "Word", "Count left", "Count right", "Matching" };
-            cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Left legth", "Right length"};
-
+            ComparatorMatchingScore cr = new ComparatorMatchingScore("Paragraph Word Counter");            
+            cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Left legth", "Right length", "Match"};
+            
             //Calculate the matching for each individual word within each paragraph.
             float match, matchWord, matchLength = 0;
             int leftLengt, rightLength, countLeft, countRight = 0;
@@ -89,28 +88,29 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 rightLength = wordCounter.Values.Select(x => x[1]).Where(x => x > 0).Count();
 
                 if(leftLengt == 0 || rightLength == 0)  matchLength = 0;
-                else matchLength = (leftLengt < rightLength ? (float)leftLengt / (float)rightLength : (float)rightLength / (float)leftLengt);
+                else matchLength = (leftLengt < rightLength ? (float)leftLengt / (float)rightLength : (float)rightLength / (float)leftLengt);                
 
                 //Counting for each word inside an especific paragraph
+                cr.Child = new DetailsMatchingScore();
+                cr.Child.DetailsCaption = new string[]{"Word", "Left count", "Right count", "Match"};
+
                 foreach(string word in wordCounter.Select(x => x.Key)){                                
                     countLeft = wordCounter[word][0];
                     countRight = wordCounter[word][1];                
 
                     //Mathing with word appearences
                     if(countLeft == 0 || countRight == 0)  matchWord = 0;
-                    else matchWord = (countLeft < countRight ? (float)countLeft / (float)countRight : (float)countRight / (float)countLeft);                    
+                    else matchWord = (countLeft < countRight ? (float)countLeft / (float)countRight : (float)countRight / (float)countLeft);                                        
 
-                    //Adding the details for each paragraph, the total match is: 50% - 50% (must be tested in order to tweak) and add the info to the detils.                    
-                    match = (matchWord + matchLength) / 2;
-                    cr.AddMatch(match);
-                    cr.DetailsData.Add(new string[]{paragraphs[0], paragraphs[1], leftLengt.ToString(), rightLength.ToString()});
-
-                    //Adding the details for each word
-                    cr.Child = new DetailsMatchingScore(DisplayLevel.COMPARATOR);
-                    cr.Child.AddMatch(match);                    
-                    cr.Child.DetailsCaption = new string[]{"Word", "Left count", "Right count"};
-                    cr.Child.DetailsData.Add(new string[]{word, countLeft.ToString(), countRight.ToString()});                
+                    //Adding the details for each word                    
+                    cr.Child.AddMatch(matchWord);                                        
+                    cr.Child.DetailsData.Add(new string[]{word, countLeft.ToString(), countRight.ToString(), String.Format("{0:P2}", matchWord)});                
                 }
+
+                //Adding the details for each paragraph, the total match is: 75% for words - 25% for length (must be tested in order to tweak) and add the info to the detils.                    
+                match = (cr.Child.Matching*0.75f + matchLength*0.25f);
+                cr.AddMatch(match);                
+                cr.DetailsData.Add(new string[]{paragraphs[0], paragraphs[1], leftLengt.ToString(), rightLength.ToString(), String.Format("{0:P2}", match)});
             }                                    
             
             return cr;

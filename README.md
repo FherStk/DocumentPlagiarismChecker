@@ -1,7 +1,12 @@
 # Document Plagiarism Checker
-This C# project over .NET Core 2.1 contains a really simple way to compare a set of documents between each other in order to check if some of them are copies and it has been developed for academic purposes only. Also notice than this project could not be possible without the help of the [iTextSharp](https://developers.itextpdf.com/downloads) library from [iText](https://itextpdf.com/).
+This C# project over .NET Core 2.1 contains a really simple way to compare a set of documents between each other in order to check if some of them are copies and it has been developed for academic purposes only. 
 
 Feel free to use, copy, fork or modify this project; but please refer a mention to this project and its author respecting also the [iText's Community license](https://itextpdf.com/AGPL) if you pretend to develop a commercial prouduct (more info can be found inside the  **LICENSE** file).
+
+### Third party code and libraries:
+Please notice than this project could not be possible without the help of:
+* The [iTextSharp](https://developers.itextpdf.com/downloads) library from [iText](https://itextpdf.com/).
+* The [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables) library from [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh)
 
 ## WARNING: still in an early development stage.
 ### How to use it:
@@ -23,12 +28,12 @@ New comparators will be added as long as the tool became improved with new capab
 - [ ] Configuration file: some settings will be able to be established inside this file (comparators to use or ignore, folders, extensions, outputs, etc.).
 - [ ] Threshold: each comparator will have its own default threshold in order to alert when a comparisson result exceeded it, so only plagiarism alerts will be displayed to the user depending of the output detail level. It will be possible to change the default threshold value using the configuration file. 
 ### Changelog:
-- v0.3.0.0 - XXXXXXXXXX:
-    - The "Paragraph Word Counter" has been added, and can be used in order to count how many words and how many times appears on each paragraph, having also in count the paragraph's length when calculing the matching percentage.
-    - The output console has been improved, adding multi-level options, output colors and indentation.
+* v0.3.0.0 - XXXXXXXXXX:
+    * The "Paragraph Word Counter" has been added, and can be used in order to count how many words and how many times appears on each paragraph, having also in count the paragraph's length when calculing the matching percentage.
+    * The output console has been improved, adding multi-level options, output colors and indentation.
 
-- v0.2.0.0 - 03/12/2018:
-    - A sample file can be used in order to exclude some data from the comparisson.
+* v0.2.0.0 - 03/12/2018:
+    * A sample file can be used in order to exclude some data from the comparisson.
 
-- v0.1.0.0 - 02/12/2018:
-    - Initial release.
+* v0.1.0.0 - 02/12/2018:
+    * Initial release.

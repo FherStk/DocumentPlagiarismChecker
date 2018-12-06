@@ -60,7 +60,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
             }
 
             //Defining the results headers
-            ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter");            
+            ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter", DisplayLevel.FULL);            
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
 
             //Calculate the matching for each individual word.

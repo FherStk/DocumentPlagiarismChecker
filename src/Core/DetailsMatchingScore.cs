@@ -26,14 +26,19 @@ namespace DocumentPlagiarismChecker.Core
         public DetailsMatchingScore Child {get; set;}
 
         /// <summary>
-        /// The caption row used in order to display the details of the comparisson.
+        /// The caption row used in order to display the details of the comparisson (same length and same order as data and match details)
         /// </summary>
         public string[] DetailsCaption {get; set;}
 
         /// <summary>
-        /// The details row used in order to display the details of the comparisson.
+        /// The details row used in order to display the details of the comparisson (same length and same order as caption and match details)
         /// </summary>
         public List<string[]> DetailsData {get; set;} 
+
+        /// <summary>
+        /// The match set used to compute the matching field (same length and same order as caption and data details)
+        /// </summary>
+        public List<float> DetailsMatch {get; private set;} 
 
         /// <summary>
         /// The matching score between [0,1].
@@ -41,10 +46,9 @@ namespace DocumentPlagiarismChecker.Core
         /// <value></value>
         public float Matching {
             get{                
-                return (_matching.Count == 0 ? 0 : _matching.Sum(x => x)/_matching.Count);
+                return (DetailsMatch.Count == 0 ? 0 : DetailsMatch.Sum(x => x)/DetailsMatch.Count);
             }            
         }  
-        private List<float> _matching;
            
         /// <summary>
         /// Adds a match socre to the global amount.
@@ -54,18 +58,18 @@ namespace DocumentPlagiarismChecker.Core
             if(match < 0 || match > 1)
                 throw new MatchValueNotValid();
             
-            _matching.Add(match);
+            DetailsMatch.Add(match);
         }
 
         /// <summary>
         /// Instantiates a new details matching socre object.
         /// </summary>
-        public DetailsMatchingScore(DisplayLevel displayLevel = Core.DisplayLevel.COMPARATOR){            
+        public DetailsMatchingScore(DisplayLevel displayLevel = Core.DisplayLevel.FULL){            
             if(displayLevel < Core.DisplayLevel.COMPARATOR) throw new DisplayLevelNotAllowed();
             else{
                 this.DisplayLevel = displayLevel;
                 this.DetailsData = new List<string[]>();
-                _matching = new List<float>();            
+                this.DetailsMatch = new List<float>();         
             }            
         }
     }      

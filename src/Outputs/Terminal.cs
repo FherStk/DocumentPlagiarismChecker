@@ -5,6 +5,7 @@
  */
  
 using System;
+using ConsoleTables;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
 
@@ -37,7 +38,7 @@ namespace DocumentPlagiarismChecker.Outputs
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Matching: ");                
                 Console.ForegroundColor = (fms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
-                Console.WriteLine("{0}%", Math.Round(fms.Matching*100, 2));
+                Console.WriteLine("{0:P2}", fms.Matching);
                 
                 if(level >= DisplayLevel.COMPARATOR){
                     foreach(ComparatorMatchingScore cms in fms.ComparatorResults){
@@ -52,29 +53,26 @@ namespace DocumentPlagiarismChecker.Outputs
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
                         Console.Write("    Matching: ");
                         Console.ForegroundColor = (cms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
-                        Console.WriteLine("{0}%", Math.Round(cms.Matching*100, 2));                        
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.WriteLine("{0:P2}", cms.Matching);                        
                         
                         //Looping over the detials
-                        string indent = "      ";
-                        DetailsMatchingScore dms = cms.Child;
-                        if(dms != null){
-                            Console.WriteLine("··············································································");
-                            
-                            while(dms != null){
-                                if(level >= dms.DisplayLevel){                 
-                                    //TODO: move to cols + rows               
-                                    for(int i = 0; i < cms.DetailsCaption.Length; i++){
-                                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                                        Console.Write("{0}{1}: " ,indent, cms.DetailsCaption[i]);
-                                        Console.ForegroundColor = ConsoleColor.White;
-                                        Console.WriteLine(cms.DetailsData[i]); 
-                                    }                                                              
-                                }
+                        DetailsMatchingScore dms = (DetailsMatchingScore)cms;
+                        while(dms != null){
+                            if(level >= dms.DisplayLevel){      
+                                Console.ForegroundColor = ConsoleColor.DarkGray;
+                                Console.WriteLine("··············································································");
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                                dms = dms.Child;
-                                indent += "  ";
+                                var table = new ConsoleTable(dms.DetailsCaption);
+                                for(int i = 0; i < dms.DetailsData.Count; i++){
+                                    if(dms.DetailsMatch[i] > 0.5f)  //TODO: use config. threshold
+                                        table.AddRow(dms.DetailsData[i]);
+                                }
+                                                                
+                                table.Write(); 
+                                Console.WriteLine();                                                                                                                                                         
                             }
+                            dms = dms.Child;
                         }
                     }  
                 }
@@ -82,6 +80,7 @@ namespace DocumentPlagiarismChecker.Outputs
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("##############################################################################");
                 Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
     }
