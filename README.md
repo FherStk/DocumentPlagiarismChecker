@@ -18,9 +18,12 @@ If there is no *settings.yaml* file in the same folder as the program, it will b
 #### As a library:
 Do the same as with the stand-alone app but import the compiled **DocumentPlagiarismChecker.dll** file to your project. Then invoke the **CompareFiles** method inside the **API** object to get the results. You can also send them to an output with the **WriteOutput** method inside the same **API** object:
 
-`List<FileMatchingScore> results = API.CompareFiles(folder, extension, sample);`
+`List<FileMatchingScore> results = API.CompareFiles();`
 
 `API.WriteOutput(results);`
+
+Please, notice that all configuration is performed through the *settings.yaml* file under the same path as the program, so if there is no file a new one will must be established with `Settings.Instance.Load(path);` in order to proceed.
+
 ### How to add new comparator:
 New comparators will be added as long as the tool became improved with new capabilities but, if anyone wants to contribute or just code their own comparator, feel free to enjoy following those steps:
  1. Copy the **_tamplate** folder with all its content inside the **Comparators** folder.
@@ -35,6 +38,7 @@ New comparators will be added as long as the tool became improved with new capab
 - [X] Settings file: some settings will be able to be established inside this file (comparators to use or ignore, folders, extensions, outputs, etc.).
 - [ ] Threshold: each comparator will have its own default threshold in order to alert when a comparisson result exceeded it, so only plagiarism alerts will be displayed to the user depending of the output detail level. It will be possible to change the default threshold value using the configuration file. 
 - [ ] Exclussion list: it will be possible to ignore some words or phrases along the comparisson to avoid false positives. This list will be specified inside the configuration file.
+- [ ] Optional settings file: actually, all the parameters stored inside the settings file can be set through input arguments (console) or using the API `Settings.Instance.Set(setting, value)` method but it only works if the settings file is present and well-formed. When developed, it will be possible to use the program withouth any settings file and just stablishing all those parameters one by one (in both console and API mode).
 ### Changelog:
 * v0.4.0.0-alpha (06/12/2018):
     * A settings file has been added, so the input arguments can be omited if the mandatory settings are defined inside the yaml file. Notice that settings data will be overwriten if new information is sent throught the arguments input.

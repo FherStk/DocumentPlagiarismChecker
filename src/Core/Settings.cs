@@ -65,7 +65,7 @@ namespace DocumentPlagiarismChecker.Core
         }
 
         public void Load(string path = "settings.yaml"){
-            if(!System.IO.File.Exists(path)) throw new SettingsFileNotFoundException();
+            if(!System.IO.File.Exists(path)) return;
 
             using (var reader = new StreamReader(path)) {
                 YamlStream yaml = new YamlStream();
@@ -90,6 +90,8 @@ namespace DocumentPlagiarismChecker.Core
         }
 
         private YamlScalarNode Find(string setting){
+            if(_settings == null) throw new SettingsFileNotFoundException();
+
             string[] levels = setting.Split(":");
             YamlMappingNode current = _settings;
 
