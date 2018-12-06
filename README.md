@@ -7,11 +7,14 @@ Feel free to use, copy, fork or modify this project; but please refer a mention 
 Please notice than this project could not be possible without the help of:
 * The [iTextSharp](https://developers.itextpdf.com/downloads) library from [iText](https://itextpdf.com/).
 * The [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables) library from [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh)
+* The [YamlDotNet](https://github.com/aaubry/YamlDotNet) library from [Antoine Aubry](https://github.com/aaubry)
 
 ## WARNING: still in an early development stage.
 ### How to use it:
 #### As an stand-alone app:
-Clone the repository to your local working directory, restore the dependencies with `dotnet restore` and build it with `dotnet build`. Finally run the project with `dotnet run %files_path %files_extension` where *%files_path* is the folder that contains all the documents to compare and *%files_extension* is the files's extension to check (files with other extensions will be ignored).
+Clone the repository to your local working directory, restore the dependencies with `dotnet restore`, build it with `dotnet build` and, finally, run the project with `dotnet run`. 
+
+If there is no *settings.yaml* file in the same folder as the program, it will be mandatory to manually set some arguments when calling the program; please call `dotnet run --info` for further details or explore the *settings.yaml* file that comes within this project.
 #### As a library:
 Do the same as with the stand-alone app but import the compiled **DocumentPlagiarismChecker.dll** file to your project. Then invoke the **CompareFiles** method inside the **API** object to get the results. You can also send them to an output with the **WriteOutput** method inside the same **API** object:
 
@@ -29,10 +32,14 @@ New comparators will be added as long as the tool became improved with new capab
 - [X] Paragraph Word Counter: compares two PDF files and check how many words and how many times appears within each paragraph, useful for checking which parts of two documents are almost equals.
  ### Roadmap:
 - [X] Sample file: the ability to set a sample file that will be used to ignore some comparisons, useful to exclude some homework statement from the plagiarism matching result.
-- [ ] Configuration file: some settings will be able to be established inside this file (comparators to use or ignore, folders, extensions, outputs, etc.).
+- [X] Settings file: some settings will be able to be established inside this file (comparators to use or ignore, folders, extensions, outputs, etc.).
 - [ ] Threshold: each comparator will have its own default threshold in order to alert when a comparisson result exceeded it, so only plagiarism alerts will be displayed to the user depending of the output detail level. It will be possible to change the default threshold value using the configuration file. 
 - [ ] Exclussion list: it will be possible to ignore some words or phrases along the comparisson to avoid false positives. This list will be specified inside the configuration file.
 ### Changelog:
+* v0.4.0.0-alpha (06/12/2018):
+    * A settings file has been added, so the input arguments can be omited if the mandatory settings are defined inside the yaml file. Notice that settings data will be overwriten if new information is sent throught the arguments input.
+    * The output console has been improved, adding multi-level options, output colors and indentation.
+
 * v0.3.0.0-alpha (06/12/2018):
     * The "Paragraph Word Counter" has been added, and can be used in order to count how many words and how many times appears on each paragraph, having also in count the paragraph's length when calculing the matching percentage.
     * The output console has been improved, adding multi-level options, output colors and indentation.

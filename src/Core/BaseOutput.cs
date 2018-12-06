@@ -12,10 +12,10 @@ namespace DocumentPlagiarismChecker.Core
     /// Used in order to stablish the output detail level.
     /// </summary>
     public enum DisplayLevel{
-        BASIC = 0,
-        COMPARATOR = 1,
-        DETAILED = 2,
-        FULL = 3
+        BASIC,
+        COMPARATOR,
+        DETAILED,
+        FULL
     }
 
     /// <summary>
