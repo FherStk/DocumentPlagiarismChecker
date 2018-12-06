@@ -27,6 +27,7 @@ New comparators will be added as long as the tool became improved with new capab
 - [X] Sample file: the ability to set a sample file that will be used to ignore some comparisons, useful to exclude some homework statement from the plagiarism matching result.
 - [ ] Configuration file: some settings will be able to be established inside this file (comparators to use or ignore, folders, extensions, outputs, etc.).
 - [ ] Threshold: each comparator will have its own default threshold in order to alert when a comparisson result exceeded it, so only plagiarism alerts will be displayed to the user depending of the output detail level. It will be possible to change the default threshold value using the configuration file. 
+- [ ] Exclussion list: it will be possible to ignore some words or phrases along the comparisson to avoid false positives. This list will be specified inside the configuration file.
 ### Changelog:
 * v0.3.0.0 - XXXXXXXXXX:
     * The "Paragraph Word Counter" has been added, and can be used in order to count how many words and how many times appears on each paragraph, having also in count the paragraph's length when calculing the matching percentage.

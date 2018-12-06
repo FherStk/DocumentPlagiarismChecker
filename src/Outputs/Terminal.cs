@@ -20,7 +20,7 @@ namespace DocumentPlagiarismChecker.Outputs
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
-        public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.GLOBAL){            
+        public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){            
             foreach(FileMatchingScore fms in results){
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
@@ -65,8 +65,28 @@ namespace DocumentPlagiarismChecker.Outputs
 
                                 var table = new ConsoleTable(dms.DetailsCaption);
                                 for(int i = 0; i < dms.DetailsData.Count; i++){
-                                    if(dms.DetailsMatch[i] > 0.5f)  //TODO: use config. threshold
-                                        table.AddRow(dms.DetailsData[i]);
+                                    if(dms.DetailsMatch[i] > 0.5f){  //TODO: use config. threshold
+                                        
+                                        List<string> formatedData = new List<string>();
+                                        for(int j = 0; j < dms.DetailsFormat.Length; j++){                                            
+                                            if(dms.DetailsFormat[j].Contains(":L")){
+                                               //Custom string length formatting output
+                                                string sl = dms.DetailsFormat[j].Substring(dms.DetailsFormat[j].IndexOf(":L")+2);
+                                                sl = sl.Substring(0, sl.IndexOf("}"));
+                                                
+                                                int length = int.Parse(sl);
+                                                string pText = dms.DetailsData[i][j].ToString();
+                                                if(pText.Length <= length) formatedData.Add(pText);
+                                                else formatedData.Add(string.Format("{0}...", pText.Substring(0, length - 3)));                                                       
+                                            }
+                                            else{
+                                                 //Native string formatting output
+                                                formatedData.Add(String.Format(dms.DetailsFormat[j], dms.DetailsData[i][j]));
+                                            }                                            
+                                        }                                            
+                                        
+                                        table.AddRow(formatedData.ToArray());
+                                    }
                                 }
                                                                 
                                 table.Write(); 

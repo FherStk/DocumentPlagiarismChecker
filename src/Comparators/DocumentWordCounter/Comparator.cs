@@ -62,6 +62,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
             //Defining the results headers
             ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter", DisplayLevel.FULL);            
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
+            cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
             //Calculate the matching for each individual word.
             float match = 0;
@@ -74,7 +75,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 else match = (left < right ? (float)left / (float)right : (float)right / (float)left);
 
                 cr.AddMatch(match);
-                cr.DetailsData.Add(new string[]{word, left.ToString(), right.ToString(), string.Format("{0}%", MathF.Round(match, 2))});                
+                cr.DetailsData.Add(new object[]{word, left, right, match});                
             }                                    
             
             return cr;

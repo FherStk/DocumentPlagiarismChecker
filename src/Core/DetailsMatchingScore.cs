@@ -31,9 +31,14 @@ namespace DocumentPlagiarismChecker.Core
         public string[] DetailsCaption {get; set;}
 
         /// <summary>
+        /// The format used in order to display each details row of the comparisson (same length and same order as caption and match details)
+        /// </summary>
+        public string[] DetailsFormat {get; set;} 
+
+        /// <summary>
         /// The details row used in order to display the details of the comparisson (same length and same order as caption and match details)
         /// </summary>
-        public List<string[]> DetailsData {get; set;} 
+        public List<object[]> DetailsData {get; set;}       
 
         /// <summary>
         /// The match set used to compute the matching field (same length and same order as caption and data details)
@@ -68,7 +73,7 @@ namespace DocumentPlagiarismChecker.Core
             if(displayLevel < Core.DisplayLevel.COMPARATOR) throw new DisplayLevelNotAllowed();
             else{
                 this.DisplayLevel = displayLevel;
-                this.DetailsData = new List<string[]>();
+                this.DetailsData = new List<object[]>();
                 this.DetailsMatch = new List<float>();         
             }            
         }

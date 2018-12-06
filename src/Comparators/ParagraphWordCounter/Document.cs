@@ -43,9 +43,10 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
                     string text = PdfTextExtractor.GetTextFromPage(reader, i);
-
-                    foreach(string paragraph in text.Split("\n").Select(x => x.Replace("•", "").Trim()).Where(x => !string.IsNullOrEmpty(x))){                                                
-                        
+                    
+                    foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){                                                
+                        //TODO: settings file in order to exclude a set of words.
+                                                   
                         words = new Dictionary<string, int>();
                         foreach(string word in paragraph.Split(" ").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
                              if(!words.ContainsKey(word))

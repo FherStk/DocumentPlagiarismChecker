@@ -22,7 +22,7 @@ namespace DocumentPlagiarismChecker.Core
         /// Instantiates a new comparator matching socre object.
         /// </summary>
         /// <param name="Comparator">The Comparator's name.</param>
-        public ComparatorMatchingScore(string Comparator, DisplayLevel detailsDisplayLevel = Core.DisplayLevel.COMPARATOR): base(detailsDisplayLevel){
+        public ComparatorMatchingScore(string Comparator, DisplayLevel detailsDisplayLevel = Core.DisplayLevel.DETAILED): base(detailsDisplayLevel){
             this.Comparator = Comparator;                        
         }
     }      
