@@ -16,42 +16,31 @@ namespace DocumentPlagiarismChecker
     class Program
     {
         static void Main(string[] args)
-        {
+        {                        
             //Settings file must be loaded first.
-            for(int i = 0; i < args.Length; i++){
-                if(args[i] == "--settings"){
-                    Settings.Instance.Load(args[i+1]);
+            for(int i = 0; i < args.Length; i++){                
+                if(args[i].StartsWith("--settings")){
+                    Settings.Instance.Load(args[i].Split("=")[1]);
                     break;
                 }
             }
 
             //The settings can be overwriten by input arguments.
-            for(int i = 0; i < args.Length; i++){
-                switch(args[i]){
-                    case "--info":
-                        Help();
-                        return;
-                    
-                    case "--folder":
-                        Settings.Instance.Set(Setting.GLOBAL_FOLDER, args[i+1]);
-                        i++;
-                        break;
+            string[] kv = null;
 
-                    case "--extension":
-                        Settings.Instance.Set(Setting.GLOBAL_EXTENSION, args[i+1]);
-                        i++;
-                        break;
-                    
-                    case "--sample":
-                        Settings.Instance.Set(Setting.GLOBAL_SAMPLE, args[i+1]);
-                        i++;
-                        break;
-
-                    case "--display":
-                        Settings.Instance.Set(Setting.GLOBAL_DISPLAY, args[i+1]);
-                        i++;
-                        break;
+            for(int i = 0; i < args.Length; i++){   
+                kv = args[i].Split("=");                             
+                if(kv[0] == "--info"){
+                    Help();
+                    return;                    
                 }
+                else{
+                    if(kv[0].StartsWith("--")) kv[0] = kv[0].Substring(2);
+                    if(!kv[0].Contains("-")) kv[0] = string.Format("global-{0}", kv[0]);
+                    kv[0] = kv[0].Replace("-", "_").ToUpper();
+
+                    Settings.Instance.Set(Enum.Parse<Setting>(kv[0]), kv[1]);
+                }              
             }
 
             if(string.IsNullOrEmpty(Settings.Instance.Get(Setting.GLOBAL_FOLDER))) throw new FolderNotSpecifiedException();
@@ -86,18 +75,27 @@ namespace DocumentPlagiarismChecker
             Console.WriteLine("  --folder: the absolute path to the folder containing the documents that must be compared.");
             Console.WriteLine();
             Console.WriteLine("  --sample: the absolute path to the sample file, results matching the content of this file will be ommited (like parts of homework statements).");            
-            
+            Console.WriteLine();
+            Console.WriteLine("  --threshold-basic: matching values below the threshold will be ignored at basic results output.");
+            Console.WriteLine();
+            Console.WriteLine("  --threshold-comparator: matching values below the threshold will be ignored at comparator results output.");
+            Console.WriteLine();
+            Console.WriteLine("  --threshold-details: matching values below the threshold will be ignored at comparator's details output.");
+            Console.WriteLine();
+            Console.WriteLine("  --threshold-full: matching values below the threshold will be ignored at comparator's full details output.");
             
 
             WriteSeparator('-');
 
             Console.WriteLine("Examples (Windows):");
             Console.WriteLine("  dotnet run");
-            Console.WriteLine("  dotnet run --folder \"C:\\test\" --sample \"C:\\test\\sample.pdf\"");
+            Console.WriteLine("  dotnet run --threshold-basic=0.25");
+            Console.WriteLine("  dotnet run --folder=\"C:\\test\" --sample=\"C:\\test\\sample.pdf\"");
             Console.WriteLine();
             Console.WriteLine("Examples (Linux):");
             Console.WriteLine("  dotnet run");
-            Console.WriteLine("  dotnet run --folder \"/home/user/test\" --sample \"/home/user/test/sample.pdf\"");
+            Console.WriteLine("  dotnet run --threshold-basic=0.25");
+            Console.WriteLine("  dotnet run --folder=\"/home/user/test\" --sample=\"/home/user/test/sample.pdf\"");
             
             WriteSeparator('#');
         }

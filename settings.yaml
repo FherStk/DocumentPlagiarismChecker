@@ -3,8 +3,17 @@
 #Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
 
 global:
-  folder: 'C:\test\M10DAM-LL6'
-  sample: 'C:\test\M10DAM-LL6\Enunciat.pdf'
+  #folder: 'C:\test\M10DAM-LL6'
+  folder: 'C:\test\'
+  #sample: 'C:\test\M10DAM-LL6\Enunciat.pdf'
+  sample: 'C:\test\Sample.pdf'
   extension: 'pdf'
   display: 'comparator'
-  recursive: true
+  #recursive: true
+  recursive: false
+
+threshold:
+  basic: 0.5
+  comparator: 0.5
+  details: 0.5
+  full: 0

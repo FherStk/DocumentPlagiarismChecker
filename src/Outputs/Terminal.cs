@@ -37,7 +37,7 @@ namespace DocumentPlagiarismChecker.Outputs
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Matching: ");                
-                Console.ForegroundColor = (fms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
+                Console.ForegroundColor = (fms.Matching < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
                 Console.WriteLine("{0:P2}", fms.Matching);
                 
                 if(level >= DisplayLevel.COMPARATOR){
@@ -52,7 +52,7 @@ namespace DocumentPlagiarismChecker.Outputs
 
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
                         Console.Write("    Matching: ");
-                        Console.ForegroundColor = (cms.Matching <0.5f ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed); //TODO: use config. threshold
+                        Console.ForegroundColor = (cms.Matching < GetThreshold(DisplayLevel.COMPARATOR) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
                         Console.WriteLine("{0:P2}", cms.Matching);                        
                         
                         //Looping over the detials
@@ -61,12 +61,15 @@ namespace DocumentPlagiarismChecker.Outputs
                             if(level >= dms.DisplayLevel){      
                                 Console.ForegroundColor = ConsoleColor.DarkGray;
                                 Console.WriteLine("··············································································");
+                                Console.WriteLine();
+                                
                                 Console.ForegroundColor = ConsoleColor.DarkRed;
+                                Console.WriteLine(string.Format("  Displaying details with a match value > {0:P2}", GetThreshold(dms.DisplayLevel)));
+                                Console.WriteLine();
 
                                 var table = new ConsoleTable(dms.DetailsCaption);
                                 for(int i = 0; i < dms.DetailsData.Count; i++){
-                                    if(dms.DetailsMatch[i] > 0.5f){  //TODO: use config. threshold
-                                        
+                                    if(dms.DetailsMatch[i] > GetThreshold(dms.DisplayLevel)){                                        
                                         List<string> formatedData = new List<string>();
                                         for(int j = 0; j < dms.DetailsFormat.Length; j++){                                            
                                             if(dms.DetailsFormat[j].Contains(":L")){
@@ -102,6 +105,10 @@ namespace DocumentPlagiarismChecker.Outputs
                 Console.WriteLine("");
                 Console.ForegroundColor = ConsoleColor.White;
             }
+        }
+
+        private float GetThreshold(DisplayLevel level){
+            return float.Parse(Settings.Instance.Get(string.Format("threshold:{0}", level.ToString().ToLower())),  System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
         }
     }
 }

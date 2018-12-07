@@ -20,7 +20,11 @@ namespace DocumentPlagiarismChecker.Core
         GLOBAL_SAMPLE,
         GLOBAL_EXTENSION,
         GLOBAL_DISPLAY,
-        GLOBAL_RECURSIVE
+        GLOBAL_RECURSIVE,
+        THRESHOLD_BASIC,
+        THRESHOLD_COMPARATOR,
+        THRESHOLD_DETAILS,
+        THRESHOLD_FULL
     }
 
     public sealed class Settings
