@@ -19,7 +19,8 @@ namespace DocumentPlagiarismChecker.Core
         GLOBAL_FOLDER,
         GLOBAL_SAMPLE,
         GLOBAL_EXTENSION,
-        GLOBAL_DISPLAY
+        GLOBAL_DISPLAY,
+        GLOBAL_RECURSIVE
     }
 
     public sealed class Settings

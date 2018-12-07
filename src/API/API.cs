@@ -32,7 +32,7 @@ namespace DocumentPlagiarismChecker
             string leftFilePath = null;
             string rightFilePath = null;                   
             List<FileMatchingScore> results = new List<FileMatchingScore>();
-            List<string> files = Directory.GetFiles(Settings.Instance.Get(Setting.GLOBAL_FOLDER)).Where(x => Path.GetExtension(x).ToLower().Equals(string.Format(".{0}", Settings.Instance.Get(Setting.GLOBAL_EXTENSION))) && !x.Equals(Settings.Instance.Get(Setting.GLOBAL_SAMPLE))).ToList();
+            List<string> files = Directory.GetFiles(Settings.Instance.Get(Setting.GLOBAL_FOLDER), string.Format("*.{0}", Settings.Instance.Get(Setting.GLOBAL_EXTENSION)), (Settings.Instance.Get(Setting.GLOBAL_RECURSIVE) == "true" ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(Settings.Instance.Get(Setting.GLOBAL_SAMPLE))).ToList();
 
             //Loops over each pair of files (the files must be compared between each other in a relation "1 to many").
             for(int i = 0; i < files.Count(); i++){                                

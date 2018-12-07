@@ -56,7 +56,7 @@ namespace DocumentPlagiarismChecker
 
             if(string.IsNullOrEmpty(Settings.Instance.Get(Setting.GLOBAL_FOLDER))) throw new FolderNotSpecifiedException();
             if(string.IsNullOrEmpty(Settings.Instance.Get(Setting.GLOBAL_EXTENSION))) throw new FileExtensionNotSpecifiedException();
-            API.WriteOutput(API.CompareFiles(), Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY)));
+            API.WriteOutput(API.CompareFiles(), Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper()));
         }
 
         private static void Help(){            
