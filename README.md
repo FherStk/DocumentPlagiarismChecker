@@ -34,14 +34,10 @@ New comparators will be added as long as the tool became improved with new capab
 - [x] Document Word Counter: compares two PDF files and check how many words and how many times appears within each document, useful for checking if two documents are almost equals.
 - [X] Paragraph Word Counter: compares two PDF files and check how many words and how many times appears within each paragraph, useful for checking which parts of two documents are almost equals.
  ### Roadmap:
-- [X] Sample file: the ability to set a sample file that will be used to ignore some comparisons, useful to exclude some homework statement from the plagiarism matching result.
-- [X] Settings file: some settings will be able to be established inside this file (comparators to use or ignore, folders, extensions, outputs, etc.).
-- [ ] Threshold: each comparator will have its own default threshold in order to alert when a comparisson result exceeded it, so only plagiarism alerts will be displayed to the user depending of the output detail level. It will be possible to change the default threshold value using the configuration file. 
-- [ ] Exclussion list: it will be possible to ignore some words or phrases along the comparisson to avoid false positives. This list will be specified inside the configuration file.
-- [ ] Optional settings file: actually, all the parameters stored inside the settings file can be set through input arguments (console) or using the API `Settings.Instance.Set(setting, value)` method but it only works if the settings file is present and well-formed. When developed, it will be possible to use the program withouth any settings file and just stablishing all those parameters one by one (in both console and API mode).
+The full list of ideas and improvements can be found at [issues section (with the enhancements tag).](https://github.com/FherStk/DocumentPlagiarismChecker/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+is%3Aenhancement)
 ### Changelog:
 * v0.4.0.0-alpha (06/12/2018):
-    * A settings file has been added, so the input arguments can be omited if the mandatory settings are defined inside the yaml file. Notice that settings data will be overwriten if new information is sent throught the arguments input.
+    * A settings file has been added, so the input arguments (console) can be omited if the mandatory settings are defined inside the yaml file or Settings.Instance.Set(setting, value) method (API) can be used. Notice that settings file data will be overwriten if new information is sent throught the arguments console or API.
     * The output console has been improved, adding multi-level options, output colors and indentation.
 
 * v0.3.0.0-alpha (06/12/2018):
