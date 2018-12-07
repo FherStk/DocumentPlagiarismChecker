@@ -1,5 +1,5 @@
 # Document Plagiarism Checker
-This C# project over .NET Core 2.1 contains a really simple way to compare a set of documents between each other in order to check if some of them are copies, and it has been developed for academic purposes only. 
+Document Plagiarism Checker is an Open-Source C# project over .NET Core 2.1 that has been developed for academic purposes only, which implements a really simple way to compare a set of documents between each other in order to check if some of them are copies.
 
 Feel free to use, copy, fork or modify this project; but please refer a mention to this project and its author respecting also the [iText's Community license](https://itextpdf.com/AGPL) if you pretend to develop a commercial prouduct (more info can be found inside the  **LICENSE** file).
 
