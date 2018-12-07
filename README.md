@@ -33,6 +33,7 @@ New comparators will be added as long as the tool became improved with new capab
  ### List of comparators (marked ones are avaliables, the other ones are under development):
 - [x] Document Word Counter: compares two PDF files and check how many words and how many times appears within each document, useful for checking if two documents are almost equals.
 - [X] Paragraph Word Counter: compares two PDF files and check how many words and how many times appears within each paragraph, useful for checking which parts of two documents are almost equals.
+- [ ] Document Image Counter: like the word one, but with images.
  ### Roadmap:
 The full list of ideas and improvements can be found at [issues section (with the enhancements tag).](https://github.com/FherStk/DocumentPlagiarismChecker/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+is%3Aenhancement)
 ### Changelog:
