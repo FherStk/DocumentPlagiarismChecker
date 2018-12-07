@@ -31,7 +31,7 @@ namespace DocumentPlagiarismChecker.Outputs
                 Console.WriteLine(fms.LeftFileName);
                 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("  Displayt file: ");
+                Console.Write("  Right file: ");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(fms.RightFileName);
 
