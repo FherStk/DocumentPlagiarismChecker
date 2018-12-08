@@ -45,6 +45,14 @@ namespace DocumentPlagiarismChecker
 
             if(string.IsNullOrEmpty(Settings.Instance.Get(Setting.GLOBAL_FOLDER))) throw new FolderNotSpecifiedException();
             if(string.IsNullOrEmpty(Settings.Instance.Get(Setting.GLOBAL_EXTENSION))) throw new FileExtensionNotSpecifiedException();
+
+            //TODO: Progress indicator.
+            //  Use a task1 to execute CompareFiles().
+            //  Use task2 to check a singleton object (maybe TotalMatchingScore?) progress.
+            //  When task2 ends, waits a second and runs itself again.
+            //  When task1 ends, stops task2 and call to the WriteOutpu mehtod.
+            //  NOTE1: WriteOutput will get the results from the new singleton object.
+            //  NOTE2: This design will be usefull for the multi-threading support.
             API.WriteOutput(API.CompareFiles(), Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper()));
         }
 
