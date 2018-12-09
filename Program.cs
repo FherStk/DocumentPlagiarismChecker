@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DocumentPlagiarismChecker.Core;
 
 namespace DocumentPlagiarismChecker
@@ -44,16 +45,28 @@ namespace DocumentPlagiarismChecker
             }
 
             if(string.IsNullOrEmpty(Settings.Instance.Get(Setting.GLOBAL_FOLDER))) throw new FolderNotSpecifiedException();
-            if(string.IsNullOrEmpty(Settings.Instance.Get(Setting.GLOBAL_EXTENSION))) throw new FileExtensionNotSpecifiedException();
+            if(string.IsNullOrEmpty(Settings.Instance.Get(Setting.GLOBAL_EXTENSION))) throw new FileExtensionNotSpecifiedException();            
 
-            //TODO: Progress indicator.
-            //  Use a task1 to execute CompareFiles().
-            //  Use task2 to check a singleton object (maybe TotalMatchingScore?) progress.
-            //  When task2 ends, waits a second and runs itself again.
-            //  When task1 ends, stops task2 and call to the WriteOutpu mehtod.
-            //  NOTE1: WriteOutput will get the results from the new singleton object.
-            //  NOTE2: This design will be usefull for the multi-threading support.
-            API.WriteOutput(API.CompareFiles(), Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper()));
+            //Multi-tasking in order to display progress
+            API api = new API();
+            Task compare = Task.Run(() => 
+                api.CompareFiles()
+            );
+
+            //Polling for progress in order to display the output
+            Task progress = Task.Run(() => {
+                while(api.Progress < 1){
+                    Console.Write("\rLoading... {0:P2}", api.Progress);
+                    System.Threading.Thread.Sleep(1000);
+                }
+
+                Console.Write("\rLoading... {0:P2}", api.Progress);
+                Console.WriteLine();
+                Console.WriteLine("Done! Printing results:");
+                api.WriteOutput(Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper()));                                
+            });
+
+            progress.Wait();
         }
 
         private static void Help(){            

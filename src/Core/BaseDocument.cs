@@ -26,7 +26,7 @@ namespace DocumentPlagiarismChecker.Core
             if(!File.Exists(filePath)) 
                 throw new FileNotFoundException();
 
-            this.Name = System.IO.Path.GetFileName(filePath);
+            this.Name = System.IO.Path.GetFullPath(filePath);
         }       
     }
 }
