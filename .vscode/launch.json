@@ -11,6 +11,8 @@
             "preLaunchTask": "build [debug]",
             "program": "${workspaceFolder}/bin/Debug/netcoreapp2.1/DocumentPlagiarismChecker.dll",
             "args": [],
+            //"args": ["--info"],
+            //"args": ["--extension=pdf", "--threshold-basic=0.4"],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "stopAtEntry": false,

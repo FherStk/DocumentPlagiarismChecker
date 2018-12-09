@@ -18,9 +18,45 @@ If there is no *settings.yaml* file in the same folder as the program, it will b
 #### As a library:
 Do the same as with the stand-alone app but import the compiled **DocumentPlagiarismChecker.dll** file to your project. Then invoke the **CompareFiles** method inside the **API** object to get the results. You can also send them to an output with the **WriteOutput** method inside the same **API** object:
 
-`List<FileMatchingScore> results = API.CompareFiles();`
+**Synchronous example**
+```
+API api = new API();
+api.CompareFiles();
+api.WriteOutput();
+```
 
-`API.WriteOutput(results);`
+**Asynchronous example**
+```
+API api = new API();
+Task compare = Task.Run(() => 
+    api.CompareFiles()
+).ContinueWith((x) => {
+    api.WriteOutput();
+});
+
+//SOME CODE
+```
+
+**Asynchronous example (with progress indicator)**
+```
+API api = new API();
+Task compare = Task.Run(() => 
+    api.CompareFiles()
+);
+
+Task progress = Task.Run(() => {
+    while(api.Progress < 1){
+        Console.Write("\r{0:P2}", api.Progress);
+        System.Threading.Thread.Sleep(1000);
+    }
+
+    Console.Write("\rLoading... {0:P2}", api.Progress);
+    Console.WriteLine();
+    Console.WriteLine("Done! Printing results:");
+});
+
+progress.Wait();
+```
 
 Please, notice that all configuration is performed through the *settings.yaml* file under the same path as the program, so if there is no file a new one will must be established with `Settings.Instance.Load(path);` in order to proceed.
 
@@ -37,6 +73,12 @@ New comparators will be added as long as the tool became improved with new capab
  ### Roadmap:
 The full list of ideas and improvements can be found at [issues section (with the enhancements tag).](https://github.com/FherStk/DocumentPlagiarismChecker/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+is%3Aenhancement)
 ### Changelog:
+* v0.5.0.0-alpha (09/12/2018):
+    * A progress indicator has been added when running the app through the terminal.
+    * A new parameter has been added to the settings (recursive) in order to set the file search method inside the given folder.
+    * New parameters has been added to the settings in order to set the threshold values that will be used in order to determine if there is a match between two comparisons.
+    * The Document and FileMatchingScore objects stores the full path for a file instead of its single name.
+
 * v0.4.0.0-alpha (06/12/2018):
     * A settings file has been added, so the input arguments (console) can be omited if the mandatory settings are defined inside the yaml file or Settings.Instance.Set(setting, value) method (API) can be used. Notice that settings file data will be overwriten if new information is sent throught the arguments console or API.
     * The output console has been improved, adding multi-level options, output colors and indentation.
