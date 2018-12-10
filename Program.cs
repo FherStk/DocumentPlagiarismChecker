@@ -55,12 +55,12 @@ namespace DocumentPlagiarismChecker
 
             //Polling for progress in order to display the output
             Task progress = Task.Run(() => {
-                while(api.Progress < 1){
+                do{
                     Console.Write("\rLoading... {0:P2}", api.Progress);
                     System.Threading.Thread.Sleep(1000);
                 }
+                while(api.Progress < 1);                
 
-                Console.Write("\rLoading... {0:P2}", api.Progress);
                 Console.WriteLine();
                 Console.WriteLine("Done! Printing results:");
                 api.WriteOutput(Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper()));                                

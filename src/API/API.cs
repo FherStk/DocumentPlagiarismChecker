@@ -72,6 +72,7 @@ namespace DocumentPlagiarismChecker
                 }                    
             }
 
+            _total = 1;            
             this.MatchingResults = results;            
         }       
 
