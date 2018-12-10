@@ -14,14 +14,9 @@ namespace DocumentPlagiarismChecker.Core
     /// </summary>
     public class FileMatchingScore{
         /// <summary>
-        /// The left side file name.
+        /// The file name.
         /// </summary>
-        public string LeftFileName {get; private set;}
-
-        /// <summary>
-        /// The right side file name.
-        /// </summary>
-        public string RightFileName {get; private set;}      
+        public string FileName {get; private set;}        
         
         /// <summary>
         /// The set of all the matching results, regarding the current pair of files, that has been produced by all the different Comparators used.
@@ -41,11 +36,9 @@ namespace DocumentPlagiarismChecker.Core
         /// <summary>
         /// Instantiates a new file matching socre object.
         /// </summary>
-        /// <param name="leftFileName">The left file's name.</param>
-        /// <param name="rightFileName">The right file's name.</param>
-        public FileMatchingScore(string leftFileName, string rightFileName){
-            this.LeftFileName = leftFileName;
-            this.RightFileName = rightFileName;            
+        /// <param name="fileName">The file's name.</param>
+        public FileMatchingScore(string fileName){
+            this.FileName = fileName;
             this.ComparatorResults = new List<ComparatorMatchingScore>();
         }             
     }      

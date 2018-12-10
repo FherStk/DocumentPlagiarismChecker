@@ -48,14 +48,16 @@ namespace DocumentPlagiarismChecker
             _current = 0;
 
             //Loops over each pair of files (the files must be compared between each other in a relation "1 to many").
+            //TODO: the results must be stored even if the values has been computed early. So the FileMatchingScore will be related with
+            //(n-1)*x where n is the number of files and x the number of comparers.
             for(int i = 0; i < files.Count(); i++){                                
                 leftFilePath = files.ElementAt(i);
-             
+                
+                //Create the score for the given file pair                    
+                FileMatchingScore fpr = new FileMatchingScore(Path.GetFullPath(leftFilePath));
+            
                 for(int j = i+1; j < files.Count(); j++){                                
-                    rightFilePath = files.ElementAt(j);
-
-                    //Create the score for the given file pair                    
-                    FileMatchingScore fpr = new FileMatchingScore(Path.GetFullPath(leftFilePath), Path.GetFullPath(rightFilePath));
+                    rightFilePath = files.ElementAt(j);                    
 
                     //Instantiate and run every Comparator
                     foreach(Type t in comparatorTypes){
@@ -66,10 +68,11 @@ namespace DocumentPlagiarismChecker
                         ComparatorMatchingScore cms = (ComparatorMatchingScore)method.Invoke(comp, null);
                         fpr.ComparatorResults.Add(cms);
                         _current++;
-                    }
-                   
-                    results.Add(fpr);
-                }                    
+                    }                                    
+                }    
+
+                if(fpr.ComparatorResults.Count > 0)
+                    results.Add(fpr);                
             }
 
             _total = 1;            

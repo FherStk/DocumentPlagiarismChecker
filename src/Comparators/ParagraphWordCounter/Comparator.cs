@@ -106,7 +106,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 
         private  ComparatorMatchingScore ComputeMatching(Dictionary<string[], Dictionary<string, int[]>> paragraphCounter){
             //Defining the results headers
-            ComparatorMatchingScore cr = new ComparatorMatchingScore("Paragraph Word Counter");            
+            ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Paragraph Word Counter");            
             cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Left legth", "Right length", "Length match", "Word match", "Total match"};
             cr.DetailsFormat = new string[]{"{0:L50}", "{0:L50}", "{0}", "{0}", "{0:P2}", "{0:P2}", "{0:P2}"};
             

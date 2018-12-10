@@ -5,6 +5,7 @@
  */
  
 using System;
+using System.Linq;
 using ConsoleTables;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
@@ -22,23 +23,31 @@ namespace DocumentPlagiarismChecker.Outputs
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){            
             foreach(FileMatchingScore fms in results){
+                //Displays the left file info and total match
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
                 Console.WriteLine("##############################################################################");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Left file: ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(fms.LeftFileName);
-                
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("  Right file: ");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(fms.RightFileName);
+                Console.WriteLine(fms.FileName);                                
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Matching: ");                
                 Console.ForegroundColor = (fms.Matching < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
                 Console.WriteLine("{0:P2}", fms.Matching);
+
+                //Displays the right file info and total match (related with the previous left file).
+                foreach(IGrouping<string, ComparatorMatchingScore> group in fms.ComparatorResults.GroupBy(x => x.RightFileName)){
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("    Right file: ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(group.Key);                                
+                }                
+
+                /*foreach(ComparatorMatchingScore cms in fms.ComparatorResults.Where(x => x.LeftFileName == fms.FileName)){
+
+                }
                 
                 if(level >= DisplayLevel.COMPARATOR){
                     foreach(ComparatorMatchingScore cms in fms.ComparatorResults){
@@ -97,8 +106,9 @@ namespace DocumentPlagiarismChecker.Outputs
                             }
                             dms = dms.Child;
                         }
-                    }  
+                    }                       
                 }
+                */
                               
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("##############################################################################");

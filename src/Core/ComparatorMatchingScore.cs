@@ -13,6 +13,18 @@ namespace DocumentPlagiarismChecker.Core
     /// Contains the global comparator matching score (%) with its detailed data.
     /// </summary>
     public class ComparatorMatchingScore : DetailsMatchingScore{       
+        
+        
+       /// <summary>
+        /// The left side file name.
+        /// </summary>
+        public string LeftFileName {get; private set;}
+
+        /// <summary>
+        /// The right side file name.
+        /// </summary>
+        public string RightFileName {get; private set;} 
+        
         /// <summary>
         /// The Comparator's name.
         /// </summary>
@@ -22,8 +34,10 @@ namespace DocumentPlagiarismChecker.Core
         /// Instantiates a new comparator matching socre object.
         /// </summary>
         /// <param name="Comparator">The Comparator's name.</param>
-        public ComparatorMatchingScore(string Comparator, DisplayLevel detailsDisplayLevel = Core.DisplayLevel.COMPARATOR): base(detailsDisplayLevel){
+        public ComparatorMatchingScore(string leftFileName, string rightFileName, string Comparator, DisplayLevel detailsDisplayLevel = Core.DisplayLevel.COMPARATOR): base(detailsDisplayLevel){
             this.Comparator = Comparator;                        
+            this.LeftFileName = leftFileName;
+            this.RightFileName = rightFileName;            
         }
     }      
 }
