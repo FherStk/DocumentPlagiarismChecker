@@ -30,11 +30,13 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         }  
         
         /// <summary>
+        /// compta quantes paraules hi ha i quantes vegades apareixen en cada document, y fa una revisio del percentatge.
         /// Counts how many words and how many times appears within each document, and checks the matching percentage.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Resultats del emparellament</returns>
         public override ComparatorMatchingScore Run(){
             //Counting the words appearences for each document (left and right).
+            //Compta les paraules que apareixen a cada document (Esquerra i dreta).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
