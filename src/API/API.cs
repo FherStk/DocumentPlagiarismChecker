@@ -19,7 +19,7 @@ namespace DocumentPlagiarismChecker
     public class API{
         private long _total;
         private long _current;
-        public List<FileMatchingScore> MatchingResults {get; private set;}
+        public List<ComparatorMatchingScore> MatchingResults {get; private set;}
         public float Progress {
             get{
                 if(_total == 0 || _current == 0) return 0f;
@@ -38,7 +38,7 @@ namespace DocumentPlagiarismChecker
             //Initial vars. including the set of files.
             string leftFilePath = null;
             string rightFilePath = null;                   
-            List<FileMatchingScore> results = new List<FileMatchingScore>();
+            List<ComparatorMatchingScore> results = new List<ComparatorMatchingScore>();
             List<string> files = Directory.GetFiles(Settings.Instance.Get(Setting.GLOBAL_FOLDER), string.Format("*.{0}", Settings.Instance.Get(Setting.GLOBAL_EXTENSION)), (Settings.Instance.Get(Setting.GLOBAL_RECURSIVE) == "true" ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(Settings.Instance.Get(Setting.GLOBAL_SAMPLE))).ToList();
             List<Type> comparatorTypes = GetComparatorTypes().ToList();
 
@@ -52,10 +52,7 @@ namespace DocumentPlagiarismChecker
             //(n-1)*x where n is the number of files and x the number of comparers.
             for(int i = 0; i < files.Count(); i++){                                
                 leftFilePath = files.ElementAt(i);
-                
-                //Create the score for the given file pair                    
-                FileMatchingScore fpr = new FileMatchingScore(Path.GetFullPath(leftFilePath));
-            
+                            
                 for(int j = i+1; j < files.Count(); j++){                                
                     rightFilePath = files.ElementAt(j);                    
 
@@ -65,14 +62,10 @@ namespace DocumentPlagiarismChecker
                         MethodInfo method = comp.GetType().GetMethod("Run");
                         
                         //Once the object is instantiated, the Run method is invoked.
-                        ComparatorMatchingScore cms = (ComparatorMatchingScore)method.Invoke(comp, null);
-                        fpr.ComparatorResults.Add(cms);
+                        results.Add((ComparatorMatchingScore)method.Invoke(comp, null));                        
                         _current++;
                     }                                    
-                }    
-
-                if(fpr.ComparatorResults.Count > 0)
-                    results.Add(fpr);                
+                }                                    
             }
 
             _total = 1;            

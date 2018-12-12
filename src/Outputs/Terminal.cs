@@ -21,8 +21,13 @@ namespace DocumentPlagiarismChecker.Outputs
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
-        public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){            
-            foreach(FileMatchingScore fms in results){
+        public override void Write(List<ComparatorMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){  
+            //The list of CMS must be grouped and sorted in order to display.
+            foreach(List<ComparatorMatchingScore> leftFileGroup in results.GroupBy(x => x.LeftFileName).ToList()){
+                foreach(ComparatorMatchingScore leftFileMatch in leftFileGroup){
+
+                }
+                
                 //Displays the left file info and total match
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
@@ -30,15 +35,28 @@ namespace DocumentPlagiarismChecker.Outputs
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Left file: ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(fms.FileName);                                
+                Console.WriteLine(leftFileGroup.);        
+            }
+
+
+
+            foreach(ComparatorMatchingScore cms in results){
+                //Displays the left file info and total match
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("");
+                Console.WriteLine("##############################################################################");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write("  Left file: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(cms.FileName);                                
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Matching: ");                
-                Console.ForegroundColor = (fms.Matching < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                Console.WriteLine("{0:P2}", fms.Matching);
+                Console.ForegroundColor = (cms.Matching < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
+                Console.WriteLine("{0:P2}", cms.Matching);
 
                 //Displays the right file info and total match (related with the previous left file).
-                foreach(IGrouping<string, ComparatorMatchingScore> group in fms.ComparatorResults.GroupBy(x => x.RightFileName)){
+                foreach(IGrouping<string, ComparatorMatchingScore> group in cms.ComparatorResults.GroupBy(x => x.RightFileName)){
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.Write("    Right file: ");
                     Console.ForegroundColor = ConsoleColor.White;

@@ -27,6 +27,6 @@ namespace DocumentPlagiarismChecker.Core
         /// </summary>
         /// <param name="results">A set of scores regarding each pair of compared files.</param>
         /// <param name="displayLevel">The detail level that will be displayed.</param>       
-        public abstract void Write(List<FileMatchingScore> results, DisplayLevel displayLevel = DisplayLevel.BASIC);
+        public abstract void Write(List<ComparatorMatchingScore> results, DisplayLevel displayLevel = DisplayLevel.BASIC);
     }
 }
