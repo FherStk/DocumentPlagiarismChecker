@@ -77,5 +77,7 @@ namespace DocumentPlagiarismChecker.Core
                 this.DetailsMatch = new List<float>();         
             }            
         }
+
+        //TODO: clone method
     }      
 }

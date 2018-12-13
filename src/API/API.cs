@@ -18,12 +18,12 @@ namespace DocumentPlagiarismChecker
     /// </summary>
     public class API{
         private long _total;
-        private long _current;
+        private long _computed;
         public List<ComparatorMatchingScore> MatchingResults {get; private set;}
         public float Progress {
             get{
-                if(_total == 0 || _current == 0) return 0f;
-                else return MathF.Round((float)_current / (float)_total, 2);
+                if(_total == 0 || _computed == 0) return 0f;
+                else return MathF.Round((float)_computed / (float)_total, 2);
             }            
         }
     
@@ -38,38 +38,47 @@ namespace DocumentPlagiarismChecker
             //Initial vars. including the set of files.
             string leftFilePath = null;
             string rightFilePath = null;                   
-            List<ComparatorMatchingScore> results = new List<ComparatorMatchingScore>();
+            Dictionary<string, ComparatorMatchingScore> results = new Dictionary<string, ComparatorMatchingScore>();
             List<string> files = Directory.GetFiles(Settings.Instance.Get(Setting.GLOBAL_FOLDER), string.Format("*.{0}", Settings.Instance.Get(Setting.GLOBAL_EXTENSION)), (Settings.Instance.Get(Setting.GLOBAL_RECURSIVE) == "true" ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(Settings.Instance.Get(Setting.GLOBAL_SAMPLE))).ToList();
             List<Type> comparatorTypes = GetComparatorTypes().ToList();
 
             //The total combinations to calculate are the number of combinations without repetition for 2 elements over a set of N = (n over 2) = (n! / 2! (n-2)!)
             //The that total of combination, there will be performed a check for every comparator. 
             _total = (Factorial(files.Count()) / 2 * Factorial(files.Count() - 2)) * comparatorTypes.Count;
-            _current = 0;
+            _computed = 0;
 
             //Loops over each pair of files (the files must be compared between each other in a relation "1 to many").
             //TODO: the results must be stored even if the values has been computed early. So the FileMatchingScore will be related with
             //(n-1)*x where n is the number of files and x the number of comparers.
+            string key = "";
             for(int i = 0; i < files.Count(); i++){                                
                 leftFilePath = files.ElementAt(i);
                             
-                for(int j = i+1; j < files.Count(); j++){                                
-                    rightFilePath = files.ElementAt(j);                    
-
-                    //Instantiate and run every Comparator
-                    foreach(Type t in comparatorTypes){
-                        var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, Settings.Instance.Get(Setting.GLOBAL_SAMPLE));
-                        MethodInfo method = comp.GetType().GetMethod("Run");
-                        
-                        //Once the object is instantiated, the Run method is invoked.
-                        results.Add((ComparatorMatchingScore)method.Invoke(comp, null));                        
-                        _current++;
-                    }                                    
+                for(int j = 0; j < files.Count(); j++){                                
+                    rightFilePath = files.ElementAt(j);                                        
+                    
+                    //Instantiate and run every Comparator avoiding already computed ones and comparing a file with itself                    
+                    key = string.Format("{0}@{1}", leftFilePath, rightFilePath);
+                    if(results.ContainsKey(key)){
+                        //TODO: clone the results[key] item and swap the left and right files.
+                        //add it again to the results
+                        //this doesn't count as computed matchign result.
+                    }
+                    else if(rightFilePath != leftFilePath){
+                        foreach(Type t in comparatorTypes){
+                            var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, Settings.Instance.Get(Setting.GLOBAL_SAMPLE));
+                            MethodInfo method = comp.GetType().GetMethod("Run");
+                            
+                            //Once the object is instantiated, the Run method is invoked.
+                            results.Add(key, (ComparatorMatchingScore)method.Invoke(comp, null));
+                            _computed++;
+                        }                                    
+                    }
                 }                                    
             }
 
             _total = 1;            
-            this.MatchingResults = results;            
+            this.MatchingResults = results.Values.ToList();            
         }       
 
         /// <summary>
