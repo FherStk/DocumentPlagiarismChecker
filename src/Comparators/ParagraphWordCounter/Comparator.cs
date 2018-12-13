@@ -48,17 +48,14 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
                     doc.Paragraphs.Remove(paragraph);
-                                
-                int leftLength, rightLength = 0;
-                float totalMatch, lengthMatch, wordMath = 0f;                
+                                                
                 ComparatorMatchingScore sampleScore = ComputeMatching(CompareParagraphs(this.Sample, doc));
-
                 for(int i = 0; i < sampleScore.DetailsData.Count; i++){                    
-                    leftLength = (int)sampleScore.DetailsData[i][2];
-                    rightLength = (int)sampleScore.DetailsData[i][3];
-                    lengthMatch = (float)sampleScore.DetailsData[i][4];
-                    wordMath = (float)sampleScore.DetailsData[i][5];
-                    totalMatch = sampleScore.DetailsMatch[i];    //same as (float)sampleScore.DetailsData[i][6];
+                    int leftLength = (int)sampleScore.DetailsData[i][2];
+                    int rightLength = (int)sampleScore.DetailsData[i][3];
+                    float lengthMatch = (float)sampleScore.DetailsData[i][4];
+                    float wordMath = (float)sampleScore.DetailsData[i][5];
+                    float totalMatch = sampleScore.DetailsMatch[i];    //same as (float)sampleScore.DetailsData[i][6];
                     
                     //TODO: allowing to use totalMatch value or the length + word matches (used to compute the total match).
                     //TODO: testing and tweaking necessary, also config loading from a settings file.                   
@@ -74,13 +71,12 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// <param name="paragraphsRight">A right-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
         /// <returns>The result of the comparisson as a collection of pair-values following the schema (text[left, right], (word, [countLeft, countRight])</returns>
         private Dictionary<string[], Dictionary<string, int[]>> CompareParagraphs(Document leftDoc, Document rightDoc){
-            Dictionary<string, int[]> wordCounter = null;   
             Dictionary<string[], Dictionary<string, int[]>> paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();            
             foreach(string plKey in leftDoc.Paragraphs.Select(x => x.Key)){                
                 foreach(string prKey in rightDoc.Paragraphs.Select(x => x.Key)){                                        
 
                     //Counting the words withing one of the left document's paragraph
-                    wordCounter = new Dictionary<string, int[]>();
+                    Dictionary<string, int[]> wordCounter = new Dictionary<string, int[]>();
                     Dictionary<string, int> pLeft = leftDoc.Paragraphs[plKey];
 
                     foreach(string wLeft in pLeft.Select(x => x.Key)){
@@ -110,19 +106,14 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Left legth", "Right length", "Length match", "Word match", "Total match"};
             cr.DetailsFormat = new string[]{"{0:L50}", "{0:L50}", "{0}", "{0}", "{0:P2}", "{0:P2}", "{0:P2}"};
             
-            //Calculate the matching for each individual word within each paragraph.
-            float match, matchWord, matchLength = 0;
-            int leftLengt, rightLength, countLeft, countRight = 0;
-            Dictionary<string, int[]> wordCounter = null;                      
+            //Calculate the matching for each individual word within each paragraph.            
             foreach(string[] paragraphs in paragraphCounter.Select(x => x.Key)){    
-                wordCounter = paragraphCounter[paragraphs];                
+                Dictionary<string, int[]> wordCounter = paragraphCounter[paragraphs];                
 
                 //Matching with paragraph length
-                leftLengt = wordCounter.Values.Select(x => x[0]).Where(x => x > 0).Count();
-                rightLength = wordCounter.Values.Select(x => x[1]).Where(x => x > 0).Count();
-
-                if(leftLengt == 0 || rightLength == 0)  matchLength = 0;
-                else matchLength = (leftLengt < rightLength ? (float)leftLengt / (float)rightLength : (float)rightLength / (float)leftLengt);                
+                int leftLengt = wordCounter.Values.Select(x => x[0]).Where(x => x > 0).Count();
+                int rightLength = wordCounter.Values.Select(x => x[1]).Where(x => x > 0).Count();
+                float matchLength = (leftLengt == 0 || rightLength == 0 ? 0 : (leftLengt < rightLength ? (float)leftLengt / (float)rightLength : (float)rightLength / (float)leftLengt));                
 
                 //Counting for each word inside an especific paragraph
                 cr.Child = new DetailsMatchingScore();
@@ -130,12 +121,11 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 cr.Child.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
                 foreach(string word in wordCounter.Select(x => x.Key)){                                
-                    countLeft = wordCounter[word][0];
-                    countRight = wordCounter[word][1];                
+                    int countLeft = wordCounter[word][0];
+                    int countRight = wordCounter[word][1];                
 
                     //Mathing with word appearences
-                    if(countLeft == 0 || countRight == 0)  matchWord = 0;
-                    else matchWord = (countLeft < countRight ? (float)countLeft / (float)countRight : (float)countRight / (float)countLeft);                                        
+                    float matchWord = (countLeft == 0 || countRight == 0 ? 0 :(countLeft < countRight ? (float)countLeft / (float)countRight : (float)countRight / (float)countLeft));                    
 
                     //Adding the details for each word                    
                     cr.Child.AddMatch(matchWord);                                        
@@ -143,7 +133,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 }
 
                 //Adding the details for each paragraph, the total match is: 75% for words - 25% for length (must be tested in order to tweak) and add the info to the detils.                    
-                match = (cr.Child.Matching*0.75f + matchLength*0.25f);
+                float match = (cr.Child.Matching*0.75f + matchLength*0.25f);
                 cr.AddMatch(match);                
                 cr.DetailsData.Add(new object[]{paragraphs[0], paragraphs[1], leftLengt, rightLength, matchLength, cr.Child.Matching, match});
             }

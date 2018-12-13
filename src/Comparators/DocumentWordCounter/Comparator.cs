@@ -64,15 +64,11 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
-            //Calculate the matching for each individual word.
-            float match = 0;
-            int left, right = 0;
+            //Calculate the matching for each individual word.            
             foreach(string word in counter.Select(x => x.Key)){                
-                left = counter[word][0];
-                right = counter[word][1];                
-
-                if(left == 0 || right == 0) match = 0;
-                else match = (left < right ? (float)left / (float)right : (float)right / (float)left);
+                int left = counter[word][0];
+                int right = counter[word][1];                
+                float match = (left == 0 || right == 0 ? 0 : (left < right ? (float)left / (float)right : (float)right / (float)left));
 
                 cr.AddMatch(match);
                 cr.DetailsData.Add(new object[]{word, left, right, match});                

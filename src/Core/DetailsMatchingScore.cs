@@ -43,7 +43,7 @@ namespace DocumentPlagiarismChecker.Core
         /// <summary>
         /// The match set used to compute the matching field (same length and same order as caption and data details)
         /// </summary>
-        public List<float> DetailsMatch {get; private set;} 
+        public List<float> DetailsMatch {get; protected set;} 
 
         /// <summary>
         /// The matching score between [0,1].
@@ -77,7 +77,5 @@ namespace DocumentPlagiarismChecker.Core
                 this.DetailsMatch = new List<float>();         
             }            
         }
-
-        //TODO: clone method
     }      
 }

@@ -29,8 +29,10 @@ namespace DocumentPlagiarismChecker.Outputs
             foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
                 //Displays the left file info with its total match
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("");
+                //TODO: missing WriteSeparator???
+                Console.WriteLine();                
                 Console.WriteLine("##############################################################################");
+                Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Left file: ");
                 Console.ForegroundColor = ConsoleColor.White;

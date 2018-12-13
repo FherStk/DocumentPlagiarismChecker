@@ -35,19 +35,17 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 
             //Init object attributes.
             Paragraphs = new Dictionary<string, Dictionary<string, int>>();
-            Dictionary<string, int> words = null;
 
             //Read PDF file and sotre each word appearence inside its paragraph.
             using (PdfReader reader = new PdfReader(path))
             {
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    string text = PdfTextExtractor.GetTextFromPage(reader, i);
-                    
+                    string text = PdfTextExtractor.GetTextFromPage(reader, i);                    
                     foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){                                                
                         //TODO: settings file in order to exclude a set of words.
                                                    
-                        words = new Dictionary<string, int>();
+                        Dictionary<string, int> words = new Dictionary<string, int>();
                         foreach(string word in paragraph.Split(" ").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
                              if(!words.ContainsKey(word))
                                 words.Add(word, 0);

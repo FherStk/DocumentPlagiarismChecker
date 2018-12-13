@@ -33,11 +33,31 @@ namespace DocumentPlagiarismChecker.Core
         /// <summary>
         /// Instantiates a new comparator matching socre object.
         /// </summary>
-        /// <param name="Comparator">The Comparator's name.</param>
+        /// <param name="leftFileName">The left side's comparisson file name.</param>
+        /// <param name="rightFileName">The right side's comparisson file name.</param>
+        /// <param name="Comparator">The used comparato's name.</param>
+        /// <param name="detailsDisplayLevel">The display level for the details (must be lower or the same as the global settings value in order to be displayed at the output).</param>
+        /// <returns></returns>
         public ComparatorMatchingScore(string leftFileName, string rightFileName, string Comparator, DisplayLevel detailsDisplayLevel = Core.DisplayLevel.COMPARATOR): base(detailsDisplayLevel){
             this.Comparator = Comparator;                        
             this.LeftFileName = leftFileName;
             this.RightFileName = rightFileName;            
+        }
+
+        /// <summary>
+        /// Copy the current ComparatorMatchingScore but its details will be linked to the original ones (no copy for the DetailsMatchingScore items will be performed).
+        /// </summary>
+        /// <param name="leftFileName">The left side's comparisson file name.</param>
+        /// <param name="rightFileName">The right side's comparisson file name.</param>
+        /// <returns>A copy of the current item.</returns>
+        public ComparatorMatchingScore Copy(string leftFileName, string rightFileName){
+            return new ComparatorMatchingScore(leftFileName, rightFileName, this.Comparator, this.DisplayLevel){
+                Child = this.Child,
+                DetailsCaption = this.DetailsCaption,
+                DetailsFormat = this.DetailsFormat,
+                DetailsData = this.DetailsData,
+                DetailsMatch = this.DetailsMatch
+            };            
         }
     }      
 }

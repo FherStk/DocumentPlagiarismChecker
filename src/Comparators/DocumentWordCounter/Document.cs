@@ -41,9 +41,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
             {
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    string text = PdfTextExtractor.GetTextFromPage(reader, i);
-                    text = text.Replace("\n", "");
-
+                    string text = PdfTextExtractor.GetTextFromPage(reader, i).Replace("\n", "");
                     foreach(string word in text.Split(" ").Where(x => !string.IsNullOrEmpty(x.Trim()))){
                         if(!WordAppearances.ContainsKey(word))
                             WordAppearances.Add(word, 0);
