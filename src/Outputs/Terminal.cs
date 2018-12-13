@@ -23,14 +23,14 @@ namespace DocumentPlagiarismChecker.Outputs
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<ComparatorMatchingScore> results){              
             DisplayLevel dl = Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper());            
+            Console.OutputEncoding = System.Text.Encoding.UTF8;            
             WriteSeparator('#', ConsoleColor.DarkGray);                
-            Console.WriteLine();
 
             //The list of CMS must be grouped and sorted in order to display.
             foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
                 //Displays the left file info with its total match                
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("  Left file [");
+                Console.Write("  ⬩ Left file [");
                     
                 float match = grpLeft.Sum(x => x.Matching) / grpLeft.Count();
                 Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
@@ -45,7 +45,7 @@ namespace DocumentPlagiarismChecker.Outputs
                 foreach(IGrouping<string, ComparatorMatchingScore> grpRight in grpLeft.GroupBy(x => x.RightFileName)){
                     //Displays the right file info with its total match
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("    ↳ Right file [");
+                    Console.Write("     ⤷ Right file [");
                         
                     match = grpRight.Sum(x => x.Matching) / grpLeft.Count();
                     Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
@@ -60,7 +60,7 @@ namespace DocumentPlagiarismChecker.Outputs
                     if(dl >= DisplayLevel.COMPARATOR){
                         foreach(ComparatorMatchingScore comp in grpRight.Select(x => x).ToList()){
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write("      ↳ Comparator [");
+                            Console.Write("        ⤷ Comparator [");
                                 
                             Console.ForegroundColor = (comp.Matching < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
                             Console.Write("{0:P2}", comp.Matching);
