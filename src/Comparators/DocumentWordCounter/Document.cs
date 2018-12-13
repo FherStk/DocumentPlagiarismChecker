@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections.Generic;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using DocumentPlagiarismChecker.Core;
 
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
@@ -31,7 +32,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         public Document(string path): base(path){
             //Check pre-conditions        
             if(!System.IO.Path.GetExtension(path).ToLower().Equals(".pdf"))
-                throw new FileNotPdfException();
+                throw new FileExtensionNotAllowed();
 
             //Init object attributes.
             WordAppearances = new Dictionary<string, int>();

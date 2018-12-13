@@ -68,16 +68,23 @@ New comparators will be added as long as the tool became improved with new capab
  3. Code both files following the indications, but you can use the current comparators as a guide.
  ### List of comparators (marked ones are avaliables, the other ones are under development):
 - [x] Document Word Counter: compares two PDF files and check how many words and how many times appears within each document, useful for checking if two documents are almost equals.
-- [X] Paragraph Word Counter: compares two PDF files and check how many words and how many times appears within each paragraph, useful for checking which parts of two documents are almost equals.
+- [X] Paragraph Word Counter: compares two PDF files and check how many paragraphs contains similar sentences, useful for checking which if two paragraphs are almost equals.
+- [X] Paragraph Length Counter: compares two PDF files and check how many paragraph has the same length, useful for checking which parts of two documents could have been replaced by synonyms.
 - [ ] Document Image Counter: like the word one, but with images.
  ### Roadmap:
 The full list of ideas and improvements can be found at [issues section (with the enhancements tag).](https://github.com/FherStk/DocumentPlagiarismChecker/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+is%3Aenhancement)
 ### Changelog:
+* v0.6.0.0-alpha (XX/12/2018):
+    * A new output format for the terminal output (Left file [matching %] -> Right file [matching %] -> Comparator [matching %]).
+    * The Paragraph Word Counter has been splitted into a new comparator: the Paragraph Length Counter.
+    * For further information see [the full list of changes](https://github.com/FherStk/DocumentPlagiarismChecker/projects/3).
+
 * v0.5.0.0-alpha (09/12/2018):
     * A progress indicator has been added when running the app through the terminal.
     * A new parameter has been added to the settings (recursive) in order to set the file search method inside the given folder.
     * New parameters has been added to the settings in order to set the threshold values that will be used in order to determine if there is a match between two comparisons.
     * The Document and FileMatchingScore objects stores the full path for a file instead of its single name.
+    * For further information see [the full list of changes](https://github.com/FherStk/DocumentPlagiarismChecker/projects/1).
 
 * v0.4.0.0-alpha (06/12/2018):
     * A settings file has been added, so the input arguments (console) can be omited if the mandatory settings are defined inside the yaml file or Settings.Instance.Set(setting, value) method (API) can be used. Notice that settings file data will be overwriten if new information is sent throught the arguments console or API.

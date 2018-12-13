@@ -47,7 +47,7 @@ namespace DocumentPlagiarismChecker.Outputs
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.Write("     ⤷ Right file [");
                         
-                    match = grpRight.Sum(x => x.Matching) / grpLeft.Count();
+                    match = grpRight.Sum(x => x.Matching) / grpRight.Count();
                     Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
                     Console.Write("{0:P2}", match);
                     

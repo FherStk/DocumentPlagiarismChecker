@@ -11,18 +11,18 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using DocumentPlagiarismChecker.Core;
 
-namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
+namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
 {
     /// <summary>
-    /// This document must be used with the Paragraph Word Counter Comparator, and stores how many words and how many times appears withing each paragraph inside a document.
+    /// This document must be used with the Paragraph Length Counter Comparator, and stores the length (amount of words) of any paragraph along the document.
     /// </summary>
     internal class Document: Core.BaseDocument
     {        
         /// <summary>
-        /// Contains the paragraphs (key) and the appearances of each word inside it (value).
+        /// Contains the paragraphs (key) and the number of words inside it (value).
         /// </summary>
         /// <value></value>
-        public Dictionary<string, Dictionary<string, int>> Paragraphs {get; set;}
+        public Dictionary<string, int> Lengths {get; set;}
         
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 throw new FileExtensionNotAllowed();
 
             //Init object attributes.
-            Paragraphs = new Dictionary<string, Dictionary<string, int>>();
+            Lengths = new Dictionary<string, int>();
 
             //Read PDF file and sotre each word appearence inside its paragraph.
             using (PdfReader reader = new PdfReader(path))
@@ -43,18 +43,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
                     string text = PdfTextExtractor.GetTextFromPage(reader, i);                    
-                    foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){                                                
-                        //TODO: settings file in order to exclude a set of words.
-                                                   
-                        Dictionary<string, int> words = new Dictionary<string, int>();
-                        foreach(string word in paragraph.Split(" ").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
-                             if(!words.ContainsKey(word))
-                                words.Add(word, 0);
-                                        
-                            words[word]++;         
-                        }
-
-                        if(!Paragraphs.ContainsKey(paragraph)) Paragraphs.Add(paragraph, words);                                    
+                    foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){                                                                                                                                                   
+                        if(!Lengths.ContainsKey(paragraph)) Lengths.Add(paragraph, paragraph.Split(" ").Select(x => x.Trim()).Count());                                    
                         else
                         {
                             //Repeated paragraph... can be ignored.
