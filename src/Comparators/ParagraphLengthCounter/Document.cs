@@ -19,14 +19,13 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
     internal class Document: Core.BaseDocument
     {        
         /// <summary>
-        /// Contains the paragraphs (key) and the number of words inside it (value).
+        /// Contains how many paragraphs (value) has an specific length (key)
         /// </summary>
         /// <value></value>
-        public Dictionary<string, int> Lengths {get; set;}
-        
+        public Dictionary<float, int> Lengths {get; set;}        
 
         /// <summary>
-        /// Loads the content of a PDF file and counts how many words and how many times appears on each paragraph within the document.
+        /// Loads the content of a PDF file and counts the length of the paragraphs.
         /// </summary>
         /// <param name="path">The file path.</param>
         public Document(string path): base(path){
@@ -35,7 +34,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
                 throw new FileExtensionNotAllowed();
 
             //Init object attributes.
-            Lengths = new Dictionary<string, int>();
+            Lengths = new Dictionary<float, int>();
 
             //Read PDF file and sotre each word appearence inside its paragraph.
             using (PdfReader reader = new PdfReader(path))
@@ -43,12 +42,10 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
                     string text = PdfTextExtractor.GetTextFromPage(reader, i);                    
-                    foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){                                                                                                                                                   
-                        if(!Lengths.ContainsKey(paragraph)) Lengths.Add(paragraph, paragraph.Split(" ").Select(x => x.Trim()).Count());                                    
-                        else
-                        {
-                            //Repeated paragraph... can be ignored.
-                        }
+                    foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
+                        float length = paragraph.Length;
+                        if(!Lengths.ContainsKey(length)) Lengths.Add(length, 0);
+                        Lengths[length] += 1;                        
                     }
                 }
             }

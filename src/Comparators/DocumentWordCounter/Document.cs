@@ -14,7 +14,7 @@ using DocumentPlagiarismChecker.Core;
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
-    /// This document must be used with the Word Counter Comparator, and stores how many words and how many times appears withing a document.
+    /// This document must be used with the Document Word Counter Comparator, and stores how many words and how many times appears withing a document.
     /// </summary>
     internal class Document: Core.BaseDocument
     {        

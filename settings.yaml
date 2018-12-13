@@ -11,8 +11,8 @@ global:
   #sample: '/home/porrino.fernando/Documents/Proves/Sample.pdf'
   extension: 'pdf'
   #display: 'detailed'
-  #display: 'comparator'
-  display: 'basic'
+  display: 'comparator'
+  #display: 'basic'
   recursive: true
   #recursive: false
 
