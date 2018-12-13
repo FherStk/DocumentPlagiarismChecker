@@ -21,18 +21,14 @@ namespace DocumentPlagiarismChecker.Outputs
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
-        public override void Write(List<ComparatorMatchingScore> results){  
-            float match = 0f;
+        public override void Write(List<ComparatorMatchingScore> results){              
             DisplayLevel dl = Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper());            
-            
+            Console.ForegroundColor = ConsoleColor.DarkGray;              
+            WriteSeparator('#');                
+
             //The list of CMS must be grouped and sorted in order to display.
             foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
-                //Displays the left file info with its total match
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                //TODO: missing WriteSeparator???
-                Console.WriteLine();                
-                Console.WriteLine("##############################################################################");
-                Console.WriteLine();
+                //Displays the left file info with its total match                
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Left file: ");
                 Console.ForegroundColor = ConsoleColor.White;
@@ -40,7 +36,7 @@ namespace DocumentPlagiarismChecker.Outputs
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Match: ");  
                 
-                match = grpLeft.Sum(x => x.Matching) / grpLeft.Count();
+                float match = grpLeft.Sum(x => x.Matching) / grpLeft.Count();
                 Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
                 Console.WriteLine("{0:P2}", match);
                 Console.WriteLine();
@@ -70,10 +66,11 @@ namespace DocumentPlagiarismChecker.Outputs
                         
                             Console.ForegroundColor = (comp.Matching < GetThreshold(DisplayLevel.COMPARATOR) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
                             Console.WriteLine("{0:P2}", comp.Matching);
-                            Console.WriteLine();
                         }
                     }
-                } 
+                }
+
+                WriteSeparator('.');
 
             /*            
             foreach(ComparatorMatchingScore cms in results){
@@ -162,17 +159,27 @@ namespace DocumentPlagiarismChecker.Outputs
                         }
                     }                       
                 }
-                */
-                              
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("##############################################################################");
-                Console.WriteLine("");
-                Console.ForegroundColor = ConsoleColor.White;
+                */                                           
             }
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            WriteSeparator('#');
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         private float GetThreshold(DisplayLevel level){
             return float.Parse(Settings.Instance.Get(string.Format("threshold:{0}", level.ToString().ToLower())),  System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+        }
+
+        private void WriteSeparator(char symbol, ConsoleColor color = ConsoleColor.White){            
+            Console.ForegroundColor = color;
+            Console.WriteLine();
+            
+            for(int i = 0; i < Console.WindowWidth; i++)
+                Console.Write(symbol);
+
+            Console.WriteLine();
+            Console.WriteLine();
         }
     }
 }
