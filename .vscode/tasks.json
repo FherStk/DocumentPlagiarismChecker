@@ -26,6 +26,15 @@
                 "Release"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run"                
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }
