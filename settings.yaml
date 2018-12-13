@@ -3,10 +3,12 @@
 #Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
 
 global:
-  folder: 'C:\test\M10DAM-LL6'
+  #folder: 'C:\test\M10DAM-LL6'
+  folder: 'C:\test\Length'
   #folder: 'C:\test\'
   #folder: '/home/porrino.fernando/Documents/Proves'
-  sample: 'C:\test\M10DAM-LL6\Enunciat.pdf'
+  #sample: 'C:\test\M10DAM-LL6\Enunciat.pdf'
+  sample: 'C:\test\Length\Sample.pdf'
   #sample: 'C:\test\Sample.pdf'
   #sample: '/home/porrino.fernando/Documents/Proves/Sample.pdf'
   extension: 'pdf'
