@@ -61,9 +61,12 @@ namespace DocumentPlagiarismChecker
                 }
                 while(api.Progress < 1);                
 
+                Console.Write("\rLoading... {0:P2}", 1);
                 Console.WriteLine();
-                Console.WriteLine("Done! Printing results:");
-                api.WriteOutput(Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper()));                                
+                Console.WriteLine("Done!");
+                Console.WriteLine();
+                Console.WriteLine("Printing results:");
+                api.WriteOutput();
             });
 
             progress.Wait();

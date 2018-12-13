@@ -21,25 +21,59 @@ namespace DocumentPlagiarismChecker.Outputs
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
-        public override void Write(List<ComparatorMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){  
+        public override void Write(List<ComparatorMatchingScore> results){  
+            float match = 0f;
+            DisplayLevel dl = Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper());            
+            
             //The list of CMS must be grouped and sorted in order to display.
-            foreach(List<ComparatorMatchingScore> leftFileGroup in results.GroupBy(x => x.LeftFileName).ToList()){
-                foreach(ComparatorMatchingScore leftFileMatch in leftFileGroup){
-
-                }
-                
-                //Displays the left file info and total match
+            foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
+                //Displays the left file info with its total match
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
                 Console.WriteLine("##############################################################################");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  Left file: ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(leftFileGroup.);        
-            }
+                Console.WriteLine(grpLeft.Key);        
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write("  Match: ");  
+                
+                match = grpLeft.Sum(x => x.Matching) / grpLeft.Count();
+                Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
+                Console.WriteLine("{0:P2}", match);
+                Console.WriteLine();
 
+                foreach(IGrouping<string, ComparatorMatchingScore> grpRight in grpLeft.GroupBy(x => x.RightFileName)){
+                    //Displays the right file info with its total match
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("    Right file: ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(grpRight.Key);        
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("    Match: ");
+                    
+                    match = grpRight.Sum(x => x.Matching) / grpRight.Count();
+                    Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
+                    Console.WriteLine("{0:P2}", match);
+                    Console.WriteLine();
 
+                    if(dl >= DisplayLevel.COMPARATOR){
+                        foreach(ComparatorMatchingScore comp in grpRight.Select(x => x).ToList()){
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.Write("      Comparator: ");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine(comp.Comparator);        
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.Write("      Match: ");
+                        
+                            Console.ForegroundColor = (comp.Matching < GetThreshold(DisplayLevel.COMPARATOR) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
+                            Console.WriteLine("{0:P2}", comp.Matching);
+                            Console.WriteLine();
+                        }
+                    }
+                } 
 
+            /*            
             foreach(ComparatorMatchingScore cms in results){
                 //Displays the left file info and total match
                 Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -63,7 +97,7 @@ namespace DocumentPlagiarismChecker.Outputs
                     Console.WriteLine(group.Key);                                
                 }                
 
-                /*foreach(ComparatorMatchingScore cms in fms.ComparatorResults.Where(x => x.LeftFileName == fms.FileName)){
+                foreach(ComparatorMatchingScore cms in fms.ComparatorResults.Where(x => x.LeftFileName == fms.FileName)){
 
                 }
                 
