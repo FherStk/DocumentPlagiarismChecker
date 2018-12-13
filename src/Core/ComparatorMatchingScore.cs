@@ -38,7 +38,7 @@ namespace DocumentPlagiarismChecker.Core
         /// <param name="Comparator">The used comparato's name.</param>
         /// <param name="detailsDisplayLevel">The display level for the details (must be lower or the same as the global settings value in order to be displayed at the output).</param>
         /// <returns></returns>
-        public ComparatorMatchingScore(string leftFileName, string rightFileName, string Comparator, DisplayLevel detailsDisplayLevel = Core.DisplayLevel.COMPARATOR): base(detailsDisplayLevel){
+        public ComparatorMatchingScore(string leftFileName, string rightFileName, string Comparator, DisplayLevel detailsDisplayLevel = Core.DisplayLevel.DETAILED): base(detailsDisplayLevel){
             this.Comparator = Comparator;                        
             this.LeftFileName = leftFileName;
             this.RightFileName = rightFileName;            

@@ -10,12 +10,14 @@ global:
   #sample: 'C:\test\Sample.pdf'
   sample: '/home/porrino.fernando/Documents/Proves/Sample.pdf'
   extension: 'pdf'
+  #display: 'detailed'
   display: 'comparator'
+  #display: 'basic'
   #recursive: true
   recursive: false
 
 threshold:
   basic: 0.5
   comparator: 0.5
-  details: 0.5
+  detailed: 0.5
   full: 0

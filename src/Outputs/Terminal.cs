@@ -23,54 +23,101 @@ namespace DocumentPlagiarismChecker.Outputs
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<ComparatorMatchingScore> results){              
             DisplayLevel dl = Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper());            
-            Console.ForegroundColor = ConsoleColor.DarkGray;              
-            WriteSeparator('#');                
+            WriteSeparator('#', ConsoleColor.DarkGray);                
+            Console.WriteLine();
 
             //The list of CMS must be grouped and sorted in order to display.
             foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
                 //Displays the left file info with its total match                
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("  Left file: ");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(grpLeft.Key);        
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("  Match: ");  
-                
+                Console.Write("  Left file [");
+                    
                 float match = grpLeft.Sum(x => x.Matching) / grpLeft.Count();
                 Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                Console.WriteLine("{0:P2}", match);
-                Console.WriteLine();
+                Console.Write("{0:P2}", match);
+                
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write("]: ");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(grpLeft.Key);                                                        
 
                 foreach(IGrouping<string, ComparatorMatchingScore> grpRight in grpLeft.GroupBy(x => x.RightFileName)){
                     //Displays the right file info with its total match
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("    Right file: ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(grpRight.Key);        
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("    Match: ");
-                    
-                    match = grpRight.Sum(x => x.Matching) / grpRight.Count();
+                    Console.Write("    ↳ Right file [");
+                        
+                    match = grpRight.Sum(x => x.Matching) / grpLeft.Count();
                     Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                    Console.WriteLine("{0:P2}", match);
-                    Console.WriteLine();
+                    Console.Write("{0:P2}", match);
+                    
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("]: ");
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(grpRight.Key);                                                        
 
                     if(dl >= DisplayLevel.COMPARATOR){
                         foreach(ComparatorMatchingScore comp in grpRight.Select(x => x).ToList()){
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write("      Comparator: ");
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine(comp.Comparator);        
+                            Console.Write("      ↳ Comparator [");
+                                
+                            Console.ForegroundColor = (comp.Matching < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
+                            Console.Write("{0:P2}", comp.Matching);
+                            
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write("      Match: ");
-                        
-                            Console.ForegroundColor = (comp.Matching < GetThreshold(DisplayLevel.COMPARATOR) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                            Console.WriteLine("{0:P2}", comp.Matching);
+                            Console.Write("]: ");
+
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine(comp.Comparator);
+
+                            //Looping over the detials
+                            DetailsMatchingScore dms = (DetailsMatchingScore)comp;
+                            while(dms != null){
+                                if(dl >= dms.DisplayLevel){      
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                                    Console.WriteLine();
+                                    WriteSeparator('·', ConsoleColor.DarkRed);          
+                                    Console.WriteLine();                          
+                                    Console.WriteLine("  {1}: displaying details for matching values over {0:P2}", GetThreshold(dms.DisplayLevel), comp.Comparator);
+                                    Console.WriteLine();
+
+                                    var table = new ConsoleTable(dms.DetailsCaption);
+                                    for(int i = 0; i < dms.DetailsData.Count; i++){
+                                        if(dms.DetailsMatch[i] > GetThreshold(dms.DisplayLevel)){                                        
+                                            List<string> formatedData = new List<string>();
+                                            for(int j = 0; j < dms.DetailsFormat.Length; j++){                                            
+                                                if(dms.DetailsFormat[j].Contains(":L")){
+                                                //Custom string length formatting output
+                                                    string sl = dms.DetailsFormat[j].Substring(dms.DetailsFormat[j].IndexOf(":L")+2);
+                                                    sl = sl.Substring(0, sl.IndexOf("}"));
+                                                    
+                                                    int length = int.Parse(sl);
+                                                    string pText = dms.DetailsData[i][j].ToString();
+                                                    if(pText.Length <= length) formatedData.Add(pText);
+                                                    else formatedData.Add(string.Format("{0}...", pText.Substring(0, length - 3)));                                                       
+                                                }
+                                                else{
+                                                    //Native string formatting output
+                                                    formatedData.Add(String.Format(dms.DetailsFormat[j], dms.DetailsData[i][j]));
+                                                }                                            
+                                            }                                            
+                                            
+                                            table.AddRow(formatedData.ToArray());
+                                        }
+                                    }
+                                                                    
+                                    table.Write(); 
+                                    Console.WriteLine();                                                                                                                                                         
+                                }
+                                dms = dms.Child;
+                            }
                         }
                     }
-                }
+                }    
 
-                WriteSeparator('.');
+                Console.WriteLine();            
+                //WriteSeparator('.', ConsoleColor.Gray);
 
             /*            
             foreach(ComparatorMatchingScore cms in results){
@@ -162,8 +209,7 @@ namespace DocumentPlagiarismChecker.Outputs
                 */                                           
             }
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            WriteSeparator('#');
+            WriteSeparator('#', ConsoleColor.DarkGray);
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -173,12 +219,10 @@ namespace DocumentPlagiarismChecker.Outputs
 
         private void WriteSeparator(char symbol, ConsoleColor color = ConsoleColor.White){            
             Console.ForegroundColor = color;
-            Console.WriteLine();
-            
+
             for(int i = 0; i < Console.WindowWidth; i++)
                 Console.Write(symbol);
 
-            Console.WriteLine();
             Console.WriteLine();
         }
     }

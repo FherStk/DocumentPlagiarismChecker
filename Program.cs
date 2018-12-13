@@ -66,6 +66,7 @@ namespace DocumentPlagiarismChecker
                 Console.WriteLine("Done!");
                 Console.WriteLine();
                 Console.WriteLine("Printing results:");
+                Console.WriteLine();
                 api.WriteOutput();
             });
 
