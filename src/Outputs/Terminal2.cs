@@ -23,8 +23,8 @@ namespace DocumentPlagiarismChecker.Outputs
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){
             // File archivo = new File;
-             //aqui tendria que cambiar el codigo y guardarse en un archivo.  
-             //no se programar en c#       
+            //aqui tendria que cambiar el codigo y guardarse en un archivo.  
+            //no se programar en c#       
             foreach(FileMatchingScore fms in results){
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
