@@ -143,7 +143,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     cr.Child.DetailsData.Add(new object[]{word, countLeft, countRight, matchWord});                
                 }
 
-                //Adding the details for each paragraph, the total match is: 75% for words - 25% for length (must be tested in order to tweak) and add the info to the detils.                    
+                //Añadiendo the details for each paragraph, the total match is: 75% for words - 25% for length (must be tested in order to tweak) and add the info to the detils.                    
                 match = (cr.Child.Matching*0.75f + matchLength*0.25f);
                 cr.AddMatch(match);                
                 cr.DetailsData.Add(new object[]{paragraphs[0], paragraphs[1], leftLengt, rightLength, matchLength, cr.Child.Matching, match});
