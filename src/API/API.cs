@@ -36,8 +36,8 @@ namespace DocumentPlagiarismChecker
                 throw new FolderNotFoundException();
 
             //Initial vars. including the set of files.
-            string leftFilePath = null;
-            string rightFilePath = null;                   
+            string leftFilePath = "C:\\Users\\Cerkine\\Desktop\\combate.txt";
+            string rightFilePath = "C:\\Users\\Cerkine\\Desktop\\combate2.txt";                   
             List<FileMatchingScore> results = new List<FileMatchingScore>();
             List<string> files = Directory.GetFiles(Settings.Instance.Get(Setting.GLOBAL_FOLDER), string.Format("*.{0}", Settings.Instance.Get(Setting.GLOBAL_EXTENSION)), (Settings.Instance.Get(Setting.GLOBAL_RECURSIVE) == "true" ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(Settings.Instance.Get(Setting.GLOBAL_SAMPLE))).ToList();
             List<Type> comparatorTypes = GetComparatorTypes().ToList();
@@ -81,7 +81,7 @@ namespace DocumentPlagiarismChecker
         /// <param name="results">A set of file matching scores</param>
         public void WriteOutput(DisplayLevel level = DisplayLevel.COMPARATOR){
             //TODO: must be selected by settings
-            Outputs.Terminal t = new Outputs.Terminal();
+            Outputs.Fichero t = new Outputs.Fichero();
             t.Write(this.MatchingResults, level);
         }
 
