@@ -81,8 +81,20 @@ namespace DocumentPlagiarismChecker
         /// <param name="results">A set of file matching scores</param>
         public void WriteOutput(DisplayLevel level = DisplayLevel.COMPARATOR){
             //TODO: must be selected by settings
-            Outputs.Terminal t = new Outputs.Terminal();
+            try {
+        //Pass the filepath and filename to the StreamWriter Constructor
+        StreamWriter sw = new StreamWriter("C:\\Test.txt");
+
+    //Write a line of text
+    sw.WriteLine(this.MatchingResults, level);
+    sw.Close();
+    }
+    catch(Exception e)
+    {   
+            Outputs.Terminal1 t = new Outputs.Terminal1();
             t.Write(this.MatchingResults, level);
+        
+        
         }
 
         /// <summary>
