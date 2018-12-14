@@ -15,7 +15,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
     /// <summary>
     /// El contador de palabras compara un par de archivos y cuenta cuántas palabras y cuántas veces aparecen en cada archivo, y luego calcula
     /// cuántas de esas apariencias coinciden entre documentos. Entonces, dos documentos con la misma cantidad de las mismas palabras pueden ser una copia con
-    /// un alto nivel de probabilidad.
+    /// un alto nivel de probabilidad .
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
