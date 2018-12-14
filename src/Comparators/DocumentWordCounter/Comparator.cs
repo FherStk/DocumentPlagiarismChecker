@@ -2,6 +2,7 @@
     Copyright (C) 2018 Fernando Porrino Serrano.
     This software it's under the terms of the GNU Affero General Public License version 3.
     Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
+    Hey =D
  */
  
 using System;
@@ -32,12 +33,8 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         /// Cuenta cuántas palabras y cuántas veces aparecen dentro de cada documento, para verifica el porcentaje correspondiente.        /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){
-<<<<<<< HEAD
-        // Contando repeticiones de cada palabras en cada documento (izquierda y derecha).            Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
-=======
             //Cuenta la frecuencia de palabras por cada documento (iquierda y derecha).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
->>>>>>> f0cb799c19f7b6d7e33756441e7638e1f19c7c7c
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
                 counter[word][0] += Left.WordAppearances[word];
@@ -48,11 +45,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 counter[word][1] += Right.WordAppearances[word];
             }
 
-<<<<<<< HEAD
-            //contando las palabras del archivo original.
-=======
 // Contando las apariciones de la palabra del archivo de muestra, para ignorar las de los archivos anteriores.
->>>>>>> f0cb799c19f7b6d7e33756441e7638e1f19c7c7c
             if(this.Sample != null){
                  foreach(string word in this.Sample.WordAppearances.Select(x => x.Key)){
                     if(counter.ContainsKey(word)){
@@ -65,14 +58,9 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 }
             }
 
-<<<<<<< HEAD
-            //Definiendo los encabezados de resultado.
-            ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter", DisplayLevel.FULL);            
-=======
 
 // Definiendo los encabezados de resultados    
         ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter", DisplayLevel.FULL);            
->>>>>>> f0cb799c19f7b6d7e33756441e7638e1f19c7c7c
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
