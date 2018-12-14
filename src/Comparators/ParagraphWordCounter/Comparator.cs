@@ -44,6 +44,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// </summary>
         /// <param name="doc">The document that will be compared with the sample.</param>
         private void ExcludeSampleMatches(Document doc){
+            //este es el metodo ExcludeSampleMatches            
              if(this.Sample != null){                
                 //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
                 //Per tal de millorar el rendiment, tots els paràgrafs d'exemple s'exclouen en primer lloc dels dos documents (només coincidència exacta)

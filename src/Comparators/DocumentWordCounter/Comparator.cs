@@ -13,6 +13,7 @@ using DocumentPlagiarismChecker.Core;
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
+///     esto es para hacer un commit
     /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
     /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
     /// a high level of provability.
