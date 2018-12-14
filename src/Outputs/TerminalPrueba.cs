@@ -22,7 +22,7 @@ namespace DocumentPlagiarismChecker.Outputs
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){            
             foreach(FileMatchingScore fms in results){
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
                 Console.WriteLine("##############################################################################");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
