@@ -12,7 +12,7 @@ using DocumentPlagiarismChecker.Core;
 
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
-    /// <summary>
+    /// <summary>////
     /// El Word Counter Comparator llegeix  a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
     /// then calculates how many of those appearences matches between documents. So, two documents with the same amount of the same paragraphs and 
     /// words can be a copy with a high level of provability.
@@ -21,7 +21,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>///
-        
+
         /// Creates a new instance for the Comparator.
         /// </summary>
         /// <param name="fileLeftPath">The left side file's path.</param>
