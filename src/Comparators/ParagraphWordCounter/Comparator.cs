@@ -21,7 +21,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Crea una nova instancia per al comparador.
+        /// Crea una nova instancia per al comparador .
         /// </summary>
         /// <param name="fileLeftPath">The left side file's path.</param>
         /// <param name="fileRightPath">The right side file's path.</param>
