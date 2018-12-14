@@ -13,7 +13,7 @@ using DocumentPlagiarismChecker.Core;
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
     /// <summary>
-    /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
+    /// El Word Counter Comparator llegeix  a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
     /// then calculates how many of those appearences matches between documents. So, two documents with the same amount of the same paragraphs and 
     /// words can be a copy with a high level of provability.
     /// </summary>
@@ -79,7 +79,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             foreach(string plKey in leftDoc.Paragraphs.Select(x => x.Key)){                
                 foreach(string prKey in rightDoc.Paragraphs.Select(x => x.Key)){                                        
 
-                    //Counting the words withing one of the left document's paragraph
+                    //Comptant les paraues amb un dels paràgrafs del document esquerre
                     wordCounter = new Dictionary<string, int[]>();
                     Dictionary<string, int> pLeft = leftDoc.Paragraphs[plKey];
 
@@ -87,16 +87,14 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                         if(!wordCounter.ContainsKey(wLeft)) wordCounter.Add(wLeft, new int[]{0, 0});
                         wordCounter[wLeft][0] += pLeft[wLeft];
                     }
-
-                    //Counting the words withing one of the right document's paragraph
+                    //Comptant les paraules amb un dels documents del paragraf dret
                     Dictionary<string, int> pRight = rightDoc.Paragraphs[prKey];
                     foreach(string wRight in pRight.Select(x => x.Key)){
                         if(!wordCounter.ContainsKey(wRight)) wordCounter.Add(wRight, new int[]{0, 0});
                         wordCounter[wRight][1] += pRight[wRight];
                     }
 
-                    //Adding the word count to the global paragapg comparisson (the key are a subset of the paragraph in order to show it 
-                    //at the input).
+                   //  Addició del recompte de paraules a la comparació de paràgrafs globals (la clau és un subconjunt del paràgraf per mostrar-lo
                     paragraphCounter.Add(new string[]{ plKey, prKey }, wordCounter);
                 }
             }
@@ -105,26 +103,26 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }   
 
         private  ComparatorMatchingScore ComputeMatching(Dictionary<string[], Dictionary<string, int[]>> paragraphCounter){
-            //Defining the results headers
+            //Definició dels encapçalaments de resultats
             ComparatorMatchingScore cr = new ComparatorMatchingScore("Paragraph Word Counter");            
             cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Left legth", "Right length", "Length match", "Word match", "Total match"};
             cr.DetailsFormat = new string[]{"{0:L50}", "{0:L50}", "{0}", "{0}", "{0:P2}", "{0:P2}", "{0:P2}"};
             
-            //Calculate the matching for each individual word within each paragraph.
+            //Calculem la concordança per a cada paraula individual dins de cada paràgraf
             float match, matchWord, matchLength = 0;
             int leftLengt, rightLength, countLeft, countRight = 0;
             Dictionary<string, int[]> wordCounter = null;                      
             foreach(string[] paragraphs in paragraphCounter.Select(x => x.Key)){    
                 wordCounter = paragraphCounter[paragraphs];                
 
-                //Matching with paragraph length
+                //Coincidència amb la longitud del paràgraf
                 leftLengt = wordCounter.Values.Select(x => x[0]).Where(x => x > 0).Count();
                 rightLength = wordCounter.Values.Select(x => x[1]).Where(x => x > 0).Count();
 
                 if(leftLengt == 0 || rightLength == 0)  matchLength = 0;
                 else matchLength = (leftLengt < rightLength ? (float)leftLengt / (float)rightLength : (float)rightLength / (float)leftLengt);                
 
-                //Counting for each word inside an especific paragraph
+                //Comptant per a cada paraula dins d'un paràgraf específic
                 cr.Child = new DetailsMatchingScore();
                 cr.Child.DetailsCaption = new string[]{"Word", "Left count", "Right count", "Match"};
                 cr.Child.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
@@ -133,16 +131,16 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     countLeft = wordCounter[word][0];
                     countRight = wordCounter[word][1];                
 
-                    //Mathing with word appearences
+                    //Matemàtica amb aplicacions de paraules
                     if(countLeft == 0 || countRight == 0)  matchWord = 0;
                     else matchWord = (countLeft < countRight ? (float)countLeft / (float)countRight : (float)countRight / (float)countLeft);                                        
 
-                    //Adding the details for each word                    
+                    //Afegint els detalls de cada paraula      
                     cr.Child.AddMatch(matchWord);                                        
                     cr.Child.DetailsData.Add(new object[]{word, countLeft, countRight, matchWord});                
                 }
 
-                //Adding the details for each paragraph, the total match is: 75% for words - 25% for length (must be tested in order to tweak) and add the info to the detils.                    
+                //Si s'afegeixen els detalls de cada paràgraf, la coincidència total és: 75% per a les paraules - 25% per a la durada (s'ha de provar per tal de modificar) i afegir la informació als detalls.                    
                 match = (cr.Child.Matching*0.75f + matchLength*0.25f);
                 cr.AddMatch(match);                
                 cr.DetailsData.Add(new object[]{paragraphs[0], paragraphs[1], leftLengt, rightLength, matchLength, cr.Child.Matching, match});
