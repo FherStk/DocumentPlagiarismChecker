@@ -39,7 +39,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
         }
 
-        /// <summary>
+        /// <summary>///
         /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
         /// </summary>
         /// <param name="doc">The document that will be compared with the sample.</param>
