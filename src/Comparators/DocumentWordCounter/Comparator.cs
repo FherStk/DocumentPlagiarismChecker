@@ -12,7 +12,7 @@ using DocumentPlagiarismChecker.Core;
 
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
-    /// <summary>
+    /// <resume>
     /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
     /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
     /// a high level of provability.
@@ -30,9 +30,9 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each document, and checks the matching percentage.
+        /// Cuenta cuantas palabras y cuantas veces aparecen dentro de cada documento y verifica el porcentaje correspondiente.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Los resultados de las coincidencias.</returns>
         public override ComparatorMatchingScore Run(){
             //Contando las apariencias de las palabras para cada documento.(izquierda y derecha).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
