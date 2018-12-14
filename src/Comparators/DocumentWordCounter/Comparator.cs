@@ -2,6 +2,7 @@
     Copyright (C) 2018 Fernando Porrino Serrano.
     This software it's under the terms of the GNU Affero General Public License version 3.
     Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
+    Hey =D
  */
  
 using System;
@@ -13,16 +14,21 @@ using DocumentPlagiarismChecker.Core;
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
+<<<<<<< HEAD
 ///     esto es para hacer un commit
     /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
     /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
     /// a high level of provability.
+=======
+    /// El contador de palabras compara archivos y cuenta cuantas palabras aparecen en cada archivo, luego calcula cuantas veces se repiten en esos documentos.un alto porcentaje de coincidencias podria significar que es una copia
+
+>>>>>>> dff324e1afbfd35df508ba0d9ec13aa3d274f0e1
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
+        /// Crea una nueva instancia para el Comparador.
         /// </summary>
         /// <param name="fileLeftPath">The left side file's path.</param>
         /// <param name="fileRightPath">The right side file's path.</param>
@@ -31,8 +37,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each document, and checks the matching percentage.
-        /// </summary>
+        /// Cuenta cuántas palabras y cuántas veces aparecen dentro de cada documento, para verifica el porcentaje correspondiente.        /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){
             //Cuenta la frecuencia de palabras por cada documento (iquierda y derecha).
@@ -66,7 +71,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
-            //Calculate the matching for each individual word.
+            //Calcula las coincidencias de cada palabra uno a uno de manera individual.
             float match = 0;
             int left, right = 0;
             foreach(string word in counter.Select(x => x.Key)){                
