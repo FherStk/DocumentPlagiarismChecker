@@ -59,12 +59,12 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 }
             }
 
-            //Defining the results headers
+            //Definició dels encapçalaments de resultats
             ComparatorMatchingScore cr = new ComparatorMatchingScore("Document Word Counter", DisplayLevel.FULL);            
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
-            //Calculate the matching for each individual word.
+            //Calculeu la concordança per a cada paraula individual.
             float match = 0;
             int left, right = 0;
             foreach(string word in counter.Select(x => x.Key)){                
