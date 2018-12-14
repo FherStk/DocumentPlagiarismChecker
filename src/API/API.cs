@@ -37,7 +37,7 @@ namespace DocumentPlagiarismChecker
 
             //Initial vars. including the set of files.
             string leftFilePath = @"C:\Users\David\Desktop\david1.txt";
-            string rightFilePath = @"C:\Users\David\Desktop\david.txt";;                   
+            string rightFilePath = @"C:\Users\David\Desktop\david2.txt";;                   
             List<FileMatchingScore> results = new List<FileMatchingScore>();
             List<string> files = Directory.GetFiles(Settings.Instance.Get(Setting.GLOBAL_FOLDER), string.Format("*.{0}", Settings.Instance.Get(Setting.GLOBAL_EXTENSION)), (Settings.Instance.Get(Setting.GLOBAL_RECURSIVE) == "true" ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(Settings.Instance.Get(Setting.GLOBAL_SAMPLE))).ToList();
             List<Type> comparatorTypes = GetComparatorTypes().ToList();
