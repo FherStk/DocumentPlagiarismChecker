@@ -8,6 +8,7 @@ using System;
 using ConsoleTables;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
+using System.IO;
 
 namespace DocumentPlagiarismChecker.Outputs
 {
@@ -24,6 +25,10 @@ namespace DocumentPlagiarismChecker.Outputs
                 
                 foreach(FileMatchingScore fms in results){
                 //Aqui en teoria, abro un archivo.
+        public override void Write(List<FileMatchingScore> results, DisplayLevel level = DisplayLevel.BASIC){
+            // File archivo = new File;
+             //aqui tendria que cambiar el codigo y guardarse en un archivo.         
+            foreach(FileMatchingScore fms in results){
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("");
                 Console.WriteLine("##############################################################################");
