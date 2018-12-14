@@ -23,7 +23,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         /// <summary>
         /// Crea una nova instància per el "Comparator".
         /// </summary>
-        /// <param name="fileLeftPath">La ubicació del fitxer de la esquerra.</param>
+        /// <param name="fileLeftPath">La ubicació del fitxer de l'esquerra.</param>
         /// <param name="fileRightPath">La ubicació del fitxer de la dreta.</param>
         /// <returns></returns>
         public Comparator(string fileLeftPath, string fileRightPath, string sampleFilePath=null): base(fileLeftPath, fileRightPath, sampleFilePath){
