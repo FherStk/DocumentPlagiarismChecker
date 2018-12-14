@@ -14,6 +14,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
     /// <summary>
     /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
+    /// El contador de palabras 
     /// then calculates how many of those appearences matches between documents. So, two documents with the same amount of the same paragraphs and 
     /// words can be a copy with a high level of provability.
     /// </summary>
@@ -33,6 +34,11 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
         /// </summary>
         /// <returns>The matching's results.</returns>
+
+        ///<summary>
+        ///Cuenta cuantas palabras y las veces que aparecen en cada uno de los parrafos del documento, y comprueba el porcentaje de coincidencia.
+        ///</summary>
+        ///<returns>Los resultados sacados de la comprobacion</summary>
         public override ComparatorMatchingScore Run(){      
             ExcludeSampleMatches(this.Left);
             ExcludeSampleMatches(this.Right);    
@@ -45,7 +51,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// <param name="doc">The document that will be compared with the sample.</param>
         private void ExcludeSampleMatches(Document doc){
              if(this.Sample != null){                
-                //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
+                //Con el objetivo de mejorar el rendimiento, todos los paragrafos de muestra seran excluidos de primeras de ambos documentos (solo coincidencia)
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
                     doc.Paragraphs.Remove(paragraph);
                                 
@@ -58,10 +64,10 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     rightLength = (int)sampleScore.DetailsData[i][3];
                     lengthMatch = (float)sampleScore.DetailsData[i][4];
                     wordMath = (float)sampleScore.DetailsData[i][5];
-                    totalMatch = sampleScore.DetailsMatch[i];    //same as (float)sampleScore.DetailsData[i][6];
+                    totalMatch = sampleScore.DetailsMatch[i];    //Mismo funcionamiento que (float).sampleScore.DetailsData[i][6]
                     
-                    //TODO: allowing to use totalMatch value or the length + word matches (used to compute the total match).
-                    //TODO: testing and tweaking necessary, also config loading from a settings file.                   
+                    //TODO: permitiendo usar el valor de totlMatch o la coincidiencia de longitud+palabra (usada para computar el total para coincidencias)
+                    //TODO: probando y retocando lo necesario, tambien configurada la carga desde un archivo de opciones.                  
                     if(totalMatch >= 0.70f)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
                 }
              }
