@@ -13,15 +13,15 @@ using DocumentPlagiarismChecker.Core;
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
     /// <summary>
-    /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
-    /// then calculates how many of those appearences matches between documents. So, two documents with the same amount of the same paragraphs and 
-    /// words can be a copy with a high level of provability.
+    /// The Word Counter Comparator llegeix un parell de fitxers i compte quantes paraules i quantes vegades apareixen a cada paràgraf d'un fitxer i
+    ///  a continuació, calcula quants d'aquests appearences coincideixen entre documents. Per tant, dos documents amb la mateixa quantitat dels mateixos paràgrafs i
+    ///  Les paraules poden ser una còpia amb un alt nivell de probabilitat.
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
+        /// Crea una nova instancia per al comparador.
         /// </summary>
         /// <param name="fileLeftPath">The left side file's path.</param>
         /// <param name="fileRightPath">The right side file's path.</param>
@@ -30,7 +30,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
+        /// 
+        /// Compta quantes paraules i quantes vegades apareix a cada paràgraf d'un document i comprova el percentatge que coincideix.
         /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){      
@@ -40,12 +41,12 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
+        /// Compara la mostra amb el fitxer especificat i exclou els paràgrafs que produeixen una coincidència falsa positiva entre la mostra i el document.
         /// </summary>
         /// <param name="doc">The document that will be compared with the sample.</param>
         private void ExcludeSampleMatches(Document doc){
              if(this.Sample != null){                
-                //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
+                // Per millorar el rendiment, tots els paràgrafs d'exemple s'exclouran en primer lloc dels dos documents (només coincidència exacta).
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
                     doc.Paragraphs.Remove(paragraph);
                                 
@@ -58,17 +59,17 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     rightLength = (int)sampleScore.DetailsData[i][3];
                     lengthMatch = (float)sampleScore.DetailsData[i][4];
                     wordMath = (float)sampleScore.DetailsData[i][5];
-                    totalMatch = sampleScore.DetailsMatch[i];    //same as (float)sampleScore.DetailsData[i][6];
+                    totalMatch = sampleScore.DetailsMatch[i];    //igual que (float)sampleScore.DetailsData[i][6];
                     
-                    //TODO: allowing to use totalMatch value or the length + word matches (used to compute the total match).
-                    //TODO: testing and tweaking necessary, also config loading from a settings file.                   
+                    // TODO: permetent utilitzar el valor de total de missatges o la longitud + coincidències de paraules (que es fan servir per calcular la coincidència total)
+                   // TODO: es necessiten proves i ajustaments, també es carrega la configuració des d'un fitxer de configuració.                  
                     if(totalMatch >= 0.70f)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
                 }
              }
         }
 
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph, comparing them between each other in order to score a matching percentage.
+       /// Compta quantes paraules i quantes vegades apareix dins de cada paràgraf, comparant-les entre elles per tal d'obtenir un percentatge de coincidència.
         /// </summary>
         /// <param name="paragraphsLeft">A left-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
         /// <param name="paragraphsRight">A right-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
