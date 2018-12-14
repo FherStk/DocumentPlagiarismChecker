@@ -40,9 +40,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
+        /// Comparal'exemple amb el fitxer especificat i exclou els paràgrafs que produeixen una coincidència falsa positiva entre la mostra i el document.
         /// </summary>
-        /// <param name="doc">The document that will be compared with the sample.</param>
+        /// <param name="doc">El document que es compararà amb la mostra.</param>
         private void ExcludeSampleMatches(Document doc){
              if(this.Sample != null){                
                 //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
