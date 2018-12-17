@@ -23,3 +23,6 @@ threshold:
   comparator: 0.5
   detailed: 0.5
   full: 0
+
+#TODO: use regex
+exclussion: ['/^pàgina\s1 de 9$/', 'pàgina 2 de 9']
