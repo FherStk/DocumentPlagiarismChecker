@@ -6,8 +6,9 @@
  
 using System.Linq;
 using System.Collections.Generic;
+using DocumentPlagiarismChecker.Core;
 
-namespace DocumentPlagiarismChecker.Core
+namespace DocumentPlagiarismChecker.Scores
 {
     /// <summary>
     /// Contains the global comparator matching score (%) with its detailed data.

@@ -32,7 +32,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         public Document(string path): base(path){
             //Check pre-conditions        
             if(!System.IO.Path.GetExtension(path).ToLower().Equals(".pdf"))
-                throw new FileExtensionNotAllowed();
+                throw new Exceptions.FileExtensionNotAllowed();
 
             //Init object attributes.
             Paragraphs = new Dictionary<string, Dictionary<string, int>>();

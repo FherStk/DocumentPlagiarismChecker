@@ -5,6 +5,7 @@
  */
  
 using System.Collections.Generic;
+using DocumentPlagiarismChecker.Scores;
 
 namespace DocumentPlagiarismChecker.Core
 {

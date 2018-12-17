@@ -10,6 +10,9 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
+using DocumentPlagiarismChecker.Scores;
+using DocumentPlagiarismChecker.Outputs;
+using DocumentPlagiarismChecker.Settings;
 
 namespace DocumentPlagiarismChecker
 {
@@ -32,12 +35,12 @@ namespace DocumentPlagiarismChecker
         /// </summary>
         public void CompareFiles(){
             //Initial Checks
-            if(!Directory.Exists(Settings.Instance.Get(Setting.GLOBAL_FOLDER))) 
-                throw new FolderNotFoundException();
+            if(!Directory.Exists(AppSettings.Instance.General.Folder)) 
+                throw new Exceptions.FolderNotFoundException();
 
             //Initial vars. including the set of files.            
             Dictionary<string, ComparatorMatchingScore> results = new Dictionary<string, ComparatorMatchingScore>();
-            List<string> files = Directory.GetFiles(Settings.Instance.Get(Setting.GLOBAL_FOLDER), string.Format("*.{0}", Settings.Instance.Get(Setting.GLOBAL_EXTENSION)), (Settings.Instance.Get(Setting.GLOBAL_RECURSIVE) == "true" ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(Settings.Instance.Get(Setting.GLOBAL_SAMPLE))).ToList();
+            List<string> files = Directory.GetFiles(AppSettings.Instance.General.Folder, string.Format("*.{0}", AppSettings.Instance.General.Extension), (AppSettings.Instance.General.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(AppSettings.Instance.General.Sample)).ToList();
             List<Type> comparatorTypes = GetComparatorTypes().ToList();
 
             //The total combinations to calculate are the number of combinations without repetition for 2 elements over a set of N = (n over 2) = (n! / 2! (n-2)!)
@@ -66,7 +69,7 @@ namespace DocumentPlagiarismChecker
                                 cms = old.Copy(old.RightFileName, old.LeftFileName);                            }
                             else{
                                 //New comparissons for left and right files must be performed using the current comparer.
-                                var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, Settings.Instance.Get(Setting.GLOBAL_SAMPLE));
+                                var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, AppSettings.Instance.General.Sample);
                                 MethodInfo method = comp.GetType().GetMethod("Run");
                                 cms = (ComparatorMatchingScore)method.Invoke(comp, null);
                                 
@@ -89,7 +92,7 @@ namespace DocumentPlagiarismChecker
         /// <param name="results">A set of file matching scores</param>
         public void WriteOutput(){
             //TODO: must be selected by settings
-            Outputs.Terminal t = new Outputs.Terminal();
+            Terminal t = new Terminal();
             t.Write(this.MatchingResults);
         }
 

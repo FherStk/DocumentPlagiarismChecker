@@ -31,7 +31,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
         public Document(string path): base(path){
             //Check pre-conditions        
             if(!System.IO.Path.GetExtension(path).ToLower().Equals(".pdf"))
-                throw new FileExtensionNotAllowed();
+                throw new Exceptions.FileExtensionNotAllowed();
 
             //Init object attributes.
             Lengths = new Dictionary<float, int>();

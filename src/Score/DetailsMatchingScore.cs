@@ -6,8 +6,9 @@
  
 using System.Linq;
 using System.Collections.Generic;
+using DocumentPlagiarismChecker.Core;
 
-namespace DocumentPlagiarismChecker.Core
+namespace DocumentPlagiarismChecker.Scores
 {
     /// <summary>
     /// Contains the mathing score full details.
@@ -61,7 +62,7 @@ namespace DocumentPlagiarismChecker.Core
         /// <param name="match">The match score to add (a number between [0,1])</param>
         public void AddMatch(float match){
             if(match < 0 || match > 1)
-                throw new MatchValueNotValid();
+                throw new Exceptions.MatchValueNotValid();
             
             DetailsMatch.Add(match);
         }
@@ -70,7 +71,7 @@ namespace DocumentPlagiarismChecker.Core
         /// Instantiates a new details matching socre object.
         /// </summary>
         public DetailsMatchingScore(DisplayLevel displayLevel = Core.DisplayLevel.FULL){            
-            if(displayLevel < Core.DisplayLevel.COMPARATOR) throw new DisplayLevelNotAllowed();
+            if(displayLevel < Core.DisplayLevel.COMPARATOR) throw new Exceptions.DisplayLevelNotAllowed();
             else{
                 this.DisplayLevel = displayLevel;
                 this.DetailsData = new List<object[]>();

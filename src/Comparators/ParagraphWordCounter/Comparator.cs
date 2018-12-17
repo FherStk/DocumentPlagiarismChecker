@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
+using DocumentPlagiarismChecker.Scores;
 
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {

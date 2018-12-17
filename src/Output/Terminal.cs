@@ -9,6 +9,8 @@ using System.Linq;
 using ConsoleTables;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
+using DocumentPlagiarismChecker.Scores;
+using DocumentPlagiarismChecker.Settings;
 
 namespace DocumentPlagiarismChecker.Outputs
 {
@@ -22,7 +24,7 @@ namespace DocumentPlagiarismChecker.Outputs
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<ComparatorMatchingScore> results){              
-            DisplayLevel dl = Enum.Parse<DisplayLevel>(Settings.Instance.Get(Setting.GLOBAL_DISPLAY).ToUpper());            
+            DisplayLevel dl = Enum.Parse<DisplayLevel>(AppSettings.Instance.General.Display.ToUpper());     //TODO: try with enum inside settings       
             Console.OutputEncoding = System.Text.Encoding.UTF8;            
             WriteSeparator('#', ConsoleColor.DarkGray);                
 
@@ -214,7 +216,22 @@ namespace DocumentPlagiarismChecker.Outputs
         }
 
         private float GetThreshold(DisplayLevel level){
-            return float.Parse(Settings.Instance.Get(string.Format("threshold:{0}", level.ToString().ToLower())),  System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            switch(level){
+                case DisplayLevel.BASIC:
+                    return AppSettings.Instance.General.Threshold.Basic;
+
+                case DisplayLevel.COMPARATOR:
+                    return AppSettings.Instance.General.Threshold.Comparator;
+
+                case DisplayLevel.DETAILED:
+                    return AppSettings.Instance.General.Threshold.Detailed;
+
+                case DisplayLevel.FULL:
+                    return AppSettings.Instance.General.Threshold.Full;
+
+                default:
+                    throw new Exceptions.DisplayLevelNotFound();
+            }
         }
 
         private void WriteSeparator(char symbol, ConsoleColor color = ConsoleColor.White){            
