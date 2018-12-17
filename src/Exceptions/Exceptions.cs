@@ -6,13 +6,13 @@
  
 namespace DocumentPlagiarismChecker.Exceptions
 {
-    internal class FolderNotSpecifiedException: System.Exception{}
-    internal class SettingsFileNotFoundException: System.Exception{}
-    internal class FileExtensionNotSpecifiedException: System.Exception{}
-    internal class FolderNotFoundException: System.Exception {}
-    internal class MatchValueNotValid: System.Exception {}
-    internal class DisplayLevelNotAllowed: System.Exception {}
-    internal class FileExtensionNotAllowed: System.Exception {}   
-    internal class DisplayLevelNotFound: System.Exception {}   
-    internal class AppSettingNotFound: System.Exception {}   
+    public class FolderNotSpecifiedException: System.Exception{}
+    public class SettingsFileNotFoundException: System.Exception{}
+    public class FileExtensionNotSpecifiedException: System.Exception{}
+    public class FolderNotFoundException: System.Exception {}
+    public class MatchValueNotValid: System.Exception {}
+    public class DisplayLevelNotAllowed: System.Exception {}
+    public class FileExtensionNotAllowed: System.Exception {}   
+    public class DisplayLevelNotFound: System.Exception {}   
+    public class AppSettingNotFound: System.Exception {}   
 }
