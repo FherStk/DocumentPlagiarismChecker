@@ -20,14 +20,15 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
+
         /// <summary>
-        /// Creates a new instance for the Comparator.
-        /// </summary>
-        /// <param name="fileLeftPath">The left side file's path.</param>
-        /// <param name="fileRightPath">The right side file's path.</param>
+        /// Crea una nova instancia del comparador
+        /// </summary> 
+        /// <param name="fileLeftPath">L'ubicació del fitxer del costat esquerre.</param>
+        /// <param name="fileRightPath">L'ubicació del fitxer del costat dret.</param>
         /// <returns></returns>
         public Comparator(string fileLeftPath, string fileRightPath, string sampleFilePath=null): base(fileLeftPath, fileRightPath, sampleFilePath){
-        }  
+        }
         
         /// <summary>
         /// Compta el número de paraules i cuantes vegades apareixen a cada document, i revisen el percentantge de similitut entre ells.
