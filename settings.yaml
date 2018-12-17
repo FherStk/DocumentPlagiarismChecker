@@ -25,4 +25,4 @@ threshold:
   full: 0
 
 #TODO: use regex
-exclussion: ['/^pàgina\s1 de 9$/']
+exclussion: ['\b[Pp][àa]gina\s[0-9]*\sde\s[0-9]*\b']
