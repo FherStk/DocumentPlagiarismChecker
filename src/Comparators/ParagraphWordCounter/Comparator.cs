@@ -30,9 +30,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
+        /// Compta quantes paraules i quantes vegades apareix a cada paràgraf d'un document i comprova el percentatge de concordança.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Els resultats de coincidència.</returns>
         public override ComparatorMatchingScore Run(){      
             ExcludeSampleMatches(this.Left);
             ExcludeSampleMatches(this.Right);    
@@ -40,12 +40,12 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
+        /// Compara la mostra amb el fitxer especificat i exclou els paràgrafs que produeixen una coincidència falsa positiva entre la mostra i el document.
         /// </summary>
-        /// <param name="doc">The document that will be compared with the sample.</param>
+        /// <param name="doc">El document que es compararà amb la mostra.</param>
         private void ExcludeSampleMatches(Document doc){
              if(this.Sample != null){                
-                //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
+                //Per tal de millorar el rendiment, tots els paràgrafs d'exemple s'exclouran en primer lloc dels dos documents (només coincidència exacta).
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
                     doc.Paragraphs.Remove(paragraph);
                                 
