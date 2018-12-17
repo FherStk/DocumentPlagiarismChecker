@@ -39,8 +39,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
         }
 
-        /// <summary>
-        /// Compara la mostra amb el fitxer especificat i exclou els paràgrafs que produeixen una coincidència falsa positiva entre la mostra i el document.
+       /// <summary>
+        /// Compara l'exemple amb el fitxer especificat i exclou els paràgrafs que produeixen una coincidència falsa positiva entre la mostra i el document.
         /// </summary>
         /// <param name="doc">El document que es compararà amb la mostra.</param>
         private void ExcludeSampleMatches(Document doc){
@@ -60,8 +60,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     wordMath = (float)sampleScore.DetailsData[i][5];
                     totalMatch = sampleScore.DetailsMatch[i];    //same as (float)sampleScore.DetailsData[i][6];
                     
-                    //TODO: allowing to use totalMatch value or the length + word matches (used to compute the total match).
-                    //TODO: testing and tweaking necessary, also config loading from a settings file.                   
+                    //TODO: permetent utilitzar el valor de total de missatges o la longitud + coincidències de paraules (que es fan servir per calcular la coincidència total).
+                    //TODO: proves i ajustos necessaris, també la càrrega de configuració des d'un fitxer de configuració                 
                     if(totalMatch >= 0.70f)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
                 }
              }
