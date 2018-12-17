@@ -91,7 +91,7 @@ namespace DocumentPlagiarismChecker
         /// <returns>A set of Comparator's object types</returns>
         private static IEnumerable<Type> GetComparatorTypes()
         {   
-            //TODO: Select plugins using a configuration file.
+            //TODO: Select plugins using a configuración file.
             return typeof(Program).Assembly.GetTypes().Where(x => x.BaseType.Name.Contains("BaseComparator") && !x.FullName.Contains("_template")).ToList();
         }
 
