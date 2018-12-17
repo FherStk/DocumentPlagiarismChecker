@@ -21,7 +21,7 @@ using YamlDotNet.Serialization.NamingConventions;
 namespace DocumentPlagiarismChecker.Settings
 {    
     public sealed class AppSettings
-    {       
+    {      
         public GeneralSettings General {get; set;}
         private bool _firstLoad = true;
         private static readonly AppSettings instance = new AppSettings();        
