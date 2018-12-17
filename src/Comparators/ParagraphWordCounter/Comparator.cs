@@ -30,22 +30,22 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
+        /// Compta quantes paraules i quantes vegades apareix a cada paràgraf d'un document i comprova el percentatge de concordança.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Els resultats de coincidència.</returns>
         public override ComparatorMatchingScore Run(){      
             ExcludeSampleMatches(this.Left);
             ExcludeSampleMatches(this.Right);    
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
         }
 
-        /// <summary>
-        /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
+       /// <summary>
+        /// Compara l'exemple amb el fitxer especificat i exclou els paràgrafs que produeixen una coincidència falsa positiva entre la mostra i el document.
         /// </summary>
-        /// <param name="doc">The document that will be compared with the sample.</param>
+        /// <param name="doc">El document que es compararà amb la mostra.</param>
         private void ExcludeSampleMatches(Document doc){
              if(this.Sample != null){                
-                //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
+                //Per tal de millorar el rendiment, tots els paràgrafs d'exemple s'exclouran en primer lloc dels dos documents (només coincidència exacta).
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
                     doc.Paragraphs.Remove(paragraph);
                                 
@@ -60,8 +60,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     wordMath = (float)sampleScore.DetailsData[i][5];
                     totalMatch = sampleScore.DetailsMatch[i];    //same as (float)sampleScore.DetailsData[i][6];
                     
-                    //TODO: allowing to use totalMatch value or the length + word matches (used to compute the total match).
-                    //TODO: testing and tweaking necessary, also config loading from a settings file.                   
+                    //TODO: permetent utilitzar el valor de total de missatges o la longitud + coincidències de paraules (que es fan servir per calcular la coincidència total).
+                    //TODO: proves i ajustos necessaris, també la càrrega de configuració des d'un fitxer de configuració                 
                     if(totalMatch >= 0.70f)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
                 }
              }
