@@ -12,6 +12,10 @@ using System.Linq;
 using System.Collections.Generic;
 using YamlDotNet.Helpers;
 using YamlDotNet.RepresentationModel;
+using YamlDotNet.Core;
+using YamlDotNet.Core.Events;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace DocumentPlagiarismChecker.Core
 {
@@ -24,7 +28,8 @@ namespace DocumentPlagiarismChecker.Core
         THRESHOLD_BASIC,
         THRESHOLD_COMPARATOR,
         THRESHOLD_DETAILS,
-        THRESHOLD_FULL
+        THRESHOLD_FULL,
+        EXCLUSION        
     }
 
     public sealed class Settings
@@ -72,6 +77,19 @@ namespace DocumentPlagiarismChecker.Core
         public void Load(string path = "settings.yaml"){
             if(!System.IO.File.Exists(path)) return;
 
+            Deserializer deserializer = new DeserializerBuilder().WithNamingConvention(new CamelCaseNamingConvention()).Build();
+            using (StreamReader sr = new StreamReader(path)) {
+                Parser parser = new Parser(sr);
+                parser.Expect<StreamStart>();
+
+                while (parser.Accept<DocumentStart>())
+                {
+                    Temp doc = (Temp)deserializer.Deserialize<Temp>(parser);                   
+                }
+            }
+
+
+
             using (var reader = new StreamReader(path)) {
                 YamlStream yaml = new YamlStream();
                 yaml.Load(reader);
@@ -96,7 +114,7 @@ namespace DocumentPlagiarismChecker.Core
 
         private YamlScalarNode Find(string setting){
             if(_settings == null) throw new SettingsFileNotFoundException();
-
+            
             string[] levels = setting.Split(":");
             YamlMappingNode current = _settings;
 
