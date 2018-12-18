@@ -16,7 +16,7 @@ namespace DocumentPlagiarismChecker.Outputs
     /// </summary>
     internal class ToFile: Core.BaseOutput{
         /// <summary>
-        /// Writes the given set of results into the File.
+        /// Writes the given set of results into the File.    ---
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
