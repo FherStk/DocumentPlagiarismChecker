@@ -46,8 +46,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         private void ExcludeSampleMatches(Document doc){
              if(this.Sample != null){                
                 //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
-                foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
+                foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
                     doc.Paragraphs.Remove(paragraph);
+                }
                                                 
                 ComparatorMatchingScore sampleScore = ComputeMatching(CompareParagraphs(this.Sample, doc));
                 for(int i = 0; i < sampleScore.DetailsData.Count; i++){                                                            
