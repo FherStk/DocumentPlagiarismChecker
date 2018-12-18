@@ -46,6 +46,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         private void ExcludeSampleMatches(Document doc){
              if(this.Sample != null){                
                 //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
+                //Per tal de millorar el rendiment, tots els paràgrafs d'exemple s'exclouen en primer lloc dels dos documents (només coincidència exacta)
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
                     doc.Paragraphs.Remove(paragraph);
                                 
@@ -58,10 +59,12 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     rightLength = (int)sampleScore.DetailsData[i][3];
                     lengthMatch = (float)sampleScore.DetailsData[i][4];
                     wordMath = (float)sampleScore.DetailsData[i][5];
-                    totalMatch = sampleScore.DetailsMatch[i];    //same as (float)sampleScore.DetailsData[i][6];
+                    totalMatch = sampleScore.DetailsMatch[i];    //same as (float)sampleScore.DetailsData[i][6]; el mateix que (float)sampleScore.DetailsData[i][6]
                     
                     //TODO: allowing to use totalMatch value or the length + word matches (used to compute the total match).
-                    //TODO: testing and tweaking necessary, also config loading from a settings file.                   
+                    //TODO: permet utilitzar el valor de total de missatges o la longitud + coincidències de paraules (que es fan servir per calcular la coincidència total).
+                    //TODO: testing and tweaking necessary, also config loading from a settings file.
+                    //TODO: és necessari provar i ajustar, també es carrega la configuració des d'un fitxer de configuració.                
                     if(totalMatch >= 0.70f)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
                 }
              }
