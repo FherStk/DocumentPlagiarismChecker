@@ -10,6 +10,7 @@ namespace DocumentPlagiarismChecker.Exceptions
     public class SettingsFileNotFoundException: System.Exception{}
     public class FileExtensionNotSpecifiedException: System.Exception{}
     public class FolderNotFoundException: System.Exception {}
+    public class FileNotFoundException: System.Exception{}
     public class MatchValueNotValid: System.Exception {}
     public class DisplayLevelNotAllowed: System.Exception {}
     public class FileExtensionNotAllowed: System.Exception {}   

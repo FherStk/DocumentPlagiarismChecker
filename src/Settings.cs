@@ -8,49 +8,35 @@
  */
 
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
-using YamlDotNet.Helpers;
-using YamlDotNet.RepresentationModel;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace DocumentPlagiarismChecker.OldSettings
-{    
-    public sealed class AppSettings
-    {      
-        public GeneralSettings General {get; set;}
-        private bool _firstLoad = true;
-        private static readonly AppSettings instance = new AppSettings();        
+namespace DocumentPlagiarismChecker
+{
+    
+    public class Settings
+    {       
+        public string Folder{get; set;}
+        public string Sample{get; set;}
+        public string Extension{get; set;}
+        public string Display{get; set;}
+        public bool Recursive{get; set;}
+        public string[] Exclusion {get; set;}
+        public ThresholdSettings Threshold {get; set;}    
 
-        // Explicit static constructor to tell C# compiler
-        // not to mark type as beforefieldinit
-        static AppSettings()
-        {
-        }
+        public class ThresholdSettings{
+            public float Basic{get; set;}
+            public float Comparator{get; set;}
+            public float Detailed{get; set;}
+            public float Full{get; set;}
+        }   
 
-        private AppSettings()
-        {
-        }
-
-        public static AppSettings Instance
-        {
-            get
-            {   
-                if(instance._firstLoad){
-                    instance._firstLoad = false;
-                    instance.Load();
-                } 
-
-                return instance;
-            }
-        }
-
-        public void Load(string path = "settings.yaml"){
-            if(!System.IO.File.Exists(path)) return;
+        public Settings(){}
+        public Settings(string path){
+            if(!System.IO.File.Exists(path)) throw new Exceptions.FileNotFoundException();
 
             Deserializer deserializer = new DeserializerBuilder().WithNamingConvention(new CamelCaseNamingConvention()).Build();
             using (StreamReader sr = new StreamReader(path)) {
@@ -58,15 +44,18 @@ namespace DocumentPlagiarismChecker.OldSettings
                 parser.Expect<StreamStart>();
 
                 while (parser.Accept<DocumentStart>())
-                {
-                    this.General = (GeneralSettings)deserializer.Deserialize<GeneralSettings>(parser);                    
+                {            
+                    Settings s = (Settings)deserializer.Deserialize<Settings>(parser);  
+                    foreach (PropertyInfo pi in s.GetType().GetProperties()){
+                        pi.SetValue(this, pi.GetValue(s));
+                    }
                 }
             }
         }
 
         public void Set(string name, object value){
             string[] item = name.Split("-");
-            object current = General;
+            object current = this;
             bool found = false;
 
             for (int i=0; i<item.Length; i++){                
@@ -86,4 +75,5 @@ namespace DocumentPlagiarismChecker.OldSettings
             if(!found) throw new Exceptions.AppSettingNotFound();
         }
     }
+
 }

@@ -1,4 +1,4 @@
-namespace DocumentPlagiarismChecker.Settings
+namespace DocumentPlagiarismChecker.OldSettings
 { 
     
         public class GeneralSettings{

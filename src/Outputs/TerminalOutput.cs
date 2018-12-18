@@ -10,7 +10,7 @@ using ConsoleTables;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
 using DocumentPlagiarismChecker.Scores;
-using DocumentPlagiarismChecker.Settings;
+using DocumentPlagiarismChecker.OldSettings;
 
 namespace DocumentPlagiarismChecker.Outputs
 {

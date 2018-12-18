@@ -11,11 +11,11 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DocumentPlagiarismChecker.Core;
-using DocumentPlagiarismChecker.Settings;
+using DocumentPlagiarismChecker.OldSettings;
 
 namespace DocumentPlagiarismChecker
 {
-    class Program
+    class ConsoleApp
     {
         static void Main(string[] args)
         {                        
@@ -46,41 +46,42 @@ namespace DocumentPlagiarismChecker
             if(string.IsNullOrEmpty(AppSettings.Instance.General.Extension)) throw new Exceptions.FileExtensionNotSpecifiedException();            
 
             //Multi-tasking in order to display progress
-            API api = new API();
-            Task compare = Task.Run(() => 
-                api.CompareFiles()
-            );
+            using(API api = new API()){
+                Task compare = Task.Run(() => 
+                    api.CompareFiles()
+                );
 
-            //Polling for progress in order to display the output
-            Task progress = Task.Run(() => {
-                do{
-                    Console.Write("\rLoading... {0:P2}", api.Progress);
-                    System.Threading.Thread.Sleep(1000);
-                }
-                while(api.Progress < 1);                
+                //Polling for progress in order to display the output
+                Task progress = Task.Run(() => {
+                    do{
+                        Console.Write("\rLoading... {0:P2}", api.Progress);
+                        System.Threading.Thread.Sleep(1000);
+                    }
+                    while(api.Progress < 1);                
 
-                Console.Write("\rLoading... {0:P2}", 1);
-                Console.WriteLine();
-                Console.WriteLine("Done!");
-                Console.WriteLine();
-                Console.WriteLine("Printing results:");
-                Console.WriteLine();
-                api.WriteOutput();
-            });
+                    Console.Write("\rLoading... {0:P2}", 1);
+                    Console.WriteLine();
+                    Console.WriteLine("Done!");
+                    Console.WriteLine();
+                    Console.WriteLine("Printing results:");
+                    Console.WriteLine();
+                    api.WriteOutput();
+                });
 
-            progress.Wait();
+                progress.Wait();
+            }           
         }
 
         private static void Help(){            
             WriteSeparator('#');
 
-            Console.WriteLine(typeof(Program).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyProductAttribute)).SingleOrDefault().ConstructorArguments[0].Value);
+            Console.WriteLine(typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyProductAttribute)).SingleOrDefault().ConstructorArguments[0].Value);
             Console.WriteLine();
-            Console.WriteLine(typeof(Program).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyDescriptionAttribute)).SingleOrDefault().ConstructorArguments[0].Value);
+            Console.WriteLine(typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyDescriptionAttribute)).SingleOrDefault().ConstructorArguments[0].Value);
             Console.WriteLine();
-            Console.WriteLine(string.Format("  Copyright: {0}", typeof(Program).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyCompanyAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
-            Console.WriteLine(string.Format("  License: {0}", typeof(Program).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyCopyrightAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
-            Console.WriteLine(string.Format("  Version: {0}", typeof(Program).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyInformationalVersionAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
+            Console.WriteLine(string.Format("  Copyright: {0}", typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyCompanyAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
+            Console.WriteLine(string.Format("  License: {0}", typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyCopyrightAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
+            Console.WriteLine(string.Format("  Version: {0}", typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyInformationalVersionAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
             
             WriteSeparator('-');
 
