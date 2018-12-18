@@ -54,7 +54,7 @@ namespace DocumentPlagiarismChecker.Outputs
                         Console.Write("    Matching: ");
                         Console.ForegroundColor = (cms.Matching < GetThreshold(DisplayLevel.COMPARATOR) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
                         Console.WriteLine("{0:P2}", cms.Matching);                        
-                        
+                        //alberto
                         //Looping over the detials
                         DetailsMatchingScore dms = (DetailsMatchingScore)cms;
                         while(dms != null){

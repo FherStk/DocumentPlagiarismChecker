@@ -74,6 +74,7 @@ namespace DocumentPlagiarismChecker
 
             this.MatchingResults = results;            
         }       
+/////////
 
         /// <summary>
         /// Writes the gioven scores to the configured outputs.
