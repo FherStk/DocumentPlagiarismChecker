@@ -33,19 +33,17 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                 throw new Exceptions.FileExtensionNotAllowed();
 
             //Init object attributes.
-            Paragraphs = new Dictionary<string, Dictionary<string, int>>();
+            Paragraphs = new Dictionary<string, Dictionary<string, int>>();            
 
             //Read PDF file and sotre each word appearence inside its paragraph.
             using (PdfReader reader = new PdfReader(path))
             {
+                Utils.TextAsParagraphsExtractionStrategy paragraphReader = new Utils.TextAsParagraphsExtractionStrategy();
+                                
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    //TODO: \n is not working as espected, becuase cuts all the new lines and not only new paragraphs.
-                    //https://stackoverflow.com/questions/36491429/identify-paragraphs-of-pdf-fiiles-using-itextsharp
-                    string text = PdfTextExtractor.GetTextFromPage(reader, i);                                        
-                    foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){                                                
-                        //TODO: settings file in order to exclude a set of words.
-                                                   
+                    PdfTextExtractor.GetTextFromPage(reader, i, paragraphReader);
+                    foreach(string paragraph in paragraphReader.Paragraphs){                                                                           
                         Dictionary<string, int> words = new Dictionary<string, int>();
                         foreach(string word in paragraph.Split(" ").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
                              if(!words.ContainsKey(word))
@@ -59,9 +57,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                         {
                             //Repeated paragraph... can be ignored.
                         }
-                    }
+                    } 
                 }
             }
         }
-    }
+    }   
 }
