@@ -35,11 +35,29 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){      
-             if(this.Sample != null){          
+            if(this.Sample != null){          
                  //Excluding sample paragraphs (exact match)
-                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
-                    doc.Paragraphs.Remove(paragraph);   
-             }
+                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
+                    this.Left.Paragraphs.Remove(paragraph);   
+                    this.Right.Paragraphs.Remove(paragraph);   
+                 }   
+            }
+
+            if(this.Settings.Exclusion != null){
+                //Also items that matches with the exclusion list will be also removed
+                foreach(string pattern in this.Settings.Exclusion){
+                    foreach(string paragraph in this.Left.Paragraphs.Select(x => x.Key)){
+                        if(Regex.IsMatch(paragraph, pattern)) 
+                            this.Left.Paragraphs.Remove(paragraph);   
+                    }
+
+                    foreach(string paragraph in this.Right.Paragraphs.Select(x => x.Key)){
+                        if(Regex.IsMatch(paragraph, pattern)) 
+                            this.Right.Paragraphs.Remove(paragraph);   
+                    }                    
+                }
+            }
+
             //ExcludeSampleMatches(this.Left);
             //ExcludeSampleMatches(this.Right);    
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
@@ -53,22 +71,13 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
              if(this.Sample != null){                
                 //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only)
                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
-                    doc.Paragraphs.Remove(paragraph);   
+                    doc.Paragraphs.Remove(paragraph);                               
                 
-                //Also items that matches with the exclusion list will be also removed
-                foreach(string rx in this.Settings.Exclusion){
-                    foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
-                        Regex.IsMatch()
-                    }
-                    
-                }
-                /*
                 ComparatorMatchingScore sampleScore = ComputeMatching(CompareParagraphs(this.Sample, doc));
                 for(int i = 0; i < sampleScore.DetailsData.Count; i++){                                                            
                     //TODO: testing and tweaking necessary, also config loading from a settings file.                   
                     if(sampleScore.DetailsMatch[i] >= 0.70f)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
-                }
-                */
+                }                
              }
         }
 
