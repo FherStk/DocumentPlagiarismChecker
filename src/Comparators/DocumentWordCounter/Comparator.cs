@@ -64,7 +64,14 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
             cr.DetailsCaption = new string[] { "Word", "Count left", "Count right", "Matching" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
-            //Calcula las coincidencias de cada palabra uno a uno de manera individual.
+
+
+            //Calculate the matching for each individual word.
+            //fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            //gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+=======
+
+
             float match = 0;
             int left, right = 0;
             foreach(string word in counter.Select(x => x.Key)){                
