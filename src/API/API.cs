@@ -86,6 +86,7 @@ namespace DocumentPlagiarismChecker
         }
 
         //prueba dasdasd
+        //otro cambio
 
         /// <summary>
         /// Gets all the available Comparators.
