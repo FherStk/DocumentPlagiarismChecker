@@ -37,8 +37,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         public override ComparatorMatchingScore Run(){     
             //This order is meant to improving performance
             ExcludeSampleExactMatches(); 
-            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings
-            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings        
+            //ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
+            //ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
             ExcludeExclussionListMatches();
             
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        

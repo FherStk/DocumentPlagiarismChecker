@@ -61,7 +61,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
 
             //Defining the results headers
             ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Paragraph Length Counter", DisplayLevel.DETAILED);            
-            cr.DetailsCaption = new string[] { "Length", "Left side", "Right side", "Matching" };
+            cr.DetailsCaption = new string[] {"Length", "Left side", "Right side", "Matching" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
             //Calculate the matching for each individual word.            

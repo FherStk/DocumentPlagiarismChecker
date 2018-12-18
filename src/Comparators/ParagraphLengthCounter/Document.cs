@@ -37,10 +37,11 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
             //Read PDF file and sotre each word appearence inside its paragraph.
             using (PdfReader reader = new PdfReader(path))
             {
+                Utils.TextAsParagraphsExtractionStrategy paragraphReader = new Utils.TextAsParagraphsExtractionStrategy();
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    string text = PdfTextExtractor.GetTextFromPage(reader, i);                    
-                    foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
+                    PdfTextExtractor.GetTextFromPage(reader, i, paragraphReader);                 
+                    foreach(string paragraph in paragraphReader.Paragraphs){
                         float length = paragraph.Length;
                         if(!Lengths.ContainsKey(length)) Lengths.Add(length, 0);
                         Lengths[length] += 1;                        

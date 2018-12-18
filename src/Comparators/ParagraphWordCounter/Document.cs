@@ -38,12 +38,11 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             //Read PDF file and sotre each word appearence inside its paragraph.
             using (PdfReader reader = new PdfReader(path))
             {
-                Utils.TextAsParagraphsExtractionStrategy paragraphReader = new Utils.TextAsParagraphsExtractionStrategy();
-                                
+                Utils.TextAsParagraphsExtractionStrategy paragraphReader = new Utils.TextAsParagraphsExtractionStrategy();                                
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
                     PdfTextExtractor.GetTextFromPage(reader, i, paragraphReader);
-                    foreach(string paragraph in paragraphReader.Paragraphs){                                                                           
+                    foreach(string paragraph in paragraphReader.Paragraphs){
                         Dictionary<string, int> words = new Dictionary<string, int>();
                         foreach(string word in paragraph.Split(" ").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
                              if(!words.ContainsKey(word))
