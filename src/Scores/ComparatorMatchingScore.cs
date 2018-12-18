@@ -4,10 +4,7 @@
     Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
  */
  
-using System.Linq;
-using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
-
 namespace DocumentPlagiarismChecker.Scores
 {
     /// <summary>
@@ -58,7 +55,7 @@ namespace DocumentPlagiarismChecker.Scores
                 DetailsFormat = this.DetailsFormat,
                 DetailsData = this.DetailsData,
                 DetailsMatch = this.DetailsMatch
-            };            
+            };
         }
     }      
 }

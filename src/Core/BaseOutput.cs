@@ -17,12 +17,24 @@ namespace DocumentPlagiarismChecker.Core
         COMPARATOR,
         DETAILED,
         FULL
-    }
+    }    
 
     /// <summary>
     /// Contains the output schema that every output object must inherit in order to work as expected.
     /// </summary>
     internal abstract class BaseOutput{ 
+        public Settings Settings {get; private set;}
+
+        public BaseOutput(): this("settings.yaml"){
+        }
+
+        public BaseOutput(string settingsFilePath): this(new Settings(settingsFilePath)){
+        }
+
+        public BaseOutput(Settings settings){
+            this.Settings = settings;
+        }
+
         /// <summary>
         /// This method must be implemented in order to writes the score's content into the output with the selected detail level.
         /// </summary>

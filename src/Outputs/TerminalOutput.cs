@@ -10,7 +10,6 @@ using ConsoleTables;
 using System.Collections.Generic;
 using DocumentPlagiarismChecker.Core;
 using DocumentPlagiarismChecker.Scores;
-using DocumentPlagiarismChecker.OldSettings;
 
 namespace DocumentPlagiarismChecker.Outputs
 {
@@ -18,13 +17,22 @@ namespace DocumentPlagiarismChecker.Outputs
     /// This output base object sends the results to the terminal.
     /// </summary>
     internal class TerminalOutput: Core.BaseOutput{
+        public TerminalOutput(): base(){
+        }
+
+        public TerminalOutput(string settingsFilePath): base(new Settings(settingsFilePath)){
+        }
+
+        public TerminalOutput(Settings settings): base(settings){
+        }
+
         /// <summary>
         /// Writes the given set of results into the terminal.
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<ComparatorMatchingScore> results){              
-            DisplayLevel dl = Enum.Parse<DisplayLevel>(AppSettings.Instance.General.Display.ToUpper());     //TODO: try with enum inside settings       
+            DisplayLevel dl = Enum.Parse<DisplayLevel>(this.Settings.Display.ToUpper());     //TODO: try with enum inside settings       
             Console.OutputEncoding = System.Text.Encoding.UTF8;            
             WriteSeparator('#', ConsoleColor.DarkGray);                
 
@@ -128,16 +136,16 @@ namespace DocumentPlagiarismChecker.Outputs
         private float GetThreshold(DisplayLevel level){
             switch(level){
                 case DisplayLevel.BASIC:
-                    return AppSettings.Instance.General.Threshold.Basic;
+                    return this.Settings.Threshold.Basic;
 
                 case DisplayLevel.COMPARATOR:
-                    return AppSettings.Instance.General.Threshold.Comparator;
+                    return this.Settings.Threshold.Comparator;
 
                 case DisplayLevel.DETAILED:
-                    return AppSettings.Instance.General.Threshold.Detailed;
+                    return this.Settings.Threshold.Detailed;
 
                 case DisplayLevel.FULL:
-                    return AppSettings.Instance.General.Threshold.Full;
+                    return this.Settings.Threshold.Full;
 
                 default:
                     throw new Exceptions.DisplayLevelNotFound();

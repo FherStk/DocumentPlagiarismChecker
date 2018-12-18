@@ -5,30 +5,28 @@
  */
  
 using System;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using DocumentPlagiarismChecker.Core;
-using DocumentPlagiarismChecker.OldSettings;
 
 namespace DocumentPlagiarismChecker
 {
-    class ConsoleApp
+    class App
     {
         static void Main(string[] args)
-        {                        
+        {  
+            Settings s = null;
             //Settings file must be loaded first.
             for(int i = 0; i < args.Length; i++){                
                 if(args[i].StartsWith("--settings")){
-                    AppSettings.Instance.Load(args[i].Split("=")[1]);
+                    s = new Settings(args[i].Split("=")[1]);
                     break;
                 }
             }
 
             //The settings can be overwriten by input arguments.
-            string[] kv = null;
+            string[] kv = null;            
+            if(s == null) s = new Settings("settings.yaml");
 
             for(int i = 0; i < args.Length; i++){   
                 kv = args[i].Split("=");                             
@@ -38,26 +36,26 @@ namespace DocumentPlagiarismChecker
                 }
                 else{
                     if(kv[0].StartsWith("--")) kv[0] = kv[0].Substring(2);
-                    AppSettings.Instance.Set(kv[0], kv[1]);
+                    s.Set(kv[0], kv[1]);
                 }              
             }
 
-            if(string.IsNullOrEmpty(AppSettings.Instance.General.Folder)) throw new Exceptions.FolderNotSpecifiedException();
-            if(string.IsNullOrEmpty(AppSettings.Instance.General.Extension)) throw new Exceptions.FileExtensionNotSpecifiedException();            
+            if(string.IsNullOrEmpty(s.Folder)) throw new Exceptions.FolderNotSpecifiedException();
+            if(string.IsNullOrEmpty(s.Extension)) throw new Exceptions.FileExtensionNotSpecifiedException();            
 
             //Multi-tasking in order to display progress
-            using(API api = new API()){
+            using(Api Api = new Api(s)){
                 Task compare = Task.Run(() => 
-                    api.CompareFiles()
+                    Api.CompareFiles()
                 );
 
                 //Polling for progress in order to display the output
                 Task progress = Task.Run(() => {
                     do{
-                        Console.Write("\rLoading... {0:P2}", api.Progress);
+                        Console.Write("\rLoading... {0:P2}", Api.Progress);
                         System.Threading.Thread.Sleep(1000);
                     }
-                    while(api.Progress < 1);                
+                    while(Api.Progress < 1);                
 
                     Console.Write("\rLoading... {0:P2}", 1);
                     Console.WriteLine();
@@ -65,7 +63,7 @@ namespace DocumentPlagiarismChecker
                     Console.WriteLine();
                     Console.WriteLine("Printing results:");
                     Console.WriteLine();
-                    api.WriteOutput();
+                    Api.WriteOutput();
                 });
 
                 progress.Wait();
@@ -75,13 +73,13 @@ namespace DocumentPlagiarismChecker
         private static void Help(){            
             WriteSeparator('#');
 
-            Console.WriteLine(typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyProductAttribute)).SingleOrDefault().ConstructorArguments[0].Value);
+            Console.WriteLine(typeof(App).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyProductAttribute)).SingleOrDefault().ConstructorArguments[0].Value);
             Console.WriteLine();
-            Console.WriteLine(typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyDescriptionAttribute)).SingleOrDefault().ConstructorArguments[0].Value);
+            Console.WriteLine(typeof(App).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyDescriptionAttribute)).SingleOrDefault().ConstructorArguments[0].Value);
             Console.WriteLine();
-            Console.WriteLine(string.Format("  Copyright: {0}", typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyCompanyAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
-            Console.WriteLine(string.Format("  License: {0}", typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyCopyrightAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
-            Console.WriteLine(string.Format("  Version: {0}", typeof(ConsoleApp).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyInformationalVersionAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
+            Console.WriteLine(string.Format("  Copyright: {0}", typeof(App).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyCompanyAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
+            Console.WriteLine(string.Format("  License: {0}", typeof(App).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyCopyrightAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
+            Console.WriteLine(string.Format("  Version: {0}", typeof(App).Assembly.GetCustomAttributesData().Where(x => x.AttributeType == typeof(AssemblyInformationalVersionAttribute)).SingleOrDefault().ConstructorArguments[0].Value));
             
             WriteSeparator('-');
 
@@ -108,7 +106,6 @@ namespace DocumentPlagiarismChecker
             Console.WriteLine();
             Console.WriteLine("  --threshold-full: matching values below the threshold will be ignored at comparator's full details output.");
             
-
             WriteSeparator('-');
 
             Console.WriteLine("Examples (Windows):");

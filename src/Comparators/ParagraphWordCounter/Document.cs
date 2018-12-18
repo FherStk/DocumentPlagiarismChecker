@@ -4,12 +4,10 @@
     Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
  */
  
-using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
-using DocumentPlagiarismChecker.Core;
 
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {

@@ -4,12 +4,7 @@
     Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
  */
  
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using DocumentPlagiarismChecker.Core;
 using DocumentPlagiarismChecker.Scores;
-
 namespace DocumentPlagiarismChecker.Comparators._template
 {
     internal class Comparator: Core.BaseComparator<Document>

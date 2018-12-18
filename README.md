@@ -11,7 +11,7 @@ Please notice than this project could not be possible without the help of:
 
 ## WARNING: still in an early development stage.
 ### How to use it:
-#### As an stand-alone app:
+#### As an stand-alone console app:
 Clone the repository to your local working directory, restore the dependencies with `dotnet restore`, build it with `dotnet build` and, finally, run the project with `dotnet run`. 
 
 If there is no *settings.yaml* file in the same folder as the program, it will be mandatory to manually set some arguments when calling the program; please call `dotnet run --info` for further details or explore the *settings.yaml* file that comes within this project.

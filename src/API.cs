@@ -9,17 +9,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
-using DocumentPlagiarismChecker.Core;
 using DocumentPlagiarismChecker.Scores;
 using DocumentPlagiarismChecker.Outputs;
-using DocumentPlagiarismChecker.OldSettings;
 
 namespace DocumentPlagiarismChecker
 {
     /// <summary>
     /// This object provides access to the functionalities for the Document Plagiarism Checker library. 
     /// </summary>
-    public class API: IDisposable{
+    public class Api: IDisposable{
         private long _total;
         private long _computed;          
         private bool disposed = false;
@@ -32,13 +30,13 @@ namespace DocumentPlagiarismChecker
             }            
         }
     
-        public API(): this("settings.yaml"){
+        public Api(): this("settings.yaml"){
         }
 
-        public API(string settingsFilePath): this(new Settings(settingsFilePath)){
+        public Api(string settingsFilePath): this(new Settings(settingsFilePath)){
         }
 
-        public API(Settings settings){
+        public Api(Settings settings){
             this.Settings = settings;
         }
 
@@ -47,12 +45,12 @@ namespace DocumentPlagiarismChecker
         /// </summary>
         public void CompareFiles(){
             //Initial Checks
-            if(!Directory.Exists(AppSettings.Instance.General.Folder)) 
+            if(!Directory.Exists(this.Settings.Folder)) 
                 throw new Exceptions.FolderNotFoundException();
 
             //Initial vars. including the set of files.            
             Dictionary<string, ComparatorMatchingScore> results = new Dictionary<string, ComparatorMatchingScore>();
-            List<string> files = Directory.GetFiles(AppSettings.Instance.General.Folder, string.Format("*.{0}", AppSettings.Instance.General.Extension), (AppSettings.Instance.General.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(AppSettings.Instance.General.Sample)).ToList();
+            List<string> files = Directory.GetFiles(this.Settings.Folder, string.Format("*.{0}", this.Settings.Extension), (this.Settings.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(this.Settings.Sample)).ToList();
             List<Type> comparatorTypes = GetComparatorTypes().ToList();
 
             //The total combinations to calculate are the number of combinations without repetition for 2 elements over a set of N = (n over 2) = (n! / 2! (n-2)!)
@@ -61,8 +59,6 @@ namespace DocumentPlagiarismChecker
             _computed = 0;
 
             //Loops over each pair of files (the files must be compared between each other in a relation "1 to many").
-            //TODO: the results must be stored even if the values has been computed early. So the FileMatchingScore will be related with
-            //(n-1)*x where n is the number of files and x the number of comparers.
             for(int i = 0; i < files.Count(); i++){                                
                 string leftFilePath = files.ElementAt(i);
                             
@@ -81,7 +77,7 @@ namespace DocumentPlagiarismChecker
                                 cms = old.Copy(old.RightFileName, old.LeftFileName);                            }
                             else{
                                 //New comparissons for left and right files must be performed using the current comparer.
-                                var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, AppSettings.Instance.General.Sample);
+                                var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, this.Settings.Sample);
                                 MethodInfo method = comp.GetType().GetMethod("Run");
                                 cms = (ComparatorMatchingScore)method.Invoke(comp, null);
                                 
@@ -104,7 +100,7 @@ namespace DocumentPlagiarismChecker
         /// <param name="results">A set of file matching scores</param>
         public void WriteOutput(){
             //TODO: must be selected by settings
-            TerminalOutput t = new TerminalOutput();
+            TerminalOutput t = new TerminalOutput(this.Settings);
             t.Write(this.MatchingResults);
         }
 
@@ -115,7 +111,7 @@ namespace DocumentPlagiarismChecker
         private static IEnumerable<Type> GetComparatorTypes()
         {   
             //TODO: Select plugins using a configuration file.
-            return typeof(ConsoleApp).Assembly.GetTypes().Where(x => x.BaseType.Name.Contains("BaseComparator") && !x.FullName.Contains("_template")).ToList();
+            return typeof(App).Assembly.GetTypes().Where(x => x.BaseType.Name.Contains("BaseComparator") && !x.FullName.Contains("_template")).ToList();
         }
 
         /// <summary>
