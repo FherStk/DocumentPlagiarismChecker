@@ -86,7 +86,7 @@ namespace DocumentPlagiarismChecker
         }
 
         /// <summary>
-        /// Gets all the available Comparators.
+        /// comparators.
         /// </summary>
         /// <returns>A set of Comparator's object types</returns>
         private static IEnumerable<Type> GetComparatorTypes()
