@@ -12,9 +12,10 @@ namespace DocumentPlagiarismChecker.Comparators._template
         /// <summary>
         /// Instantiates a new Comparator, creating the document objects for the given file paths (left and right).
         /// </summary>
-        /// <param name="leftFilePath"></param>
-        /// <param name="rightFilePath"></param>
-        public Comparator(string fileLeftPath, string fileRightPath): base(fileLeftPath, fileRightPath){
+        /// <param name="fileLeftPath">The left side file's path.</param>
+        /// <param name="fileRightPath">The right side file's path.</param>
+        /// <param name="settings">The settings instance that will use the comparator.</param>
+        public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
                
         /// <summary>        

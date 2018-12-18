@@ -25,8 +25,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
         /// </summary>
         /// <param name="fileLeftPath">The left side file's path.</param>
         /// <param name="fileRightPath">The right side file's path.</param>
-        /// <returns></returns>
-        public Comparator(string fileLeftPath, string fileRightPath, string sampleFilePath=null): base(fileLeftPath, fileRightPath, sampleFilePath){
+        /// <param name="settings">The settings instance that will use the comparator.</param>
+        public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
         /// <summary>

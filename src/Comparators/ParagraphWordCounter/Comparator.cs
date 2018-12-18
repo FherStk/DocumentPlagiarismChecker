@@ -25,8 +25,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// </summary>
         /// <param name="fileLeftPath">The left side file's path.</param>
         /// <param name="fileRightPath">The right side file's path.</param>
-        /// <returns></returns>
-        public Comparator(string fileLeftPath, string fileRightPath, string sampleFilePath=null): base(fileLeftPath, fileRightPath, sampleFilePath){
+        /// <param name="settings">The settings instance that will use the comparator.</param>
+        public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
         /// <summary>
@@ -45,10 +45,12 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// <param name="doc">The document that will be compared with the sample.</param>
         private void ExcludeSampleMatches(Document doc){
              if(this.Sample != null){                
-                //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only).
-                foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
-                    doc.Paragraphs.Remove(paragraph);
-                }
+                //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only)
+                foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
+                    doc.Paragraphs.Remove(paragraph);   
+                
+                //Also items that matches with the exclusion list will be also removed
+                
                                                 
                 ComparatorMatchingScore sampleScore = ComputeMatching(CompareParagraphs(this.Sample, doc));
                 for(int i = 0; i < sampleScore.DetailsData.Count; i++){                                                            

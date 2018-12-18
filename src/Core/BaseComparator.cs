@@ -14,6 +14,8 @@ namespace DocumentPlagiarismChecker.Core
     /// </summary>
     /// <typeparam name="T">The comprare's document type.</typeparam>
     internal abstract class BaseComparator<T> where T: BaseDocument{
+        public Settings Settings {get; private set;}
+
         /// <summary>
         /// The left-side document that will be compared.
         /// </summary>
@@ -35,12 +37,13 @@ namespace DocumentPlagiarismChecker.Core
         /// <param name="leftFilePath">The file's path (left-side of the comparisson).</param>
         /// <param name="rightFilePath">The file's path (right-side of the comparisson).</param>
         /// <param name="sampleFilePath">The sample's path (its content will be used for ignore some comparissons).</param>
-        protected BaseComparator(string leftFilePath, string rightFilePath, string sampleFilePath=null){          
+        protected BaseComparator(string leftFilePath, string rightFilePath, Settings settings){          
             this.Left = (T)Activator.CreateInstance(typeof(T), leftFilePath);  
-            this.Right = (T)Activator.CreateInstance(typeof(T), rightFilePath);
+            this.Right = (T)Activator.CreateInstance(typeof(T), rightFilePath);            
+            this.Settings = settings;
 
-            if(!string.IsNullOrEmpty(sampleFilePath)) 
-                this.Sample = (T)Activator.CreateInstance(typeof(T), sampleFilePath);
+            if(!string.IsNullOrEmpty(settings.Sample)) 
+                this.Sample = (T)Activator.CreateInstance(typeof(T), settings.Sample);
         }
 
         /// <summary>        

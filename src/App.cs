@@ -44,18 +44,18 @@ namespace DocumentPlagiarismChecker
             if(string.IsNullOrEmpty(s.Extension)) throw new Exceptions.FileExtensionNotSpecifiedException();            
 
             //Multi-tasking in order to display progress
-            using(Api Api = new Api(s)){
+            using(Api api = new Api(s)){
                 Task compare = Task.Run(() => 
-                    Api.CompareFiles()
+                    api.CompareFiles()
                 );
 
                 //Polling for progress in order to display the output
                 Task progress = Task.Run(() => {
                     do{
-                        Console.Write("\rLoading... {0:P2}", Api.Progress);
+                        Console.Write("\rLoading... {0:P2}", api.Progress);
                         System.Threading.Thread.Sleep(1000);
                     }
-                    while(Api.Progress < 1);                
+                    while(api.Progress < 1);                
 
                     Console.Write("\rLoading... {0:P2}", 1);
                     Console.WriteLine();
@@ -63,7 +63,7 @@ namespace DocumentPlagiarismChecker
                     Console.WriteLine();
                     Console.WriteLine("Printing results:");
                     Console.WriteLine();
-                    Api.WriteOutput();
+                    api.WriteOutput();
                 });
 
                 progress.Wait();

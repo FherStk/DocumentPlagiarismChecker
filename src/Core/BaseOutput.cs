@@ -22,7 +22,7 @@ namespace DocumentPlagiarismChecker.Core
     /// <summary>
     /// Contains the output schema that every output object must inherit in order to work as expected.
     /// </summary>
-    internal abstract class BaseOutput{ 
+    internal abstract class BaseOutput{         
         public Settings Settings {get; private set;}
 
         public BaseOutput(): this("settings.yaml"){
