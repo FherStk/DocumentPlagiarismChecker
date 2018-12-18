@@ -40,7 +40,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             {
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    string text = PdfTextExtractor.GetTextFromPage(reader, i);                    
+                    //TODO: \n is not working as espected, becuase cuts all the new lines and not only new paragraphs.
+                    //https://stackoverflow.com/questions/36491429/identify-paragraphs-of-pdf-fiiles-using-itextsharp
+                    string text = PdfTextExtractor.GetTextFromPage(reader, i);                                        
                     foreach(string paragraph in text.Split("\n").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){                                                
                         //TODO: settings file in order to exclude a set of words.
                                                    

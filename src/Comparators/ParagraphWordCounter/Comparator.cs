@@ -34,51 +34,51 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
         /// </summary>
         /// <returns>The matching's results.</returns>
-        public override ComparatorMatchingScore Run(){      
-            if(this.Sample != null){          
-                 //Excluding sample paragraphs (exact match)
-                 foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
-                    this.Left.Paragraphs.Remove(paragraph);   
-                    this.Right.Paragraphs.Remove(paragraph);   
-                 }   
-            }
-
-            if(this.Settings.Exclusion != null){
-                //Also items that matches with the exclusion list will be also removed
-                foreach(string pattern in this.Settings.Exclusion){
-                    foreach(string paragraph in this.Left.Paragraphs.Select(x => x.Key)){
-                        if(Regex.IsMatch(paragraph, pattern)) 
-                            this.Left.Paragraphs.Remove(paragraph);   
-                    }
-
-                    foreach(string paragraph in this.Right.Paragraphs.Select(x => x.Key)){
-                        if(Regex.IsMatch(paragraph, pattern)) 
-                            this.Right.Paragraphs.Remove(paragraph);   
-                    }                    
-                }
-            }
-
-            //ExcludeSampleMatches(this.Left);
-            //ExcludeSampleMatches(this.Right);    
+        public override ComparatorMatchingScore Run(){     
+            //This order is meant to improving performance
+            ExcludeSampleExactMatches(); 
+            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings
+            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings        
+            ExcludeExclussionListMatches();
+            
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
+        }
+
+        private void ExcludeExclussionListMatches(){
+            if(this.Settings.Exclusion == null) return;
+
+            foreach(string pattern in this.Settings.Exclusion){
+                foreach(string paragraph in this.Left.Paragraphs.Select(x => x.Key).ToList()){
+                    if(Regex.IsMatch(paragraph, pattern)) 
+                        this.Left.Paragraphs.Remove(paragraph);   
+                }
+
+                foreach(string paragraph in this.Right.Paragraphs.Select(x => x.Key).ToList()){
+                    if(Regex.IsMatch(paragraph, pattern)) 
+                        this.Right.Paragraphs.Remove(paragraph);   
+                }                    
+            }
         }
 
         /// <summary>
         /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
         /// </summary>
-        /// <param name="doc">The document that will be compared with the sample.</param>
-        private void ExcludeSampleMatches(Document doc){
-             if(this.Sample != null){                
-                //In order to improve the performance, all the sample paragraphs will be excluded first from both documents (exact match only)
-                foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key))
-                    doc.Paragraphs.Remove(paragraph);                               
-                
-                ComparatorMatchingScore sampleScore = ComputeMatching(CompareParagraphs(this.Sample, doc));
-                for(int i = 0; i < sampleScore.DetailsData.Count; i++){                                                            
-                    //TODO: testing and tweaking necessary, also config loading from a settings file.                   
-                    if(sampleScore.DetailsMatch[i] >= 0.70f)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
-                }                
-             }
+        private void ExcludeSampleExactMatches(){
+            if(this.Sample == null) return;
+
+            foreach(string paragraph in this.Sample.Paragraphs.Select(x => x.Key)){
+                this.Left.Paragraphs.Remove(paragraph);   
+                this.Right.Paragraphs.Remove(paragraph);   
+            }   
+        }
+
+        private void ExcludeSamplePartialMatches(Document doc, float threshold){
+            if(this.Sample == null) return;
+
+            ComparatorMatchingScore sampleScore = ComputeMatching(CompareParagraphs(this.Sample, doc));
+            for(int i = 0; i < sampleScore.DetailsData.Count; i++){                                                            
+                if(sampleScore.DetailsMatch[i] >= threshold)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
+            }                
         }
 
         /// <summary>

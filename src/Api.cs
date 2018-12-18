@@ -77,7 +77,7 @@ namespace DocumentPlagiarismChecker
                                 cms = old.Copy(old.RightFileName, old.LeftFileName);                            }
                             else{
                                 //New comparissons for left and right files must be performed using the current comparer.
-                                var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, this.Settings.Sample);
+                                var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, this.Settings);
                                 MethodInfo method = comp.GetType().GetMethod("Run");
                                 cms = (ComparatorMatchingScore)method.Invoke(comp, null);
                                 
