@@ -37,8 +37,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         public override ComparatorMatchingScore Run(){     
             //This order is meant to improving performance
             ExcludeSampleExactMatches(); 
-            //ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
-            //ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
+            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
+            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
             ExcludeExclussionListMatches();
             
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
@@ -77,7 +77,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 
             ComparatorMatchingScore sampleScore = ComputeMatching(CompareParagraphs(this.Sample, doc));
             for(int i = 0; i < sampleScore.DetailsData.Count; i++){                                                            
-                if(sampleScore.DetailsMatch[i] >= threshold)  doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
+                if(sampleScore.DetailsMatch[i] >= threshold){
+                    doc.Paragraphs.Remove((string)sampleScore.DetailsData[i][1]);                    
+                } 
             }                
         }
 
@@ -95,7 +97,6 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     //Counting the words withing one of the left document's paragraph
                     Dictionary<string, int[]> wordCounter = new Dictionary<string, int[]>();
                     Dictionary<string, int> pLeft = leftDoc.Paragraphs[plKey];
-
                     foreach(string wLeft in pLeft.Select(x => x.Key)){
                         if(!wordCounter.ContainsKey(wLeft)) wordCounter.Add(wLeft, new int[]{0, 0});
                         wordCounter[wLeft][0] += pLeft[wLeft];

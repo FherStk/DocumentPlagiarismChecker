@@ -40,24 +40,24 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             {
                 Utils.TextAsParagraphsExtractionStrategy paragraphReader = new Utils.TextAsParagraphsExtractionStrategy();                                
                 for (int i = 1; i <= reader.NumberOfPages; i++)
-                {
-                    PdfTextExtractor.GetTextFromPage(reader, i, paragraphReader);
-                    foreach(string paragraph in paragraphReader.Paragraphs){
-                        Dictionary<string, int> words = new Dictionary<string, int>();
-                        foreach(string word in paragraph.Split(" ").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
-                             if(!words.ContainsKey(word))
-                                words.Add(word, 0);
-                                        
-                            words[word]++;         
-                        }
+                    PdfTextExtractor.GetTextFromPage(reader, i, paragraphReader);                                       
 
-                        if(!Paragraphs.ContainsKey(paragraph)) Paragraphs.Add(paragraph, words);                                    
-                        else
-                        {
-                            //Repeated paragraph... can be ignored.
-                        }
-                    } 
-                }
+                //All the paragraph data is stored inside the paragraphReader (for all the pages). 
+                foreach(string paragraph in paragraphReader.Paragraphs){
+                    Dictionary<string, int> words = new Dictionary<string, int>();
+                    foreach(string word in paragraph.Split(" ").Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))){
+                            if(!words.ContainsKey(word))
+                            words.Add(word, 0);
+                                    
+                        words[word]++;         
+                    }
+
+                    if(!Paragraphs.ContainsKey(paragraph)) Paragraphs.Add(paragraph, words);                                    
+                    else
+                    {
+                        //Repeated paragraph... can be ignored.
+                    }
+                } 
             }
         }
     }   
