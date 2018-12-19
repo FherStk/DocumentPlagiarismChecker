@@ -10,20 +10,14 @@ using System.Collections.Generic;
 namespace DocumentPlagiarismChecker.Core
 {
     /// <summary>
-    /// Contains the mathing score full details.
+    /// Contains the score schema that every score object must inherit in order to work as expected.
     /// </summary>
-    public class DetailsMatchingScore{         
+    public class BaseMatchingScore{         
         /// <summary>
         /// The output display level will be compared with this one in order to determine if the details data must be shown.
         /// </summary>
         /// <value></value>
-        public DisplayLevel DisplayLevel {get; private set;}
-        
-        /// <summary>
-        /// Child-level details
-        /// </summary>
-        /// <value></value>
-        public DetailsMatchingScore Child {get; set;}
+        public DisplayLevel DisplayLevel {get; private set;}               
 
         /// <summary>
         /// The caption row used in order to display the details of the comparisson (same length and same order as data and match details)
@@ -43,7 +37,7 @@ namespace DocumentPlagiarismChecker.Core
         /// <summary>
         /// The match set used to compute the matching field (same length and same order as caption and data details)
         /// </summary>
-        public List<float> DetailsMatch {get; private set;} 
+        public List<float> DetailsMatch {get; protected set;} 
 
         /// <summary>
         /// The matching score between [0,1].
@@ -61,7 +55,7 @@ namespace DocumentPlagiarismChecker.Core
         /// <param name="match">The match score to add (a number between [0,1])</param>
         public void AddMatch(float match){
             if(match < 0 || match > 1)
-                throw new MatchValueNotValid();
+                throw new Exceptions.MatchValueNotValid();
             
             DetailsMatch.Add(match);
         }
@@ -69,8 +63,8 @@ namespace DocumentPlagiarismChecker.Core
         /// <summary>
         /// Instantiates a new details matching socre object.
         /// </summary>
-        public DetailsMatchingScore(DisplayLevel displayLevel = Core.DisplayLevel.FULL){            
-            if(displayLevel < Core.DisplayLevel.COMPARATOR) throw new DisplayLevelNotAllowed();
+        public BaseMatchingScore(DisplayLevel displayLevel = Core.DisplayLevel.FULL){            
+            if(displayLevel < Core.DisplayLevel.COMPARATOR) throw new Exceptions.DisplayLevelNotAllowed();
             else{
                 this.DisplayLevel = displayLevel;
                 this.DetailsData = new List<object[]>();

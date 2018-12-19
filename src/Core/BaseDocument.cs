@@ -5,7 +5,6 @@
  */
  
 using System.IO;
-
 namespace DocumentPlagiarismChecker.Core
 {
     /// <summary>

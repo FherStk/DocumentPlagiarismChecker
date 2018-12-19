@@ -4,7 +4,6 @@
     Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
  */
  
-using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using iTextSharp.text.pdf;
@@ -13,7 +12,7 @@ using iTextSharp.text.pdf.parser;
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
-    /// This document must be used with the Word Counter Comparator, and stores how many words and how many times appears withing a document.
+    /// This document must be used with the Document Word Counter Comparator, and stores how many words and how many times appears withing a document.
     /// </summary>
     internal class Document: Core.BaseDocument
     {        
@@ -31,7 +30,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         public Document(string path): base(path){
             //Check pre-conditions        
             if(!System.IO.Path.GetExtension(path).ToLower().Equals(".pdf"))
-                throw new FileNotPdfException();
+                throw new Exceptions.FileExtensionNotAllowed();
 
             //Init object attributes.
             WordAppearances = new Dictionary<string, int>();
@@ -41,9 +40,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
             {
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    string text = PdfTextExtractor.GetTextFromPage(reader, i);
-                    text = text.Replace("\n", "");
-
+                    string text = PdfTextExtractor.GetTextFromPage(reader, i).Replace("\n", "");
                     foreach(string word in text.Split(" ").Where(x => !string.IsNullOrEmpty(x.Trim()))){
                         if(!WordAppearances.ContainsKey(word))
                             WordAppearances.Add(word, 0);
