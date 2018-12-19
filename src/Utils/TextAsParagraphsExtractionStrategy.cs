@@ -90,19 +90,39 @@ namespace DocumentPlagiarismChecker.Utils
                 spacing[space] += 1;  
             }
 
-            //Regular spacing will be assumed as the most usual
-            float regular = spacing.OrderByDescending(x => x.Value).FirstOrDefault().Key;
-            float next = spacing.OrderBy(x => x.Key).Where(x => x.Key > regular).FirstOrDefault().Key;
-            float errorMargin = (next - regular)/2;
+            float min = spacing.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+            float percent = (float)spacing[min] / (float)this._baselines.Count;
+            
+            float max = min;
+            int skip = 1;
 
-            string p = string.Empty;
+            //TODO: this is not working ok...
+            //It's hard to find the spacing that determines if two lines are part of the same paragraph...
+            //An error margin must be found, but its beeing really hard :'(
+            while(skip < spacing.Count){
+                float tmpVal = spacing.OrderByDescending(x => x.Value).Skip(skip).FirstOrDefault().Key;
+                float tmpPcnt = (float)spacing[tmpVal] / (float)this._baselines.Count;
+                
+                if(tmpPcnt < percent/2) break;
+                else{
+                    max = tmpVal; 
+                    percent = tmpPcnt; 
+                    skip++;
+                } 
+            } 
+
+            if(min > max){
+                //swap
+                (min, max) = (max, min);                  
+            } 
 
             //All the paragraphs will be grouped using the spacing between lines
+            string p = string.Empty;
             for (int i = 1; i < _strings.Count; i++) {
                 float space = MathF.Round(this._baselines[i-1] - this._baselines[i], 0);
                 p = string.Format("{0} {1}", p, this._strings[i-1].Trim());
-                
-                if(space < 0 || (space > regular && Math.Abs(space - regular) > errorMargin)) {
+
+                if(space < min || space > max) {
                     //New paragraph detected, so the previous sentences will be added as a single paragraph (removing also control chars and leading/trailing spaces).
                     //Notice that an error margin of ±1 is accepted
                     AddParagraph(p);
