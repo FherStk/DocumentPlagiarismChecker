@@ -90,16 +90,23 @@ namespace DocumentPlagiarismChecker.Utils
                 spacing[space] += 1;  
             }
 
-            float min = spacing.OrderByDescending(x => x.Value).FirstOrDefault().Key;
-            float percent = (float)spacing[min] / (float)this._baselines.Count;
-            List<string> currentParagraph = new List<string>();
+            float br = spacing.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+            float percent = (float)spacing[br] / (float)_baselines.Count();            
 
-            //All the paragraphs will be grouped using the spacing between lines            
+            //The value "br" represents the space between lines inside a paragraph, so greater values means a new paragraph.
+            //Also this br must represent more than a concrete %  of the spaces in order to guarantee that it's the correct one.
+            while(percent < 0.37f){ //TODO: this % value has been extracted empirically... tweaking could be needed.               
+                br = spacing.OrderByDescending(x => x.Value).SkipWhile(x => !x.Key.Equals(br)).Skip(1).FirstOrDefault().Key;    //next value to current br
+                percent += (float)spacing[br] / (float)_baselines.Count();
+            }
+           
+            //All the paragraphs will be grouped using the spacing between lines                        
+            List<string> currentParagraph = new List<string>();
             for (int i = 0; i < _strings.Count-1; i++) {
                 float space = MathF.Round(this._baselines[i] - this._baselines[i+1], 0);
 
                 AddParagraph(currentParagraph, this._strings[i]);
-                if(space > min) {   //TODO: an error margin is needed
+                if(space <= 0 || space > br) {   //TODO: an error margin is needed
                     //The current line is the last one of the current paragraph
                     _paragraphs.Add(string.Join(" ", currentParagraph.ToArray()));
                     currentParagraph.Clear();

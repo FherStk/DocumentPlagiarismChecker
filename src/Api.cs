@@ -52,10 +52,8 @@ namespace DocumentPlagiarismChecker
             Dictionary<string, ComparatorMatchingScore> results = new Dictionary<string, ComparatorMatchingScore>();
             List<string> files = Directory.GetFiles(this.Settings.Folder, string.Format("*.{0}", this.Settings.Extension), (this.Settings.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)).Where(x => !x.Equals(this.Settings.Sample)).ToList();
             List<Type> comparatorTypes = GetComparatorTypes().ToList();
-
-            //The total combinations to calculate are the number of combinations without repetition for 2 elements over a set of N = (n over 2) = (n! / 2! (n-2)!)
-            //The that total of combination, there will be performed a check for every comparator. 
-            _total = (Factorial(files.Count()) / 2 * Factorial(files.Count() - 2)) * comparatorTypes.Count;
+            
+            _total = files.Count() * files.Count() * comparatorTypes.Count;
             _computed = 0;
 
             //Loops over each pair of files (the files must be compared between each other in a relation "1 to many").
@@ -79,18 +77,17 @@ namespace DocumentPlagiarismChecker
                                 //New comparissons for left and right files must be performed using the current comparer.
                                 var comp = Activator.CreateInstance(t, leftFilePath, rightFilePath, this.Settings);
                                 MethodInfo method = comp.GetType().GetMethod("Run");
-                                cms = (ComparatorMatchingScore)method.Invoke(comp, null);
-                                
-                                _computed++;                                    
+                                cms = (ComparatorMatchingScore)method.Invoke(comp, null);                                                            
                             }   
-
+                            
+                            _computed++;        
                             results.Add(GetComparatorKey(leftFilePath, rightFilePath, t), cms);                     
                         }
                     }
                 }                                    
             }
 
-            _total = 1;            
+            _computed = _total;
             this.MatchingResults = results.Values.ToList();            
         }               
 

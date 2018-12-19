@@ -39,13 +39,12 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphLengthCounter
             {
                 Utils.TextAsParagraphsExtractionStrategy paragraphReader = new Utils.TextAsParagraphsExtractionStrategy();
                 for (int i = 1; i <= reader.NumberOfPages; i++)
-                {
                     PdfTextExtractor.GetTextFromPage(reader, i, paragraphReader);                 
-                    foreach(string paragraph in paragraphReader.Paragraphs){
-                        float length = paragraph.Length;
-                        if(!Lengths.ContainsKey(length)) Lengths.Add(length, 0);
-                        Lengths[length] += 1;                        
-                    }
+                
+                //All the paragraph data is stored inside the paragraphReader (for all the pages). 
+                foreach(string paragraph in paragraphReader.Paragraphs){                    
+                    if(!Lengths.ContainsKey(paragraph.Length)) Lengths.Add(paragraph.Length, 0);
+                    Lengths[paragraph.Length] += 1;                        
                 }
             }
         }

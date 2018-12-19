@@ -2,20 +2,20 @@
 #This software it's under the terms of the GNU Affero General Public License version 3.
 #Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
 
-#folder: 'C:\test\M10DAM-LL6'
+folder: 'C:\test\M10DAM-LL6'
 #folder: 'C:\test\Length'
 #folder: 'C:\test\'
-folder: '/home/porrino.fernando/Documents/Proves'
-#sample: 'C:\test\M10DAM-LL6\Enunciat.pdf'
+#folder: '/home/porrino.fernando/Documents/Proves'
+sample: 'C:\test\M10DAM-LL6\Enunciat.pdf'
 #sample: 'C:\test\Length\Sample.pdf'
 #sample: 'C:\test\Sample.pdf'
-sample: '/home/porrino.fernando/Documents/Proves/Sample.pdf'
+#sample: '/home/porrino.fernando/Documents/Proves/Sample.pdf'
 extension: 'pdf'
 #display: 'detailed'
-display: 'comparator'
-#display: 'basic'
-#recursive: true
-recursive: false  
+#display: 'comparator'
+display: 'basic'
+recursive: true
+#recursive: false  
 exclusion: ['\b[Pp][àa]gina\s[0-9]*\sde\s[0-9]*\b']
 
 threshold:
