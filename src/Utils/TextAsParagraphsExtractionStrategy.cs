@@ -80,7 +80,7 @@ namespace DocumentPlagiarismChecker.Utils
         }
 
         private void ComputeParagraphContent(){            
-            _paragraphs = new List<string>();
+            _paragraphs = new List<string>();                         
 
             //Getting all the vertical spacings between lines in order to detect the regular one between lines inside the same paragraph.
             Dictionary<float, int> spacing = new Dictionary<float, int>();
@@ -92,50 +92,28 @@ namespace DocumentPlagiarismChecker.Utils
 
             float min = spacing.OrderByDescending(x => x.Value).FirstOrDefault().Key;
             float percent = (float)spacing[min] / (float)this._baselines.Count;
-            
-            float max = min;
-            int skip = 1;
+            List<string> currentParagraph = new List<string>();
 
-            //TODO: this is not working ok...
-            //It's hard to find the spacing that determines if two lines are part of the same paragraph...
-            //An error margin must be found, but its beeing really hard :'(
-            while(skip < spacing.Count){
-                float tmpVal = spacing.OrderByDescending(x => x.Value).Skip(skip).FirstOrDefault().Key;
-                float tmpPcnt = (float)spacing[tmpVal] / (float)this._baselines.Count;
-                
-                if(tmpPcnt < percent/2) break;
-                else{
-                    max = tmpVal; 
-                    percent = tmpPcnt; 
-                    skip++;
-                } 
-            } 
+            //All the paragraphs will be grouped using the spacing between lines            
+            for (int i = 0; i < _strings.Count-1; i++) {
+                float space = MathF.Round(this._baselines[i] - this._baselines[i+1], 0);
 
-            if(min > max){
-                //swap
-                (min, max) = (max, min);                  
-            } 
-
-            //All the paragraphs will be grouped using the spacing between lines
-            string p = string.Empty;
-            for (int i = 1; i < _strings.Count; i++) {
-                float space = MathF.Round(this._baselines[i-1] - this._baselines[i], 0);
-                p = string.Format("{0} {1}", p, this._strings[i-1].Trim());
-
-                if(space < min || space > max) {
-                    //New paragraph detected, so the previous sentences will be added as a single paragraph (removing also control chars and leading/trailing spaces).
-                    //Notice that an error margin of ±1 is accepted
-                    AddParagraph(p);
-                    p = string.Empty;
+                AddParagraph(currentParagraph, this._strings[i]);
+                if(space > min) {   //TODO: an error margin is needed
+                    //The current line is the last one of the current paragraph
+                    _paragraphs.Add(string.Join(" ", currentParagraph.ToArray()));
+                    currentParagraph.Clear();
                 }
             }
             
             //Adding the last line (the loop skiped it)
-            AddParagraph(string.Format("{0} {1}", p, this._strings.Last().Trim()));          
-            this._computed = true;  
+            AddParagraph(currentParagraph, this._strings.Last());
+            _paragraphs.Add(string.Join(" ", currentParagraph.ToArray()));       
+
+            this._computed = true;                  
         }
-        private void AddParagraph(string p){
-            if(p.Length > 0) _paragraphs.Add(new string(p.Trim().Where(c =>  char.IsLetterOrDigit(c) || c.Equals('’') || (c >= ' ' && c <= byte.MaxValue)).ToArray()));
+        private void AddParagraph(List<string> group, string paragraph){
+            if(paragraph.Length > 0) group.Add(new string(paragraph.Trim().Where(c =>  char.IsLetterOrDigit(c) || c.Equals('’') || (c >= ' ' && c <= byte.MaxValue)).ToArray()));
         }
 
         //Not needed, part of interface contract
