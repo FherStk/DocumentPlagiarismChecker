@@ -1,13 +1,13 @@
 # Document Plagiarism Checker
 Document Plagiarism Checker is an Open-Source C# project over .NET Core 2.1 that has been developed for academic purposes only, which implements a really simple way to compare a set of documents between each other in order to check if some of them are copies.
 
-Feel free to use, copy, fork or modify this project; but please refer a mention to this project and its author respecting also the [iText's Community license](https://itextpdf.com/AGPL) if you pretend to develop a commercial prouduct (more info can be found inside the  **LICENSE** file).
+Feel free to use, copy, fork or modify this project; but please refer a mention to this project and its author respecting also the licenses of the included third party software.
 
-### Third party code and libraries:
+### Third party software and licenses:
 Please notice than this project could not be possible without the help of:
-* The [iTextSharp](https://developers.itextpdf.com/downloads) library from [iText](https://itextpdf.com/).
-* The [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables) library from [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh)
-* The [YamlDotNet](https://github.com/aaubry/YamlDotNet) library from [Antoine Aubry](https://github.com/aaubry)
+* The [iTextSharp](https://developers.itextpdf.com/downloads) library property of [iText](https://itextpdf.com/): under the AGPL v3 license, so no commercial use of this program can be afforded without paying the corresponding fee to the original authors (further details about the license can be found at [http://itextpdf.com/terms-of-use/](http://itextpdf.com/terms-of-use/).
+* The [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables) library property of [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh): under the MIT license, (further details about the license can be found at [https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE](https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE).    
+* The [YamlDotNet](https://github.com/aaubry/YamlDotNet) library property of [Antoine Aubry](https://github.com/aaubry): under the MIT license, (further details about the license can be found at [https://github.com/aaubry/YamlDotNet/blob/master/LICENSE](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE).
 
 ## WARNING: still in an early development stage.
 ### How to use it:
