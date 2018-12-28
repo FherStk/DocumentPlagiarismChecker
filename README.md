@@ -74,7 +74,8 @@ New comparators will be added as long as the tool became improved with new capab
  ### Roadmap:
 The full list of ideas and improvements can be found at [issues section (with the enhancements tag).](https://github.com/FherStk/DocumentPlagiarismChecker/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+is%3Aenhancement)
 ### Changelog:
-* v0.6.0.0-alpha (XX/12/2018):
+* v0.6.0.0-alpha (20/12/2018):
+    * New settings in order to allow regular expressions as exclussion list items, so paragraphs matching those expressions will be ignored by the Paragraph Word Counter comparator.
     * A new output format for the terminal output (Left file [matching %] -> Right file [matching %] -> Comparator [matching %]).
     * The Paragraph Word Counter has been splitted into a new comparator: the Paragraph Length Counter.
     * For further information see [the full list of changes](https://github.com/FherStk/DocumentPlagiarismChecker/projects/3).
