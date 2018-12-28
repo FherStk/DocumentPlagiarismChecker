@@ -6,8 +6,8 @@ Feel free to use, copy, fork or modify this project; but please refer a mention 
 ### Third party software and licenses:
 Please notice than this project could not be possible without the help of:
 * The [iTextSharp](https://developers.itextpdf.com/downloads) library property of [iText](https://itextpdf.com/): under the AGPL v3 license, so no commercial use of this program can be afforded without paying the corresponding fee to the original authors (further details about the license can be found at [http://itextpdf.com/terms-of-use/](http://itextpdf.com/terms-of-use/)).
-* The [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables) library property of [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh): under the MIT license, (further details about the license can be found at [https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE](https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE).    
-* The [YamlDotNet](https://github.com/aaubry/YamlDotNet) library property of [Antoine Aubry](https://github.com/aaubry): under the MIT license, (further details about the license can be found at [https://github.com/aaubry/YamlDotNet/blob/master/LICENSE](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE).
+* The [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables) library property of [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh): under the MIT license, (further details about the license can be found at [https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE](https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE)).    
+* The [YamlDotNet](https://github.com/aaubry/YamlDotNet) library property of [Antoine Aubry](https://github.com/aaubry): under the MIT license, (further details about the license can be found at [https://github.com/aaubry/YamlDotNet/blob/master/LICENSE](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE)).
 
 ## WARNING: still in an early development stage.
 ### How to use it:
