@@ -17,7 +17,11 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
     internal class Document: Core.BaseDocument
     {   
         internal class Sentence{
-            public int Count {get; private set;}
+            public int Count {
+                get{
+                    return this.Words.Count;
+                }
+            }
             public List<string> Words {get; private set;}
             private Dictionary<string, List<int>> Index {get; set;}
             public string Text{
@@ -27,14 +31,13 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
             }
 
             public Sentence(){
-                this.Count = 0;
                 this.Words = new List<string>();
                 this.Index = new Dictionary<string, List<int>>();
             }
 
             public void AddWord(string word){
                 if(!this.Index.ContainsKey(word.ToLower())) this.Index.Add(word.ToLower(), new List<int>());
-                this.Index[word.ToLower()].Add(this.Count++);
+                this.Index[word.ToLower()].Add(this.Count);
                 this.Words.Add(word);
             }
 
@@ -68,25 +71,31 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
             //Read PDF file and sotre each word appearence inside its paragraph.
             using (PdfReader reader = new PdfReader(path))
             {
+                /*
+                //Note: use this in order to extract paragraphs (experimental)
+                Utils.TextAsParagraphsExtractionStrategy paragraphReader = new Utils.TextAsParagraphsExtractionStrategy();
+                for (int i = 1; i <= reader.NumberOfPages; i++)
+                    PdfTextExtractor.GetTextFromPage(reader, i, paragraphReader);    
+                */
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    string text = PdfTextExtractor.GetTextFromPage(reader, i).Replace("\n", " ");                //gets all the text without new lines
+                    string text = CleanText(PdfTextExtractor.GetTextFromPage(reader, i));                       //gets all the text without new lines and hidden chars
                     foreach(string sentence in text.Split(".").Where(x => !string.IsNullOrEmpty(x.Trim()))){    //splits the sentences
                         Sentence s = new Sentence();
-                        string clean = CleanText(sentence);
-                        foreach(string word in clean.Split(" ").Where(x => !string.IsNullOrEmpty(x.Trim()))){ //splits the words
+                        foreach(string word in sentence.Split(" ").Where(x => !string.IsNullOrEmpty(x.Trim()))){ //splits the words
                             s.AddWord(word);
                         }
 
-                        //Avoiding repeated sentences
-                        if(!this.Sentences.ContainsKey(s.Text)) this.Sentences.Add(s.Text, s);
+                        //Avoiding repeated sentences and also the short ones
+                        if(!this.Sentences.ContainsKey(s.Text)) 
+                            this.Sentences.Add(s.Text, s);
                     }
                 }
             }
         }
 
-        protected string CleanText(string text){
-            return new string(text.Trim().Where(c =>  char.IsLetterOrDigit(c) || c.Equals('’') || (c >= ' ' && c <= byte.MaxValue)).ToArray());
+        protected string CleanText(string text){            
+            return new string(text.Replace("\n", " ").Trim().Where(c =>  char.IsLetterOrDigit(c) || c.Equals('’') || (c >= ' ' && c <= byte.MaxValue)).ToArray());
         } 
     }   
 }

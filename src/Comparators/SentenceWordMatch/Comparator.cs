@@ -44,7 +44,7 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
             ExcludeSampleExactMatches(); 
             ExcludeExclussionListMatches();
                         
-            return ComputeMatching(CompareParagraphs(this.Left, this.Right));                
+            return ComputeMatching(CompareDocuments(this.Left, this.Right));                
         }
 
         private void ExcludeExclussionListMatches(){
@@ -69,13 +69,13 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
         private void ExcludeSampleExactMatches(){
             if(this.Sample == null) return;
 
-            foreach(string paragraph in this.Sample.Sentences.Select(x => x.Key)){
-                this.Left.Sentences.Remove(paragraph);   
-                this.Right.Sentences.Remove(paragraph);   
+            foreach(string sentence in this.Sample.Sentences.Select(x => x.Key)){
+                this.Left.Sentences.Remove(sentence);   
+                this.Right.Sentences.Remove(sentence);   
             }   
         }       
        
-        private List<List<Item>> CompareParagraphs(Document leftDoc, Document rightDoc){
+        private List<List<Item>> CompareDocuments(Document leftDoc, Document rightDoc){
             List<List<Item>> sentences = new List<List<Item>>();                              
             foreach(string lKey in leftDoc.Sentences.Select(x => x.Key)){                
                 foreach(string rKey in rightDoc.Sentences.Select(x => x.Key)){                                        
@@ -94,16 +94,20 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
                                 int i = k;                                
                                 List<Item> current = new List<Item>();                                                                      
                                 for(int j = idx; j < rs.Words.Count && i < ls.Words.Count; j++){                                    
-                                    current.Add(new Item(){
+                                    Item item =new Item(){
                                         LeftWord = ls.Words[i],
                                         RightWord = rs.Words[j],
                                         Match = ls.Words[i].Equals(rs.Words[j], StringComparison.CurrentCultureIgnoreCase)
-                                    });
+                                    };
+                                    current.Add(item);
+
+                                    k += (item.Match ? 1 : 0);  //avoid checking already-matched words from the left-side                                    
                                     i++;
                                 }
 
-                                //sentence compared
-                                sentences.Add(current);
+                                //TODO: load the min length from the settings file
+                                if(current.Count > 4)
+                                    sentences.Add(current);
                             }
                         }    
                     }
@@ -122,16 +126,13 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
             //Calculate the matching for each individual word within each paragraph.
             foreach(List<Item> sentence in sentences){                    
                 float match = (float)sentence.Where(x => x.Match).Count() / (float)sentence.Count;
+                
+                string leftSentence = string.Join(" ", sentence.Select(x => x.LeftWord));
+                string rightSentence = string.Join(" ", sentence.Select(x => x.RightWord));                               
 
-                //TODO: use the settings threshold
-                if(match > 0.5f && sentence.Count > 5){
-                    string leftSentence = string.Join(" ", sentence.Select(x => x.LeftWord));
-                    string rightSentence = string.Join(" ", sentence.Select(x => x.RightWord));                               
-
-                    //Adding the details for each paragraph
-                    cr.AddMatch(match);
-                    cr.DetailsData.Add(new object[]{leftSentence, rightSentence, match});
-                }                
+                //Adding the details for each paragraph
+                cr.AddMatch(match);
+                cr.DetailsData.Add(new object[]{leftSentence, rightSentence, match});
             }
 
             return cr; 
