@@ -5,6 +5,7 @@
  */
  
 using System.IO;
+using System.Linq;
 namespace DocumentPlagiarismChecker.Core
 {
     /// <summary>
@@ -26,6 +27,6 @@ namespace DocumentPlagiarismChecker.Core
                 throw new FileNotFoundException();
 
             this.Name = System.IO.Path.GetFullPath(filePath);
-        }       
+        }      
     }
 }
