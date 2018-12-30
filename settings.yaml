@@ -11,12 +11,13 @@ folder: 'C:\test\New'
 sample: 'C:\test\New\Sample.pdf'
 #sample: '/home/porrino.fernando/Documents/Proves/Sample.pdf'
 extension: 'pdf'
-display: 'detailed'
-#display: 'comparator'
+#display: 'full'
+#display: 'detailed'
+display: 'comparator'
 #display: 'basic'
 #recursive: true
 recursive: false  
-exclusion: ['\b[Pp][àa]gina\s[0-9]*\sde\s[0-9]*\b']
+exclusion: ['\b[Pp][àa]gina\s[0-9]*\sde\s[0-9]*\b', '2\sASIX', 'Indice']
 
 threshold:
   basic: 0.5

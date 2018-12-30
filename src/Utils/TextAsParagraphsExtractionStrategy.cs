@@ -105,7 +105,7 @@ namespace DocumentPlagiarismChecker.Utils
             for (int i = 0; i < _strings.Count-1; i++) {
                 float space = MathF.Round(this._baselines[i] - this._baselines[i+1], 0);
 
-                AddParagraph(currentParagraph, this._strings[i]);
+                if(this._strings[i].Length > 0) currentParagraph.Add(this._strings[i]);
                 if(space <= 0 || space > br) {   //TODO: an error margin is needed
                     //The current line is the last one of the current paragraph
                     _paragraphs.Add(string.Join(" ", currentParagraph.ToArray()));
@@ -114,14 +114,11 @@ namespace DocumentPlagiarismChecker.Utils
             }
             
             //Adding the last line (the loop skiped it)
-            AddParagraph(currentParagraph, this._strings.Last());
+            if(this._strings.Last().Length > 0) currentParagraph.Add(this._strings.Last());
             _paragraphs.Add(string.Join(" ", currentParagraph.ToArray()));       
 
             this._computed = true;                  
-        }
-        private void AddParagraph(List<string> group, string paragraph){
-            if(paragraph.Length > 0) group.Add(new string(paragraph.Trim().Where(c =>  char.IsLetterOrDigit(c) || c.Equals('’') || (c >= ' ' && c <= byte.MaxValue)).ToArray()));
-        }
+        }       
 
         //Not needed, part of interface contract
         public void BeginTextBlock() { }

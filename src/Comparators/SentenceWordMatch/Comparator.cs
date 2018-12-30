@@ -21,10 +21,32 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     { 
-        private class Item{
-            public string LeftWord {get; set;}
-            public string RightWord {get; set;}
-            public bool Match {get; set;}
+        private class Sentence{
+            public string Left {get; set;}
+            public string Right {get; set;}
+            public List<Word> Words {get; set;}
+
+            public int Length {
+                get{
+                    return this.Words.Count;
+                }
+            }
+
+            public float Match{
+                get{
+                    return (float)this.Words.Count() / (float)this.Left.Split(" ").Count();
+                }
+            }
+
+            public bool Exact{
+                get{
+                    return this.Match == 1 && this.Right == this.Left;
+                }                
+            }
+        }
+        private class Word{
+            public string Left {get; set;}
+            public string Right {get; set;}
         } 
         /// <summary>
         /// Creates a new instance for the Comparator.
@@ -40,10 +62,16 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
         /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){     
-            //This order is meant to improving performance
-            ExcludeSampleExactMatches(); 
+            //Excluding sample data; this order is meant to improving performance
+            ExcludeSampleExactMatches();             
             ExcludeExclussionListMatches();
+            
+            foreach(Sentence s in CompareDocuments(this.Sample, this.Left))
+                if(s.Exact || (s.Length > 5 && s.Match > 0.75f)) this.Left.Sentences.Remove(s.Left);
                         
+            foreach(Sentence s in CompareDocuments(this.Sample, this.Right))
+                if(s.Exact || (s.Length > 5 && s.Match > 0.75f)) this.Right.Sentences.Remove(s.Right);
+            
             return ComputeMatching(CompareDocuments(this.Left, this.Right));                
         }
 
@@ -75,64 +103,73 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
             }   
         }       
        
-        private List<List<Item>> CompareDocuments(Document leftDoc, Document rightDoc){
-            List<List<Item>> sentences = new List<List<Item>>();                              
-            foreach(string lKey in leftDoc.Sentences.Select(x => x.Key)){                
+        private List<Sentence> CompareDocuments(Document leftDoc, Document rightDoc){
+            List<Sentence> sentences = new List<Sentence>();
+            foreach(string lKey in leftDoc.Sentences.Select(x => x.Key)){     
+                List<Sentence> current = new List<Sentence>();           
                 foreach(string rKey in rightDoc.Sentences.Select(x => x.Key)){                                        
                     
                     //Comparing both sentences (left and right)                                                       
-                    Document.Sentence ls = leftDoc.Sentences[lKey];
+                    Document.TextLine ls = leftDoc.Sentences[lKey];
                     for(int k = 0; k < ls.Words.Count; k++){
                         string wLeft = ls.Words[k];
 
-                        Document.Sentence rs = rightDoc.Sentences[rKey];
-                        if(rs.ContainsWord(wLeft)){
-
-                            //The right side contains the word on the left one (at least one time)
+                        Document.TextLine rs = rightDoc.Sentences[rKey];
+                        if(!rs.ContainsWord(wLeft)){
+                            //This will never match
+                            current.Add(new Sentence(){
+                                Left = ls.Text,
+                                Right = rs.Text,
+                                Words = new List<Word>()
+                            });
+                        }
+                        else{
+                            //The right side contains the word on the left one (at least one time) so some match will be produced
                             foreach(int idx in rs.GetIndex(wLeft)){
                                 
-                                int i = k;                                
-                                List<Item> current = new List<Item>();                                                                      
-                                for(int j = idx; j < rs.Words.Count && i < ls.Words.Count; j++){                                    
-                                    Item item =new Item(){
-                                        LeftWord = ls.Words[i],
-                                        RightWord = rs.Words[j],
-                                        Match = ls.Words[i].Equals(rs.Words[j], StringComparison.CurrentCultureIgnoreCase)
-                                    };
-                                    current.Add(item);
+                                int i = k; 
+                                List<Word> word = new List<Word>();                                                                      
+                                for(int j = idx; j < rs.Words.Count && i < ls.Words.Count; j++){       
+                                    if(ls.Words[i].Equals(rs.Words[j], StringComparison.CurrentCultureIgnoreCase)){
+                                        word.Add(new Word(){
+                                            Left = ls.Words[i],
+                                            Right = rs.Words[j]
+                                        });
+                                    }
 
-                                    k += (item.Match ? 1 : 0);  //avoid checking already-matched words from the left-side                                    
+                                    k++;
                                     i++;
                                 }
 
-                                //TODO: load the min length from the settings file
-                                if(current.Count > 4)
-                                    sentences.Add(current);
+                                current.Add(new Sentence(){
+                                    Left = ls.Text,
+                                    Right = rs.Text,
+                                    Words = word
+                                });
                             }
                         }    
                     }
                 }
+
+                //On current we have the results of all the comparissons between the current left sentence and all the right ones.
+                //The higher match will be selected.
+                float max = current.Max(x => x.Match);
+                sentences.Add(current.Where(x => x.Match == max).FirstOrDefault());
             }
 
             return sentences;
         }   
 
-        private  ComparatorMatchingScore ComputeMatching(List<List<Item>> sentences){
+        private  ComparatorMatchingScore ComputeMatching(List<Sentence> sentences){            
             //Defining the results headers
             ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Sentence Word Match", DisplayLevel.DETAILED);
-            cr.DetailsCaption = new string[] { "Left sentence", "Right sentence", "Match"};
-            cr.DetailsFormat = new string[]{"{0:L50}", "{0:L50}", "{0:P2}"};
+            cr.DetailsCaption = new string[] { "Left sentence (subset)", "Right sentence (original)", "Match"};
+            cr.DetailsFormat = new string[]{"{0:L75}", "{0:L75}", "{0:P2}"}; //Note: use {0:L50} in order to show a substring of max length = 50
             
             //Calculate the matching for each individual word within each paragraph.
-            foreach(List<Item> sentence in sentences){                    
-                float match = (float)sentence.Where(x => x.Match).Count() / (float)sentence.Count;
-                
-                string leftSentence = string.Join(" ", sentence.Select(x => x.LeftWord));
-                string rightSentence = string.Join(" ", sentence.Select(x => x.RightWord));                               
-
-                //Adding the details for each paragraph
-                cr.AddMatch(match);
-                cr.DetailsData.Add(new object[]{leftSentence, rightSentence, match});
+            foreach(Sentence sentence in sentences){                    
+                cr.AddMatch(sentence.Match);
+                cr.DetailsData.Add(new object[]{sentence.Left, sentence.Right, sentence.Match});
             }
 
             return cr; 
