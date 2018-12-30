@@ -14,7 +14,7 @@ Please notice than this project could not be possible without the help of:
 #### As an stand-alone console app:
 Clone the repository to your local working directory, restore the dependencies with `dotnet restore`, build it with `dotnet build` and, finally, run the project with `dotnet run`. 
 
-If there is no *settings.yaml* file in the same folder as the program, it will be mandatory to manually set some arguments when calling the program; please call `dotnet run --info` for further details or explore the *settings.yaml* file that comes within this project.
+If there is no *settings.yaml* file in the same folder as the program, it will be mandatory to specify where to find it with `dotnet run --setting="FILE_PATH"`; for further details explore the *settings.yaml* file that comes within this project.
 #### As a library:
 Do the same as with the stand-alone app but import the compiled **DocumentPlagiarismChecker.dll** file to your project. Then invoke the **CompareFiles** method inside the **API** object to get the results. You can also send them to an output with the **WriteOutput** method inside the same **API** object:
 
@@ -74,6 +74,9 @@ New comparators will be added as long as the tool became improved with new capab
  ### Roadmap:
 The full list of ideas and improvements can be found at [issues section (with the enhancements tag).](https://github.com/FherStk/DocumentPlagiarismChecker/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+is%3Aenhancement)
 ### Changelog:
+* v0.7.0.0-alpha (XX/12/2018):
+    * The console app does not accept parameters anymore (but the settings one) so settings file is the only way to set the configuration for a new app instance.
+
 * v0.6.0.0-alpha (20/12/2018):
     * New settings in order to allow regular expressions as exclussion list items, so paragraphs matching those expressions will be ignored by the Paragraph Word Counter comparator.
     * A new output format for the terminal output (Left file [matching %] -> Right file [matching %] -> Comparator [matching %]).

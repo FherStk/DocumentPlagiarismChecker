@@ -52,28 +52,5 @@ namespace DocumentPlagiarismChecker
                 }
             }
         }
-
-        public void Set(string name, object value){
-            string[] item = name.Split("-");
-            object current = this;
-            bool found = false;
-
-            for (int i=0; i<item.Length; i++){                
-                foreach (PropertyInfo pi in current.GetType().GetProperties()){
-                    if(pi.Name.ToLower() == item[i].ToLower()){
-                        if(i+1 <  item.Length) current = pi.GetValue(current);
-                        else{
-                            pi.SetValue(current, System.Convert.ChangeType(value, pi.PropertyType));
-                            found = true;
-                        }
-
-                        break;
-                    }
-                }   
-            }
-
-            if(!found) throw new Exceptions.AppSettingNotFound();
-        }
     }
-
 }
