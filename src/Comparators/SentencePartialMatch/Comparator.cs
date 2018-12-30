@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using DocumentPlagiarismChecker.Core;
 using DocumentPlagiarismChecker.Scores;
 
-namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
+namespace DocumentPlagiarismChecker.Comparators.SentencePartialMatch
 {
     /// <summary>
     /// The Paragraph Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
@@ -162,7 +162,7 @@ namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
 
         private  ComparatorMatchingScore ComputeMatching(List<Sentence> sentences){            
             //Defining the results headers
-            ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Sentence Word Match", DisplayLevel.DETAILED);
+            ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Sentence Partial Match", DisplayLevel.DETAILED);
             cr.DetailsCaption = new string[] { "Left sentence (subset)", "Right sentence (original)", "Match"};
             cr.DetailsFormat = new string[]{"{0:L75}", "{0:L75}", "{0:P2}"}; //Note: use {0:L50} in order to show a substring of max length = 50
             

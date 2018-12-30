@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 
-namespace DocumentPlagiarismChecker.Comparators.SentenceWordMatch
+namespace DocumentPlagiarismChecker.Comparators.SentencePartialMatch
 {
     /// <summary>
     /// This document must be used with the Sentence Word Match Comparator, and stores all the sentences inside a document.

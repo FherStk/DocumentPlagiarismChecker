@@ -67,7 +67,7 @@ New comparators will be added as long as the tool became improved with new capab
  2. Correct the namespace of the copied folders and replace **_template** with the name of your comparator (must match the name of the folder).
  3. Code both files following the indications, but you can use the current comparators as a guide.
  ### List of comparators (marked ones are avaliables, the other ones are under development):
-- [x] Sentence Word Match: compares all the sentences between each other in order to get total or partial matches along its words.
+- [x] Sentence Partial Match: compares all the sentences between each other in order to get total or partial matches along its words.
 - [x] ~~Document Word Counter: compares two PDF files and check how many words and how many times appears within each document, useful for checking if two documents are almost equals.~~ [DEPRECTAED]
 - [X] ~~Paragraph Word Counter: compares two PDF files and check how many paragraphs contains similar sentences, useful for checking which if two paragraphs are almost equals.~~ [DEPRECTAED]
 - [X] ~~Paragraph Length Counter: compares two PDF files and check how many paragraph has the same length, useful for checking which parts of two documents could have been replaced by synonyms.~~ [DEPRECTAED]
@@ -76,7 +76,7 @@ The full list of ideas and improvements can be found at [issues section (with th
 ### Changelog:
 * v0.7.0.0-alpha (XX/12/2018):
     * The console app does not accept parameters anymore (but the settings one) so settings file is the only way to set the configuration for a new app instance.
-    * The old comparators have been removed and replaced by the new Sentence Word Match, which compares all the sentences between each other in order to get total or partial matches along its words.
+    * The old comparators have been removed and replaced by the new Sentence Partial Match, which compares all the sentences between each other in order to get total or partial matches along its words.
 
 * v0.6.0.0-alpha (20/12/2018):
     * New settings in order to allow regular expressions as exclussion list items, so paragraphs matching those expressions will be ignored by the Paragraph Word Counter comparator.
