@@ -31,14 +31,14 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
+        /// Compta quantes paraules i quantes vegades apareix dintre de cada paràgraf en un document, i comprova del percentatge de coincidències.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Els resultat de les coincidències.</returns>
         public override ComparatorMatchingScore Run(){     
-            //This order is meant to improving performance
+            //Aquesta ordre està feta per millorar el rendiment.
             ExcludeSampleExactMatches(); 
-            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
-            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
+            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: El valor llindant ha de ser obtingut de la configuració, Comproba si es pot esborrar.
+            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: El valor llindant ha de ser obtingut de la configuració, Comproba si es pot esborrar.
             ExcludeExclussionListMatches();
             
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
