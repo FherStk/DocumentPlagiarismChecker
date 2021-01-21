@@ -1,7 +1,9 @@
 # Document Plagiarism Checker
-Document Plagiarism Checker is an Open-Source C# project over .NET Core 2.1 that has been developed for academic purposes only, which implements a really simple way to compare a set of documents between each other in order to check if some of them are copies.
+Document Plagiarism Checker is an Open-Source C# project over .NET Core 3.1 that has been developed for academic purposes only, which implements a really simple way to compare a set of documents between each other in order to check if some of them are copies.
 
 Feel free to use, copy, fork or modify this project; but please refer a mention to this project and its author respecting also the licenses of the included third party software.
+
+## WARNING: still in an early development stage and doesn't work properly!
 
 ### Third party software and licenses:
 Please notice than this project could not be possible without the help of:
@@ -9,7 +11,6 @@ Please notice than this project could not be possible without the help of:
 * The [ConsoleTables](https://github.com/khalidabuhakmeh/ConsoleTables) library property of [Khalid Abuhakmeh](https://github.com/khalidabuhakmeh): under the MIT license, (further details about the license can be found at [https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE](https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/LICENSE)).    
 * The [YamlDotNet](https://github.com/aaubry/YamlDotNet) library property of [Antoine Aubry](https://github.com/aaubry): under the MIT license, (further details about the license can be found at [https://github.com/aaubry/YamlDotNet/blob/master/LICENSE](https://github.com/aaubry/YamlDotNet/blob/master/LICENSE)).
 
-## WARNING: still in an early development stage.
 ### How to use it:
 #### As an stand-alone console app:
 Clone the repository to your local working directory, restore the dependencies with `dotnet restore`, build it with `dotnet build` and, finally, run the project with `dotnet run`. 

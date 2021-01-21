@@ -1,7 +1,7 @@
 /*
     Copyright (C) 2018 Fernando Porrino Serrano.
     This software it's under the terms of the GNU Affero General Public License version 3.
-    Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
+    Please, renfer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
  */
  
 using System;
@@ -13,27 +13,28 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
-    /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
-    /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
-    /// a high level of provability.
+ 
+     ///El comparador de comptadors de paraules llegeix un parell de fitxers i compta quantes paraules i quantes vegades apareixen a cada fitxer i calcula
+    /// quantes d'aquestes aparicions coincideixen entre documents. Per tant, es poden copiar dos documents amb la mateixa quantitat de les mateixes paraules
+    /// un alt nivell de probabilitat.
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
-        /// </summary>
-        /// <param name="fileLeftPath">The left side file's path.</param>
-        /// <param name="fileRightPath">The right side file's path.</param>
-        /// <param name="settings">The settings instance that will use the comparator.</param>
+        /// Crea una nova instància per al comparador.
+        /// </summary>///El camí del fitxer del costat dret El camí del fitxer lateral esquerre
+        /// <param name="fileLeftPath">.</param>
+        /// <param name="fileRightPath">.</param>
+        /// <param name="settings">La instància de configuració que utilitzarà el comparador.</param>
         /// <returns></returns>
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each document, and checks the matching percentage.
+        ///Compta quantes paraules i quantes vegades apareixen a cada document i comprova el percentatge de coincidència.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Els resultats de la coincidència.</returns>
         public override ComparatorMatchingScore Run(){
             //Counting the words appearences for each document (left and right).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
