@@ -14,31 +14,32 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
     /// <summary>
-    /// The Paragraph Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
-    /// then calculates how many of those appearences matches between documents. So, two documents with the same amount of the same paragraphs and 
-    /// words can be a copy with a high level of provability.
+    /// El comparador de paràmetres de comptador de paraules llegeix un parell de fitxers i compta quantes paraules i quantes vegades apareixen a cada paràgraf dins d’un fitxer i
+    /// llavors calcula quantes d'aquestes aparicions coincideixen entre documents. Per tant, dos documents amb la mateixa quantitat dels mateixos paràgrafs i
+    /// les paraules poden ser una còpia amb un alt nivell de probabilitat.
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
+        /// 
+        /// Crea una nova instància per al comparador.
         /// </summary>
-        /// <param name="fileLeftPath">The left side file's path.</param>
-        /// <param name="fileRightPath">The right side file's path.</param>
-        /// <param name="settings">The settings instance that will use the comparator.</param>
+        /// <param name="fileLeftPath">El camí del fitxer lateral esquerre</param>
+        /// <param name="fileRightPath">El camí del fitxer del costat dret</param>
+        /// <param name="settings">La instància de configuració que utilizarà el comparador</param>
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
+        /// Compta quantes paraules i quantes vegades apareixen dins de cada paràgraf en un document i comprova el percentatge de coincidència.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Els resultats de la coincidència</returns>
         public override ComparatorMatchingScore Run(){     
-            //This order is meant to improving performance
+            // Aquest ordre està destinat a millorar el rendiment
             ExcludeSampleExactMatches(); 
-            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
-            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
+            ExcludeSamplePartialMatches(this.Left, 0.70f);   // TOT: el valor del llindar ha de ser obtenir de la configuració; comproveu si es pot eliminar
+            ExcludeSamplePartialMatches(this.Right, 0.70f);  // TOT: el valor del llindar ha de ser obtenir de la configuració; comproveu si es pot eliminar
             ExcludeExclussionListMatches();
             
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
@@ -61,7 +62,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
+        /// Compara la mostra amb el fitxer donat i exclou els paràgrafs que produeixen una falsa coincidència positiva entre la mostra i el document.
         /// </summary>
         private void ExcludeSampleExactMatches(){
             if(this.Sample == null) return;
@@ -84,17 +85,17 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph, comparing them between each other in order to score a matching percentage.
+        /// Compta quantes paraules i quantes vegades apareixen dins de cada paràgraf, comparant-les entre si per obtenir un percentatge coincident.
         /// </summary>
-        /// <param name="paragraphsLeft">A left-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
-        /// <param name="paragraphsRight">A right-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
-        /// <returns>The result of the comparisson as a collection of pair-values following the schema (text[left, right], (word, [countLeft, countRight])</returns>
+        /// <param name="paragraphsLeft">Un conjunt de paràgrafs de l’esquerra com a col·lecció de parells de valors que segueixen l’esquema (text, (paraula, recompte)).</param>
+        /// <param name="paragraphsRight">Un conjunt de paràgrafs de la dreta com a col·lecció de parells de valors que segueixen l’esquema (text, (paraula, recompte)).</param>
+        /// <returns>El resultat de la comparació com a col·lecció de parells de valors després de l’esquema (text [esquerra, dreta], (paraula, [countLeft, countRight])</returns>
         private Dictionary<string[], Dictionary<string, int[]>> CompareParagraphs(Document leftDoc, Document rightDoc){
             Dictionary<string[], Dictionary<string, int[]>> paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();            
             foreach(string plKey in leftDoc.Paragraphs.Select(x => x.Key)){                
                 foreach(string prKey in rightDoc.Paragraphs.Select(x => x.Key)){                                        
 
-                    //Counting the words withing one of the left document's paragraph
+                    // Comptar les paraules que contenen un dels paràgrafs del document esquerre
                     Dictionary<string, int[]> wordCounter = new Dictionary<string, int[]>();
                     Dictionary<string, int> pLeft = leftDoc.Paragraphs[plKey];
                     foreach(string wLeft in pLeft.Select(x => x.Key)){
@@ -102,15 +103,15 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                         wordCounter[wLeft][0] += pLeft[wLeft];
                     }
 
-                    //Counting the words withing one of the right document's paragraph
+                    // Comptar les paraules que contenen un dels paràgrafs del document adequat
                     Dictionary<string, int> pRight = rightDoc.Paragraphs[prKey];
                     foreach(string wRight in pRight.Select(x => x.Key)){
                         if(!wordCounter.ContainsKey(wRight)) wordCounter.Add(wRight, new int[]{0, 0});
                         wordCounter[wRight][1] += pRight[wRight];
                     }
 
-                    //Adding the word count to the global paragapg comparisson (the key are a subset of the paragraph in order to show it 
-                    //at the input).
+                    // Afegir el recompte de paraules a la comparació global de paragapg (les claus són un subconjunt del paràgraf per mostrar-lo 
+                    // a l'entrada).
                     paragraphCounter.Add(new string[]{ plKey, prKey }, wordCounter);
                 }
             }
@@ -119,16 +120,16 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }   
 
         private  ComparatorMatchingScore ComputeMatching(Dictionary<string[], Dictionary<string, int[]>> paragraphCounter){
-            //Defining the results headers
+            // Definició de les capçaleres de resultats
             ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Paragraph Word Counter", DisplayLevel.DETAILED);
             cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Match"};
             cr.DetailsFormat = new string[]{"{0:L50}", "{0:L50}", "{0:P2}"};
             
-            //Calculate the matching for each individual word within each paragraph.
+            // Calculeu la coincidència de cada paraula dins de cada paràgraf.
             foreach(string[] paragraphs in paragraphCounter.Select(x => x.Key)){    
                 Dictionary<string, int[]> wordCounter = paragraphCounter[paragraphs];                                
 
-                //Counting for each word inside an especific paragraph
+                // Comptar per a cada paraula dins d’un paràgraf específic
                 cr.Child = new DetailsMatchingScore();
                 cr.Child.DetailsCaption = new string[]{"Word", "Left count", "Right count", "Match"};
                 cr.Child.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
@@ -137,15 +138,15 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     int countLeft = wordCounter[word][0];
                     int countRight = wordCounter[word][1];
 
-                    //Mathing with word appearences
+                    // Trencar amb les aparences de paraules
                     float match = (countLeft == 0 || countRight == 0 ? 0 :(countLeft < countRight ? (float)countLeft / (float)countRight : (float)countRight / (float)countLeft));                    
 
-                    //Adding the details for each word                         
+                    // Afegir els detalls de cada paraula                        
                     cr.Child.AddMatch(match);
                     cr.Child.DetailsData.Add(new object[]{word, countLeft, countRight, match});
                 }
                 
-                //Adding the details for each paragraph
+                // Afegir els detalls de cada paràgraf
                 cr.AddMatch(cr.Child.Matching);
                 cr.DetailsData.Add(new object[]{paragraphs[0], paragraphs[1], cr.Child.Matching});
             }
