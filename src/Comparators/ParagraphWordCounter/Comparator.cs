@@ -14,26 +14,26 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
     /// <summary>
-    /// The Paragraph Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
-    /// then calculates how many of those appearences matches between documents. So, two documents with the same amount of the same paragraphs and 
-    /// words can be a copy with a high level of provability.
+    /// El comparador de contador de palabras de párrafo lee un par de archivos y cuenta cuántas palabras y cuántas veces aparecen en cada párrafo dentro de un archivo, y
+    /// luego calcula cuántas de esas apariciones coinciden entre documentos. Entonces, dos documentos con la misma cantidad de los mismos párrafos y
+    /// las palabras pueden ser una copia con un alto nivel de demostrabilidad.
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
+        /// Crea una nueva instancia para el comparador.
         /// </summary>
-        /// <param name="fileLeftPath">The left side file's path.</param>
-        /// <param name="fileRightPath">The right side file's path.</param>
-        /// <param name="settings">The settings instance that will use the comparator.</param>
+        /// <param name="fileLeftPath">La ruta del archivo del lado izquierdo</param>
+        /// <param name="fileRightPath">La ruta del archivo del lado derecho</param>
+        /// <param name="settings">La instancia de configuración que utilizará el comparador.</param>
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
+        /// Compta quantes paraules i quantes vegades apareixen dins de cada paràgraf en un document i comprova el percentatge de coincidència.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Els resultats de la coincidència.</returns>
         public override ComparatorMatchingScore Run(){     
             //This order is meant to improving performance
             ExcludeSampleExactMatches(); 
