@@ -84,17 +84,17 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph, comparing them between each other in order to score a matching percentage.
+        /// Compta quantes paraules i quantes vegades apareixen a cada paràgraf, comparant-les entre si per obtenir un percentatge coincident.
         /// </summary>
-        /// <param name="paragraphsLeft">A left-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
-        /// <param name="paragraphsRight">A right-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
-        /// <returns>The result of the comparisson as a collection of pair-values following the schema (text[left, right], (word, [countLeft, countRight])</returns>
+        /// <param name="paragraphsLeft">Un conjunt de paràgrafs de l’esquerra com a col·lecció de parells de valors que segueixen l’esquema (text, (paraula, recompte)).</param>
+        /// <param name="paragraphsRight">Un conjunt de paràgrafs de la dreta com a col·lecció de parells de valors que segueixen l’esquema (text, (paraula, recompte)).</param>
+        /// <returns>El resultat de la comparació com a col·lecció de parells de valors després de l’esquema (text [esquerra, dreta], (paraula, [countLeft, countRight])</returns>
         private Dictionary<string[], Dictionary<string, int[]>> CompareParagraphs(Document leftDoc, Document rightDoc){
             Dictionary<string[], Dictionary<string, int[]>> paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();            
             foreach(string plKey in leftDoc.Paragraphs.Select(x => x.Key)){                
                 foreach(string prKey in rightDoc.Paragraphs.Select(x => x.Key)){                                        
 
-                    //Counting the words withing one of the left document's paragraph
+                    //Comptant les paraules d'un dels paràgrafs del document esquerre
                     Dictionary<string, int[]> wordCounter = new Dictionary<string, int[]>();
                     Dictionary<string, int> pLeft = leftDoc.Paragraphs[plKey];
                     foreach(string wLeft in pLeft.Select(x => x.Key)){
