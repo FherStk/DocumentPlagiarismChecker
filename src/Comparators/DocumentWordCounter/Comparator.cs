@@ -21,7 +21,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Crea una nova instància per al comparador.
+        /// Crea una nueva instancia para el comparador.
         /// </summary>
         /// <param name = "fileLeftPath"> Camí del fitxer del costat esquerre. </param>
         /// <param name = "fileRightPath"> Camí del fitxer del costat dret. </param>
@@ -33,7 +33,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         /// <summary>
         /// Compta quantes paraules i quantes vegades apareixen dins de cada paràgraf en un document i comprova el percentatge de coincidència.
         /// </summary>
-        /// <returns>Els resultats de la coincidència..</returns>
+        /// <returns>Los resultados de la coincidencia</returns>
         public override ComparatorMatchingScore Run(){
             //Counting the words appearences for each document (left and right).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
