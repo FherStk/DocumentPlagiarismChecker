@@ -33,64 +33,63 @@ namespace DocumentPlagiarismChecker.Outputs
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<ComparatorMatchingScore> results){              
             DisplayLevel dl = Enum.Parse<DisplayLevel>(this.Settings.Display.ToUpper());     //TODO: try with enum inside settings       
-            Console.OutputEncoding = System.Text.Encoding.UTF8;            
+            FileWriter fitxer = new FileWriter("fitxer.txt")         
             WriteSeparator('#', ConsoleColor.DarkGray);                
 
             //The list of CMS must be grouped and sorted in order to display.
             foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
                 //Displays the left file info with its total match                
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("  ⬩ Left file [");
+                fitxer.Write("  ⬩ Left file [");
                     
                 float match = grpLeft.Sum(x => x.Matching) / grpLeft.Count();
-                Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                Console.Write("{0:P2}", match);
                 
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("]: ");
+                fitxer.Write("{0:P2}", match);
+                
+             
+                fitxer.Write("]: ");
 
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(grpLeft.Key);                                                        
+                
+                fitxer.WriteLine(grpLeft.Key);                                                        
 
                 foreach(IGrouping<string, ComparatorMatchingScore> grpRight in grpLeft.GroupBy(x => x.RightFileName)){
                     //Displays the right file info with its total match
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("     ⤷ Right file [");
+                   
+                    fitxer.Write("     ⤷ Right file [");
                         
                     match = grpRight.Sum(x => x.Matching) / grpRight.Count();
-                    Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                    Console.Write("{0:P2}", match);
                     
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("]: ");
+                    fitxer.Write("{0:P2}", match);
+                    
+                   
+                    fitxer.Write("]: ");
 
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(grpRight.Key);                                                        
+                   
+                    fitxer.WriteLine(grpRight.Key);                                                        
 
                     if(dl >= DisplayLevel.COMPARATOR){
                         foreach(ComparatorMatchingScore comp in grpRight.Select(x => x).ToList()){
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write("        ⤷ Comparator [");
-                                
-                            Console.ForegroundColor = (comp.Matching < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                            Console.Write("{0:P2}", comp.Matching);
                             
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write("]: ");
+                            fitxer.Write("        ⤷ Comparator [");
+                                
+                           
+                            fitxer.Write("{0:P2}", comp.Matching);
+                            
+                          
+                           fitxer.Write("]: ");
 
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine(comp.Comparator);
+                            
+                            fitxer.WriteLine(comp.Comparator);
 
                             //Looping over the detials
                             DetailsMatchingScore dms = (DetailsMatchingScore)comp;
                             while(dms != null){
                                 if(dl >= dms.DisplayLevel){      
-                                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                                    Console.WriteLine();
+                                   
+                                    fitxer.WriteLine();
                                     WriteSeparator('·', ConsoleColor.DarkRed);          
-                                    Console.WriteLine();                          
-                                    Console.WriteLine("  {1}: displaying details for matching values over {0:P2}", GetThreshold(dms.DisplayLevel), comp.Comparator);
-                                    Console.WriteLine();
+                                    fitxer.WriteLine();                          
+                                    fitxer.WriteLine("  {1}: displaying details for matching values over {0:P2}", GetThreshold(dms.DisplayLevel), comp.Comparator);
+                                    fitxer.WriteLine();
 
                                     var table = new ConsoleTable(dms.DetailsCaption);
                                     for(int i = 0; i < dms.DetailsData.Count; i++){
