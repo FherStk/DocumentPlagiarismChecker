@@ -14,7 +14,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
  
-     ///El comparador de comptadors de paraules llegeix un parell de fitxers i compta quantes paraules i quantes vegades apareixen a cada fitxer i calcula
+     ///El comparador de comptadors asdf dirde paraules llegeix un parell de fitxers i compta quantes paraules i quantes vegades apareixen a cada fitxer i calcula
     /// quantes d'aquestes aparicions coincideixen entre documents. Per tant, es poden copiar dos documents amb la mateixa quantitat de les mateixes paraules
     /// un alt nivell de probabilitat.
     /// </summary>
