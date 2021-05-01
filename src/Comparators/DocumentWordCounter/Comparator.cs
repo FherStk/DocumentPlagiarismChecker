@@ -32,9 +32,14 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         
         /// <resumen>
         /// Cuenta cuántas palabras y cuántas veces aparecen en cada documento y verifica el porcentaje de coincidencia.
+<<<<<<< HEAD
         /// </resumen>
         /// <returns> Los resultados de la coincidencia. </returns>
 
+=======
+        /// </summary>
+        /// <returns> Los resultados de la coincidencia. </returns>
+>>>>>>> 9e528f237ee06ecb135fa38408875f87a86f5d35
         public override ComparatorMatchingScore Run(){
             // Contando las apariciones de palabras para cada documento (izquierda y derecha).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
