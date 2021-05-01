@@ -30,15 +30,15 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
-        /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
+        /// <resumen>
+        /// Cuenta cuántas palabras y cuántas veces aparecen en cada párrafo de un documento y verifica el porcentaje de coincidencia.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns> Los resultados de la coincidencia. </returns>
         public override ComparatorMatchingScore Run(){     
-            //This order is meant to improving performance
+           // Este pedido está destinado a mejorar el rendimiento.
             ExcludeSampleExactMatches(); 
-            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
-            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
+            ExcludeSamplePartialMatches(this.Left, 0.70f);  // TODO: el valor del umbral debe obtenerse de la configuración; comprobar si se puede quitar
+            ExcludeSamplePartialMatches(this.Right, 0.70f);  // TODO: el valor del umbral debe obtenerse de la configuración; comprobar si se puede quitar
             ExcludeExclussionListMatches();
             
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
@@ -60,9 +60,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             }
         }
 
-        /// <summary>
-        /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
-        /// </summary>
+        /// <resumen>
+        /// Compara la muestra con el archivo dado y excluye los párrafos que producen una coincidencia falsa positiva entre la muestra y el documento.
+        /// </resumen>
         private void ExcludeSampleExactMatches(){
             if(this.Sample == null) return;
 
