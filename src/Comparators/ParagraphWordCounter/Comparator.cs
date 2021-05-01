@@ -1,7 +1,7 @@
 /*
     Copyright (C) 2018 Fernando Porrino Serrano.
-    This software it's under the terms of the GNU Affero General Public License version 3.
-    Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
+    Este softaware se rige bajo los términos de la versión 3 de la licencia pública GNU Affero General 
+	Por favor referirse a (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) para más detalles de la licencia.
  */
  
 using System;
@@ -14,31 +14,31 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
     /// <summary>
-    /// The Paragraph Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
-    /// then calculates how many of those appearences matches between documents. So, two documents with the same amount of the same paragraphs and 
-    /// words can be a copy with a high level of provability.
+    ///El Paragraph Word Counter Comparator lee un par de filas y cuanta cuantas palabras hay y cuantas veces aparecen en cada párrafo de un documento 
+    /// y luego calcula cuantas de estas apariciones se coinciden entre documetos. Así, dos documentos con la misma cantidad de párrafos y
+    /// palabras pueden tener una gran probabilidad de ser una copia.
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
+        /// Crea una nueva instancia para el Comparator.
         /// </summary>
-        /// <param name="fileLeftPath">The left side file's path.</param>
-        /// <param name="fileRightPath">The right side file's path.</param>
-        /// <param name="settings">The settings instance that will use the comparator.</param>
+        /// <param name="fileLeftPath">TLa parte izquierda de la ruta del archivo</param>
+        /// <param name="fileRightPath">La parte derecha de la ruta del archivo</param>
+        /// <param name="settings">La configuración que usará el comparador.</param>
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
+        /// Cuenta cuantas palabras y cuantas veces aparecen en cada párrafo del documento, y comprueba el porcentaje de coincidencia.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Los resultados de la coincidencia.</returns>
         public override ComparatorMatchingScore Run(){     
-            //This order is meant to improving performance
+            //Esta orden sirve para mejorar el rendimiento
             ExcludeSampleExactMatches(); 
-            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
-            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
+            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: el umbral de valores se debe obtener de la configuracion; mirar si se puede eliminar
+            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: el umbral de valores se debe obtener de la configuracion; mirar si se puede eliminar
             ExcludeExclussionListMatches();
             
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
@@ -61,7 +61,7 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
+        /// Compara el ejemplo con el archivo dado y excluye el parágrafo que produce una coincidencia de falso positivo entre el ejemplo y el documento.
         /// </summary>
         private void ExcludeSampleExactMatches(){
             if(this.Sample == null) return;
@@ -84,17 +84,17 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph, comparing them between each other in order to score a matching percentage.
+        /// Cuenta cuantas palabras y cuantas veces aparecen en cada párrafo, comparandolas entre ellas para obtener un porcentaje que los relacione.
         /// </summary>
-        /// <param name="paragraphsLeft">A left-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
-        /// <param name="paragraphsRight">A right-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
-        /// <returns>The result of the comparisson as a collection of pair-values following the schema (text[left, right], (word, [countLeft, countRight])</returns>
+        /// <param name="paragraphsLeft">Un set de parágrafos en la parte izquierda como colecciones de valores pares siguendo el esquema(text, (word, count)).</param>
+        /// <param name="paragraphsRight">Un set de parágrafos en la parte derecha como colecciones de valores pares siguendo el esquema(text, (word, count)).</param>
+        /// <returns>El resultado de la comparativa como colección de los valores pares siguiendo el esquema(text[left, right], (word, [countLeft, countRight])</returns>
         private Dictionary<string[], Dictionary<string, int[]>> CompareParagraphs(Document leftDoc, Document rightDoc){
             Dictionary<string[], Dictionary<string, int[]>> paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();            
             foreach(string plKey in leftDoc.Paragraphs.Select(x => x.Key)){                
                 foreach(string prKey in rightDoc.Paragraphs.Select(x => x.Key)){                                        
 
-                    //Counting the words withing one of the left document's paragraph
+                    //Contando las palabras en uno de los párrafos izquierdos del documentos
                     Dictionary<string, int[]> wordCounter = new Dictionary<string, int[]>();
                     Dictionary<string, int> pLeft = leftDoc.Paragraphs[plKey];
                     foreach(string wLeft in pLeft.Select(x => x.Key)){
@@ -102,15 +102,15 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                         wordCounter[wLeft][0] += pLeft[wLeft];
                     }
 
-                    //Counting the words withing one of the right document's paragraph
+                    //Contando las palabras en uno de los párrafos derechos del documentos
                     Dictionary<string, int> pRight = rightDoc.Paragraphs[prKey];
                     foreach(string wRight in pRight.Select(x => x.Key)){
                         if(!wordCounter.ContainsKey(wRight)) wordCounter.Add(wRight, new int[]{0, 0});
                         wordCounter[wRight][1] += pRight[wRight];
                     }
 
-                    //Adding the word count to the global paragapg comparisson (the key are a subset of the paragraph in order to show it 
-                    //at the input).
+                    //Añadiendo el conteo de palabras a la comparación del paragrafo global(la clave es un subset del parágrafo pata mostrarlo
+                    //en el input).
                     paragraphCounter.Add(new string[]{ plKey, prKey }, wordCounter);
                 }
             }
@@ -119,16 +119,16 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }   
 
         private  ComparatorMatchingScore ComputeMatching(Dictionary<string[], Dictionary<string, int[]>> paragraphCounter){
-            //Defining the results headers
+            //Definiendo los resultados de la cabecera
             ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Paragraph Word Counter", DisplayLevel.DETAILED);
             cr.DetailsCaption = new string[] { "Left paragraph", "Right paragraph", "Match"};
             cr.DetailsFormat = new string[]{"{0:L50}", "{0:L50}", "{0:P2}"};
             
-            //Calculate the matching for each individual word within each paragraph.
+            //Calcular las igualdades para cada palabra individual de cada paragrafo
             foreach(string[] paragraphs in paragraphCounter.Select(x => x.Key)){    
                 Dictionary<string, int[]> wordCounter = paragraphCounter[paragraphs];                                
 
-                //Counting for each word inside an especific paragraph
+                //Contando cada palabra dentro de un parágrafo específico
                 cr.Child = new DetailsMatchingScore();
                 cr.Child.DetailsCaption = new string[]{"Word", "Left count", "Right count", "Match"};
                 cr.Child.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
@@ -137,15 +137,15 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
                     int countLeft = wordCounter[word][0];
                     int countRight = wordCounter[word][1];
 
-                    //Mathing with word appearences
+                    //Coincidencia con las apariencias de las palabras
                     float match = (countLeft == 0 || countRight == 0 ? 0 :(countLeft < countRight ? (float)countLeft / (float)countRight : (float)countRight / (float)countLeft));                    
 
-                    //Adding the details for each word                         
+                    //Añadiendo los detalles para cada palabra                         
                     cr.Child.AddMatch(match);
                     cr.Child.DetailsData.Add(new object[]{word, countLeft, countRight, match});
                 }
                 
-                //Adding the details for each paragraph
+                //Añadiendo los detalles para cada párrafo
                 cr.AddMatch(cr.Child.Matching);
                 cr.DetailsData.Add(new object[]{paragraphs[0], paragraphs[1], cr.Child.Matching});
             }
