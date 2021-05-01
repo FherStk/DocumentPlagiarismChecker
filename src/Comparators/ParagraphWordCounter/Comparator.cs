@@ -35,10 +35,10 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){     
-            //This order is meant to improving performance
+            // Este pedido está destinado a mejorar el rendimiento.
             ExcludeSampleExactMatches(); 
-            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
-            ExcludeSamplePartialMatches(this.Right, 0.70f);  //TODO: threshold value must be get from settings; check if can be removed
+            ExcludeSamplePartialMatches(this.Left, 0.70f);  // TODO: el valor del umbral debe obtenerse de la configuración; comprobar si se puede quitar
+            ExcludeSamplePartialMatches(this.Right, 0.70f);  // TODO: el valor del umbral debe obtenerse de la configuración; comprobar si se puede quitar
             ExcludeExclussionListMatches();
             
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
