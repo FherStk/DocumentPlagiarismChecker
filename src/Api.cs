@@ -41,7 +41,7 @@ namespace DocumentPlagiarismChecker
         }
 
         /// <summary>
-        /// Uses the settings values for comparing a set of files between each other. 
+        /// Uses the settings values for comparing a set of files between each other.
         /// </summary>
         public void CompareFiles(){
             //Initial Checks
@@ -159,7 +159,7 @@ namespace DocumentPlagiarismChecker
                     // Dispose managed resources.                    
                 }               
 
-                // Note disposing has been done.
+                // Ya se ha desechado la nota.
                 disposed = true;
 
             }
