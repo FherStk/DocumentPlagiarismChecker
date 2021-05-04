@@ -15,7 +15,7 @@ using DocumentPlagiarismChecker.Outputs;
 namespace DocumentPlagiarismChecker
 {
     /// <summary>
-    /// This object provides access to the functionalities for the Document Plagiarism Checker library. 
+    /// Este objeto proporciona acceso a las funcionalidades de la biblioteca Document Plagiarism Checker. 
     /// </summary>
     public class Api: IDisposable{
         private long _total;
@@ -41,7 +41,7 @@ namespace DocumentPlagiarismChecker
         }
 
         /// <summary>
-        /// Uses the settings values for comparing a set of files between each other.
+        /// Utiliza los valores de configuración para comparar un conjunto de archivos entre sí.
         /// </summary>
         public void CompareFiles(){
             //Initial Checks
