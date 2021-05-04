@@ -41,7 +41,7 @@ namespace DocumentPlagiarismChecker
         }
 
         /// <summary>
-        /// Uses the settings values for comparing a set of files between each other. 
+        /// Utiliza los valores de configuración para comparar un conjunto de archivos entre sí.
         /// </summary>
         public void CompareFiles(){
             //Initial Checks
