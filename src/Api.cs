@@ -159,7 +159,7 @@ namespace DocumentPlagiarismChecker
                     // Dispose managed resources.                    
                 }               
 
-                // Note disposing has been done.
+                // Ya se ha desechado la nota.
                 disposed = true;
 
             }
