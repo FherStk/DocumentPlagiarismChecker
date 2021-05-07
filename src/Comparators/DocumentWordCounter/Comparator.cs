@@ -60,7 +60,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 }
             }
 
-            //Definición de los encabezados de resultados
+            //Definición de los encabezados de  resultados
             ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Document Word Counter", DisplayLevel.FULL);            
             cr.DetailsCaption = new string[] { "Word", "Left count", "Right count", "Match" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
