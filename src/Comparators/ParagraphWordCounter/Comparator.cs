@@ -1,7 +1,6 @@
 /*
-    Copyright (C) 2018 Fernando Porrino Serrano.
-    This software it's under the terms of the GNU Affero General Public License version 3.
-    Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
+    Este software está bajo los términos de la GNU Affero General Public License versión 3.
+    Consulte (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) para obtener más detalles sobre la licencia.
  */
  
 using System;
@@ -13,27 +12,28 @@ using DocumentPlagiarismChecker.Scores;
 
 namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
 {
-    /// <summary>
-    /// The Paragraph Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each paragraph within a file, and 
-    /// then calculates how many of those appearences matches between documents. So, two documents with the same amount of the same paragraphs and 
-    /// words can be a copy with a high level of provability.
-    /// </summary>
+    /// <resumen>
+    /// El comparador de contador de palabras de párrafo lee un par de archivos y cuenta cuántas palabras y cuántas veces aparecen en cada párrafo dentro de un archivo, y
+    /// luego calcula cuántas de esas apariciones coinciden entre documentos. Entonces, dos documentos con la misma cantidad de los mismos párrafos y
+    /// las palabras tienen un alta probabilidad de ser una copia.
+    /// </resumen>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
-        /// <summary>
-        /// Creates a new instance for the Comparator.
-        /// </summary>
-        /// <param name="fileLeftPath">The left side file's path.</param>
-        /// <param name="fileRightPath">The right side file's path.</param>
-        /// <param name="settings">The settings instance that will use the comparator.</param>
+        /// <resumen>
+        /// Crea una nueva instancia de Comparator.
+        /// </resumen>
+        /// <param name="fileLeftPath">La ruta de archivo del lado izquierdo.</param>
+        /// <param name="fileRightPath">La ruta de archivo del lado derecho.</param>
+        /// <param name="settings">La configuración de la instancioa que usará el comparador.</param>
+        /// <returns></returns>
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
-        /// <summary>
-        /// Counts how many words and how many times appears within each paragraph in a document, and checks the matching percentage.
-        /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <resumen>
+        ///  Cuenta cuántas palabras y cuántas veces aparecen en cada párrafo de un documento y verifica el porcentaje de coincidencia.
+        /// </resumen>
+        /// <returns>Los resultados de la coincidencia.</returns>
         public override ComparatorMatchingScore Run(){     
             //This order is meant to improving performance
             ExcludeSampleExactMatches(); 
@@ -60,9 +60,9 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
             }
         }
 
-        /// <summary>
-        /// Compares the sample with the given file and exclude the paragraphs that produces a false positive match between the sample an the document.
-        /// </summary>
+        /// <resumen>
+        /// Compara la muestra con el archivo dado y excluye los párrafos que producen una coincidencia falsa positiva entre la muestra y el documento.
+        /// </resumen>
         private void ExcludeSampleExactMatches(){
             if(this.Sample == null) return;
 
@@ -84,11 +84,11 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         }
 
         /// <summary>
-        /// Counts how many words and how many times appears within each paragraph, comparing them between each other in order to score a matching percentage.
+        /// Cuenta cuántas palabras y cuántas veces aparecen dentro de cada párrafo, comparándolas entre sí para obtener un porcentaje de coincidencia.
         /// </summary>
-        /// <param name="paragraphsLeft">A left-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
-        /// <param name="paragraphsRight">A right-side set of paragraphs as a collection of pair-values following the schema (text, (word, count)).</param>
-        /// <returns>The result of the comparisson as a collection of pair-values following the schema (text[left, right], (word, [countLeft, countRight])</returns>
+        /// <param name="paragraphsLeft">Un conjunto de párrafos del lado izquierdo como una colección de pares de valores siguiendo el esquema (texto, (palabra, recuento)).</param>
+        /// <param name="paragraphsRight">Un conjunto de párrafos del lado derecho como una colección de pares de valores siguiendo el esquema (texto, (palabra, recuento)).</param>
+        /// <returns>El resultado de la comparación como una colección de pares de valores siguiendo el esquema (text[left, right], (word, [countLeft, countRight])</returns>
         private Dictionary<string[], Dictionary<string, int[]>> CompareParagraphs(Document leftDoc, Document rightDoc){
             Dictionary<string[], Dictionary<string, int[]>> paragraphCounter = new Dictionary<string[], Dictionary<string, int[]>>();            
             foreach(string plKey in leftDoc.Paragraphs.Select(x => x.Key)){                
