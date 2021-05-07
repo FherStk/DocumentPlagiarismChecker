@@ -30,12 +30,12 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
-        /// <summary>
-        /// Counts how many words and how many times appears within each document, and checks the matching percentage.
-        /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <resumen>
+        /// Counts how many words and how many times appears within each documento, and checks the matching porcentaje.
+        /// </resumen>
+        /// <devuelve>Los resultados coincidentes.</devuelve>
         public override ComparatorMatchingScore Run(){
-            //Counting the words appearences for each document (left and right).
+            //Contando las apariciones de palabras para cada documento (izquierda y derecha).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
@@ -47,7 +47,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 counter[word][1] += Right.WordAppearances[word];
             }
 
-            //Counting sample file word appearences, in order to ignore those from the previous files.
+            //Contar las apariciones de las palabras del archivo de muestra, para ignorar las de los archivos anteriores.
             if(this.Sample != null){
                  foreach(string word in this.Sample.WordAppearances.Select(x => x.Key)){
                     if(counter.ContainsKey(word)){
@@ -60,12 +60,14 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 }
             }
 
-            //Defining the results headers
+            //definiendo los headers resultantes
             ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Document Word Counter", DisplayLevel.FULL);            
             cr.DetailsCaption = new string[] { "Word", "Left count", "Right count", "Match" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
-            //Calculate the matching for each individual word.            
+            //Calcula la coincidencia de cada palabra individual.
+
+         
             foreach(string word in counter.Select(x => x.Key)){                
                 int left = counter[word][0];
                 int right = counter[word][1];                
