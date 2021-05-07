@@ -13,19 +13,19 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
-    /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
-    /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
-    /// a high level of provability.
+    /// El comparador contador de palabras lee dos archivos y cuenta cuántas palabras y cuántas veces aparecen estas en cada archivo y, a continuación,
+    /// calcula cuántas de esas apariencias coinciden entre documentos. Por lo tanto, dos documentos con la misma cantidad de las mismas palabras 
+    /// pueden ser una copia con un alto nivel de provabilidad.
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
+        /// Crea una nueva instancia del Comparador.
         /// </summary>
-        /// <param name="fileLeftPath">The left side file's path.</param>
-        /// <param name="fileRightPath">The right side file's path.</param>
-        /// <param name="settings">The settings instance that will use the comparator.</param>
+        /// <param name="fileLeftPath">Ruta del archivo del lado izquierdo.</param>
+        /// <param name="fileRightPath">Ruta del archivo del lado derecho.</param>
+        /// <param name="settings">La instancia de configuración que utilizará el comparador.</param>
         /// <returns></returns>
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
