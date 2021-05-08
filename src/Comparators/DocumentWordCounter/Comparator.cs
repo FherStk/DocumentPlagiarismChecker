@@ -13,29 +13,29 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
 {
     /// <summary>
-    /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
-    /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
-    /// a high level of provability.
+    /// El Comparador de contador de palabras lee un par de archivos y cuenta cuántas palabras y cuántas veces aparecen en cada archivo, y luego calcula
+    /// cuántas de esas apariciones coinciden entre documentos. Sí, dos documentos con la misma cantidad de las mismas palabras pueden ser una copia con
+    /// un alto nivel de demostrabilidad.
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
+        /// Crea una nueva instancia para Comparator.
         /// </summary>
-        /// <param name="fileLeftPath">The left side file's path.</param>
-        /// <param name="fileRightPath">The right side file's path.</param>
-        /// <param name="settings">The settings instance that will use the comparator.</param>
+        /// <param name="fileLeftPath">La ruta del archivo del lado izquierdo.</param>
+        /// <param name="fileRightPath">La ruta del archivo del lado derecho.</param>
+        /// <param name="settings">La instancia de configuración que utilizará el comparador.</param>
         /// <returns></returns>
         public Comparator(string fileLeftPath, string fileRightPath, Settings settings): base(fileLeftPath, fileRightPath, settings){
         }  
         
         /// <summary>
-        /// Counts how many words and how many times appears within each document, and checks the matching percentage.
+        /// Cuenta cuántas palabras y cuántas veces aparecen en cada documento y comprueba el porcentaje de coincidencia.
         /// </summary>
-        /// <returns>The matching's results.</returns>
+        /// <returns>Los resultados de la coincidencia.</returns>
         public override ComparatorMatchingScore Run(){
-            //Counting the words appearences for each document (left and right).
+            //Contando las apariciones de palabras para cada documento (izquierda y derecha).
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
@@ -47,7 +47,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 counter[word][1] += Right.WordAppearances[word];
             }
 
-            //Counting sample file word appearences, in order to ignore those from the previous files.
+            //Contar las apariciones de las palabras del archivo de muestra, para ignorar las de los archivos anteriores.
             if(this.Sample != null){
                  foreach(string word in this.Sample.WordAppearances.Select(x => x.Key)){
                     if(counter.ContainsKey(word)){
@@ -60,12 +60,12 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
                 }
             }
 
-            //Defining the results headers
+            //Definición de los encabezados de resultados
             ComparatorMatchingScore cr = new ComparatorMatchingScore(this.Left.Name, this.Right.Name, "Document Word Counter", DisplayLevel.FULL);            
             cr.DetailsCaption = new string[] { "Word", "Left count", "Right count", "Match" };
             cr.DetailsFormat = new string[]{"{0}", "{0}", "{0}", "{0:P2}"};
 
-            //Calculate the matching for each individual word.            
+            //Calcule la coincidencia de cada palabra individual.           
             foreach(string word in counter.Select(x => x.Key)){                
                 int left = counter[word][0];
                 int right = counter[word][1];                
