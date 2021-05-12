@@ -14,7 +14,7 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Outputs
 {
     /// <summary>
-    /// This output base object sends the results to the terminal.
+    /// Este objeto base de salida envía los resultados al terminal.
     /// </summary>
     internal class TerminalOutput: Core.BaseOutput{
         public TerminalOutput(): base(){
