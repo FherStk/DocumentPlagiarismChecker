@@ -14,7 +14,7 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Outputs
 {
     /// <summary>
-    /// Este objeto base de salida envía los resultados al terminal.
+    /// Este objeto base de salida envía los resultados al terminal. 
     /// </summary>
     internal class TerminalOutput: Core.BaseOutput{
         public Nueva_Terminal(): base(){
@@ -27,7 +27,7 @@ namespace DocumentPlagiarismChecker.Outputs
         }
 
         /// <summary>
-        /// Writes the given set of results into the terminal.
+        /// Escribe el conjunto de resultados dado en la terminal.
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
