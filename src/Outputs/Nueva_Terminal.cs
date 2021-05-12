@@ -17,13 +17,13 @@ namespace DocumentPlagiarismChecker.Outputs
     /// Este objeto base de salida envía los resultados al terminal.
     /// </summary>
     internal class TerminalOutput: Core.BaseOutput{
-        public TerminalOutput(): base(){
+        public Nueva_Terminal(): base(){
         }
 
-        public TerminalOutput(string settingsFilePath): base(new Settings(settingsFilePath)){
+        public Nueva_Terminal(string settingsFilePath): base(new Settings(settingsFilePath)){
         }
 
-        public TerminalOutput(Settings settings): base(settings){
+        public Nueva_Terminal(Settings settings): base(settings){
         }
 
         /// <summary>
