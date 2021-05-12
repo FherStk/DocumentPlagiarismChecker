@@ -38,7 +38,7 @@ namespace DocumentPlagiarismChecker.Outputs
 
             //The list of CMS must be grouped and sorted in order to display.
             foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
-                //Displays the left file info with its total match                
+                //Muestra la info del archivo izquierdo con las coincidencias totales                
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("  ⬩ Left file [");
                     
