@@ -14,20 +14,20 @@ using DocumentPlagiarismChecker.Scores;
 namespace DocumentPlagiarismChecker.Outputs
 {
     /// <summary>
-    /// Este objeto base de salida envía los resultados al terminal. 
+    /// Este objeto base de salida envía los resultados al terminal.
     /// </summary>
     internal class TerminalOutput: Core.BaseOutput{
-        public Nueva_Terminal(): base(){
+        public TerminalOutput(): base(){
         }
 
-        public Nueva_Terminal(string settingsFilePath): base(new Settings(settingsFilePath)){
+        public TerminalOutput(string settingsFilePath): base(new Settings(settingsFilePath)){
         }
 
-        public Nueva_Terminal(Settings settings): base(settings){
+        public TerminalOutput(Settings settings): base(settings){
         }
 
         /// <summary>
-        /// Escribe el conjunto de resultados dado en la terminal.
+        /// Writes the given set of results into the terminal.
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
@@ -36,7 +36,7 @@ namespace DocumentPlagiarismChecker.Outputs
             Console.OutputEncoding = System.Text.Encoding.UTF8;            
             WriteSeparator('#', ConsoleColor.DarkGray);                
 
-            //The list of CMS must be grouped and sorted in order to display.
+            //La lista de CMS debe estar agrupada y ordenada para poder mostrarse.
             foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
                 //Displays the left file info with its total match                
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -108,7 +108,7 @@ namespace DocumentPlagiarismChecker.Outputs
                                                     else formatedData.Add(string.Format("{0}...", pText.Substring(0, length - 3)));                                                       
                                                 }
                                                 else{
-                                                    //Native string formatting output
+                                                    //Salida de formato de cadena nativa probando cosas
                                                     formatedData.Add(String.Format(dms.DetailsFormat[j], dms.DetailsData[i][j]));
                                                 }                                            
                                             }                                            
