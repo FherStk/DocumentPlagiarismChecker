@@ -37,8 +37,8 @@ namespace DocumentPlagiarismChecker.Comparators.ParagraphWordCounter
         public override ComparatorMatchingScore Run(){     
             //Esta orden tiene como objetivo mejorar el rendimiento
             ExcludeSampleExactMatches(); 
-            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TODO: El valor límite debe obtenerse de los ajustes, comprueba si puede ser eliminado
-            ExcludeSamplePartialMatches(this.Right, 0.70f); //TODO: El valor límite debe obtenerse de los ajustes, comprueba si puede ser eliminado
+            ExcludeSamplePartialMatches(this.Left, 0.70f);  //TOT: El valor límit ha d'obtindre's dels ajustos, comprova si pot ser eliminat
+            ExcludeSamplePartialMatches(this.Right, 0.70f); //TOT: El valor límit ha d'obtindre's dels ajustos, comprova si pot ser eliminat
             ExcludeExclussionListMatches();
             
             return ComputeMatching(CompareParagraphs(this.Left, this.Right));                                                        
