@@ -5,6 +5,8 @@
  */
  
 using System;
+using System.IO;
+using System.text;
 using System.Linq;
 using ConsoleTables;
 using System.Collections.Generic;
@@ -16,14 +18,14 @@ namespace DocumentPlagiarismChecker.Outputs
     /// <summary>
     /// This output base object sends the results to the terminal.
     /// </summary>
-    internal class TerminalOutput: Core.BaseOutput{
-        public TerminalOutput(): base(){
+    internal class TextOutput: Core.BaseOutput{
+        public TextOutput(): base(){
         }
 
-        public TerminalOutput(string settingsFilePath): base(new Settings(settingsFilePath)){
+        public TextOutput(string settingsFilePath): base(new Settings(settingsFilePath)){
         }
 
-        public TerminalOutput(Settings settings): base(settings){
+        public TextOutput(Settings settings): base(settings){
         }
 
         /// <summary>
@@ -31,66 +33,67 @@ namespace DocumentPlagiarismChecker.Outputs
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
-        public override void Write(List<ComparatorMatchingScore> results){              
+        public override void Write(List<ComparatorMatchingScore> results){           
+            StreamWriter sw = new StreamWriter("~/DocumentPlagiarismChecker/src/Outputs/archivo.txt", true, Encoding.ASCII);   
             DisplayLevel dl = Enum.Parse<DisplayLevel>(this.Settings.Display.ToUpper());     //TODO: try with enum inside settings       
-            Console.OutputEncoding = System.Text.Encoding.UTF8;            
+              
             WriteSeparator('#', ConsoleColor.DarkGray);                
 
             //The list of CMS must be grouped and sorted in order to display.
             foreach(IGrouping<string, ComparatorMatchingScore> grpLeft in results.GroupBy(x => x.LeftFileName)){            
                 //Displays the left file info with its total match                
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("  ⬩ Left file [");
+                sw.Write("  ⬩ Left file [");
                     
                 float match = grpLeft.Sum(x => x.Matching) / grpLeft.Count();
                 Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                Console.Write("{0:P2}", match);
+                sw.Write("{0:P2}", match);
                 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("]: ");
+                sw.Write("]: ");
 
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(grpLeft.Key);                                                        
+                sw.WriteLine(grpLeft.Key);                                                        
 
                 foreach(IGrouping<string, ComparatorMatchingScore> grpRight in grpLeft.GroupBy(x => x.RightFileName)){
                     //Displays the right file info with its total match
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("     ⤷ Right file [");
+                    sw.Write("     ⤷ Right file [");
                         
                     match = grpRight.Sum(x => x.Matching) / grpRight.Count();
                     Console.ForegroundColor = (match < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                    Console.Write("{0:P2}", match);
+                    sw.Write("{0:P2}", match);
                     
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("]: ");
+                    sw.Write("]: ");
 
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(grpRight.Key);                                                        
+                    sw.WriteLine(grpRight.Key);                                                        
 
                     if(dl >= DisplayLevel.COMPARATOR){
                         foreach(ComparatorMatchingScore comp in grpRight.Select(x => x).ToList()){
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write("        ⤷ Comparator [");
+                            sw.Write("        ⤷ Comparator [");
                                 
                             Console.ForegroundColor = (comp.Matching < GetThreshold(DisplayLevel.BASIC) ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed);
-                            Console.Write("{0:P2}", comp.Matching);
+                            sw.Write("{0:P2}", comp.Matching);
                             
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write("]: ");
+                            sw.Write("]: ");
 
                             Console.ForegroundColor = ConsoleColor.White;
-                            Console.WriteLine(comp.Comparator);
+                            sw.WriteLine(comp.Comparator);
 
                             //Looping over the detials
                             DetailsMatchingScore dms = (DetailsMatchingScore)comp;
                             while(dms != null){
                                 if(dl >= dms.DisplayLevel){      
                                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                                    Console.WriteLine();
+                                    sw.WriteLine();
                                     WriteSeparator('·', ConsoleColor.DarkRed);          
-                                    Console.WriteLine();                          
-                                    Console.WriteLine("  {1}: displaying details for matching values over {0:P2}", GetThreshold(dms.DisplayLevel), comp.Comparator);
-                                    Console.WriteLine();
+                                    sw.WriteLine();                          
+                                    sw.WriteLine("  {1}: displaying details for matching values over {0:P2}", GetThreshold(dms.DisplayLevel), comp.Comparator);
+                                    sw.WriteLine();
 
                                     var table = new ConsoleTable(dms.DetailsCaption);
                                     for(int i = 0; i < dms.DetailsData.Count; i++){
@@ -118,7 +121,7 @@ namespace DocumentPlagiarismChecker.Outputs
                                     }
                                                                     
                                     table.Write(); 
-                                    Console.WriteLine();                                                                                                                                                         
+                                    sw.WriteLine();                                                                                                                                                         
                                 }
                                 dms = dms.Child;
                             }
@@ -126,7 +129,7 @@ namespace DocumentPlagiarismChecker.Outputs
                     }
                 }    
 
-                Console.WriteLine();                                                               
+                sw.WriteLine();                                                               
             }
 
             WriteSeparator('#', ConsoleColor.DarkGray);
@@ -152,13 +155,13 @@ namespace DocumentPlagiarismChecker.Outputs
             }
         }
 
-        private void WriteSeparator(char symbol, ConsoleColor color = ConsoleColor.White){            
+        private void WriteSeparator(char symbol, ConsoleColor color = ConsoleColor.White,  StreamWriter sw ){            
             Console.ForegroundColor = color;
 
             for(int i = 0; i < Console.WindowWidth; i++)
-                Console.Write(symbol);
+                sw.Write(symbol);
 
-            Console.WriteLine();
+            sw.WriteLine();
         }
     }
 }
