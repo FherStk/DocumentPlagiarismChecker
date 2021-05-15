@@ -34,7 +34,7 @@ namespace DocumentPlagiarismChecker.Outputs
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
         public override void Write(List<ComparatorMatchingScore> results){           
-            StreamWriter sw = new StreamWriter("~/DocumentPlagiarismChecker/src/Outputs/archivo.txt", true, Encoding.ASCII);   
+            StreamWriter sw = new StreamWriter("~/DocumentPlagiarismChecker/src/Outputs/archivo.txt", true, Encoding.ASCII);   // ruta del archivo txt
             DisplayLevel dl = Enum.Parse<DisplayLevel>(this.Settings.Display.ToUpper());     //TODO: try with enum inside settings       
               
             WriteSeparator('#', ConsoleColor.DarkGray);                
