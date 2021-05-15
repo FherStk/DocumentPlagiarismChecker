@@ -97,7 +97,7 @@ namespace DocumentPlagiarismChecker
         /// <param name="results">A set of file matching scores</param>
         public void WriteOutput(){
             //TODO: must be selected by settings
-            TerminalOutput t = new TerminalOutput(this.Settings);
+            TerminalCopia t = new TerminalCopia(this.Settings);
             t.Write(this.MatchingResults);
         }
 
