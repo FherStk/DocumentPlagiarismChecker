@@ -29,7 +29,7 @@ namespace DocumentPlagiarismChecker.Outputs
         }
 
         /// <summary>
-        /// Writes the given set of results into the terminal.
+        /// Escribe el conjunto de resultados dado en la terminal.
         /// </summary>
         /// <param name="results">A set of results regarding each compared pair of files.</param>
         /// <param name="level">The output details level.</param>DisplayDisplay
