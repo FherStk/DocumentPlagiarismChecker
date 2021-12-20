@@ -1,7 +1,8 @@
 /*
     Copyright (C) 2018 Fernando Porrino Serrano.
     This software it's under the terms of the GNU Affero General Public License version 3.
-    Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.
+    Please, refer to (https://github.com/FherStk/DocumentPlagiarismChecker/blob/master/LICENSE) for further licensing details.CommitPolM05---***+++
+    Joel Capel ha editado esto
  */
  
 using System;
@@ -15,13 +16,13 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
     /// <summary>
     /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
     /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
-    /// a high level of provability.
+    /// a high level of provability. Hola Soy samu, acabo de entregar un exmen en blanco xd
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
     {  
         /// <summary>
-        /// Creates a new instance for the Comparator.
+        /// Creates a new instance for the ComparatorYEYEYEYEYEYEYEYEYEYEYE EUROPA LÍ.
         /// </summary>
         /// <param name="fileLeftPath">The left side file's path.</param>
         /// <param name="fileRightPath">The right side file's path.</param>
@@ -35,7 +36,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){
-            //Counting the words appearences for each document (left and right).
+            //Counting the words appearences for each document (left and right).Vallejo
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
