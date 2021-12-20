@@ -35,7 +35,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){
-            //Counting the words appearences for each document (left and right).
+            //Counting the words appearences for each document (left and right).Vallejo
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
