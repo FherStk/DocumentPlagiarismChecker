@@ -15,7 +15,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
     /// <summary>
     /// The Word Counter Comparator reads a pair of files and counts how many words and how many times appear on each file, and then calculates
     /// how many of those appearences matches between documents. So, two documents with the same amount of the same words can be a copy with
-    /// a high level of provability.
+    /// a high level of provability...
     /// </summary>
     /// <typeparam name="Document"></typeparam>
     internal class Comparator: Core.BaseComparator<Document>
@@ -35,7 +35,7 @@ namespace DocumentPlagiarismChecker.Comparators.DocumentWordCounter
         /// </summary>
         /// <returns>The matching's results.</returns>
         public override ComparatorMatchingScore Run(){
-            //Counting the words appearences for each document (left and right).
+            //Counting the words appearences for each document (left and right)..
             Dictionary<string, int[]> counter = new Dictionary<string, int[]>();
             foreach(string word in this.Left.WordAppearances.Select(x => x.Key)){
                 if(!counter.ContainsKey(word)) counter.Add(word, new int[]{0, 0});
